@@ -38,7 +38,17 @@
 									<td class="text-center"><?php echo $value->cod ?></td>
 									<td><?php echo $value->descricao ?></td>
 									<td class="text-center"><?php echo $value->estoque ?></td>
-									<td class="text-center">CRUD</td>
+									<td class="text-center">
+										<a class="btn btn-warning btn-circle btn-sm" href="<?php echo URLROOT ?>/users/updateUser/<?php echo $value->id ?>" id="<?php echo $value->id ?>" data-toggle="modal" data-placement="top" data-target="#modal_editar" title="Editar Usuario" modal-size="modal-lg">
+											<i class="fas fa-edit"></i>
+										</a>
+										<a class="btn btn-info btn-circle btn-sm" href="#" id="<?php echo $value->id ?>" data-toggle="modal" data-placement="top" data-target="#modal_info" title="Informações do Usuario">
+											<i class="fas fa-info"></i>
+										</a>
+										<a class="btn btn-danger btn-circle btn-sm" href="<?php echo URLROOT ?>/produtos/deleteProduto/<?php echo $value->id ?>" data-toggle="modal" data-placement="top" data-target="#modal_excluir" title="Excluir Produto" text="Deseja Realmente excluir este Produto ?">
+											<i class="fas fa-trash"></i>
+										</a>
+									</td>
 								</tr>
 							<?php endforeach ?>
 						</tbody>
@@ -48,7 +58,6 @@
 		</div>
 	</div>
 </div>
-<!-- Modal Upload -->
 <div class="modal fade" id="adicionar_produto" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg" role="document">
 		<div class="modal-content">
@@ -97,6 +106,41 @@
 			</form>
 		</div>
 	</div>
+</div>
+<div class="modal fade" id="modal_info" tabindex="-1" role="dialog" aria-labelledby="tituloModalBase" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal Title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group row">
+					<div class="col-lg-6">
+						<label class="m-0 font-weight-bold text-info">Nome:</label>
+						<p class="nome"></p>
+					</div>
+					<div class="col-lg-6">
+						<label class="m-0 font-weight-bold text-info">Email:</label>
+						<p class="email"></p>
+					</div>
+					<div class="col-lg-6">
+						<label class="m-0 font-weight-bold text-info">Nivel:</label>
+						<p class="nivel"></p>
+					</div>
+					<div class="col-lg-6">
+						<label class="m-0 font-weight-bold text-info">Status:</label><br>
+						<h5 class="status"></h5>
+					</div>
+				</div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+            </div>
+        </div>
+    </div>
 </div>
 
 <?php require_once APPROOT . '/views/inc/footer.php'; ?>

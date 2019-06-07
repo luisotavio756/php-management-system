@@ -68,8 +68,18 @@
 	
 		}
 
-		public function deleteProduto(){
-	
+		public function deleteProduto($id){
+			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+				if ($this->produtoModel->deleteProduto($id)) {
+					flash("produtos", "Usuário Excluido com Sucesso !");
+					redirect("/produtos/cadastrar/");
+				}else{
+					flash("produtos", "Não foi possível excluir o Usuário !", "alert-danger");
+					redirect("/produtos/cadastrar/");
+				}
+
+			}
+		
 		}
 
 		public function categorias(){

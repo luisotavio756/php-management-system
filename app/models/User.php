@@ -12,12 +12,12 @@
 			$this->db->query("INSERT INTO tb_usuarios(nome, sobrenome, email, senha, nivel, status) VALUES (:nome, :sobrenome, :email, :senha, :nivel, :status)");
 
 			//Bind values
-			$this->db->bind(":nome", $data['nome']);
+			$this->db->bind(":nome", $data['name']);
 			$this->db->bind(":sobrenome", $data['sobrenome']);
 			$this->db->bind(":email", $data['email']);
 			$this->db->bind(":senha", $data['password']);
-			$this->db->bind(":nivel", ($data['nivel'] ? $data['nivel'] : 1 ));
-			$this->db->bind(":status", ($data['status'] ? $data['status'] : 1 ));
+			$this->db->bind(":nivel", (isset($data['nivel'] )? $data['nivel'] : 1 ));
+			$this->db->bind(":status", (isset($data['status']) ? $data['status'] : 1 ));
 
 			if ($this->db->execute()) {
 				return true;
