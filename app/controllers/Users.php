@@ -2,10 +2,7 @@
 	class Users extends Controller{
 
 		public function __construct(){
-			// if (!isset($_SESSION['id_usuario'])) {
-			// 	$this->logout();
-			// }
-
+			
 			$this->userModel = $this->model('User');
 		}
 

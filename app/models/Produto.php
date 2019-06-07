@@ -19,7 +19,7 @@
 		public function addCategoria($data){
 			$this->db->query("INSERT INTO tb_categorias(descricao, data_registro) VALUES (:descricao, :data)");
 			$this->db->bind(":descricao", $data['descricao']);
-			$this->db->bind(":data",  $data['descricao']);
+			$this->db->bind(":data",  $data['data']);
 
 			if ($this->db->execute()) {
 				return true;
