@@ -26,6 +26,31 @@
 			}else{
 				return false;
 			}
+		
+		}
+
+		public function deleteCategoria($id) {
+			$this->db->query("DELETE FROM tb_categorias WHERE id = :id");
+			$this->db->bind(":id", $id);
+
+			if ($this->db->execute()) {
+				return true;
+			}else{
+				return false;
+			}
+		
+		}
+
+		public function alterCategoria($data) {
+			$this->db->query("UPDATE tb_categorias SET descricao = :descricao WHERE id = :id");
+			$this->db->bind(":id", $data['id']);
+			$this->db->bind(":descricao", $data['descricao']);
+
+			if ($this->db->execute()) {
+				return true;
+			}else{
+				return false;
+			}
 		}
 
 		public function getProdutos(){
@@ -34,6 +59,7 @@
 			if ($this->db->execute()) {
 				return $this->db->resultSet();
 			}
+		
 		}
 
 		public function addProduto($data){
@@ -51,6 +77,7 @@
 			}else{
 				return false;
 			}
+		
 		}
 
 		public function deleteProduto($id){
@@ -62,6 +89,24 @@
 			}else{
 				return false;
 			}
+		
+		}
+
+		public function updateProduto($data) {
+			$this->db->query("UPDATE tb_produtos SET cod = :cod, descricao = :descricao, valor = :valor, estoque = :estoque, id_categoria = :id_categoria WHERE id = :id");
+			$this->db->bind(":id", $data['id']);
+			$this->db->bind(":cod", $data['cod']);
+			$this->db->bind(":descricao", $data['descricao']);
+			$this->db->bind(":valor", $data['valor']);
+			$this->db->bind(":estoque", $data['estoque']);
+			$this->db->bind(":id_categoria", $data['categoria']);
+
+			if ($this->db->execute()) {
+				return true;
+			}else{
+				return false;
+			}
+
 		}
 
 	}

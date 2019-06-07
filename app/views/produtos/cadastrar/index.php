@@ -39,7 +39,7 @@
 									<td><?php echo $value->descricao ?></td>
 									<td class="text-center"><?php echo $value->estoque ?></td>
 									<td class="text-center">
-										<a class="btn btn-warning btn-circle btn-sm" href="<?php echo URLROOT ?>/produtos/updateProduto/<?php echo $value->id ?>" id="<?php echo $value->id_produto ?>" data-toggle="modal" data-placement="top" data-target="#modal_editar" title="Editar Usuario" modal-size="modal-lg">
+										<a class="btn btn-warning btn-circle btn-sm" href="<?php echo URLROOT ?>/produtos/alterProduto/<?php echo $value->id_produto ?>" id="<?php echo $value->id_produto ?>" data-toggle="modal" data-placement="top" data-target="#modal_editar" title="Editar Usuario" modal-size="modal-lg">
 											<i class="fas fa-edit"></i>
 										</a>
 										<a class="btn btn-info btn-circle btn-sm" href="#" id="<?php echo $value->id_produto ?>" data-toggle="modal" data-placement="top" data-target="#modal_info" title="Informações do Produto">
@@ -234,29 +234,29 @@
 <script type="text/javascript">
 	var data = JSON.parse('<?php echo $data_json ?>');
 
-	 $("#modal_info").on("show.bs.modal", function(e) {
-        var link = $(e.relatedTarget);
-        var id = link.attr('id');
+	$("#modal_info").on("show.bs.modal", function(e) {
+		var link = $(e.relatedTarget);
+		var id = link.attr('id');
 
-        if(link.attr("modal-size")!= undefined){
-            $(this).find(".modal-dialog").attr('class', 'modal-dialog '+link.attr("modal-size"))
-        } else{
-            $(this).find(".modal-dialog").attr('class', 'modal-dialog modal-lg')
-        }
+		if(link.attr("modal-size")!= undefined){
+			$(this).find(".modal-dialog").attr('class', 'modal-dialog '+link.attr("modal-size"))
+		} else{
+			$(this).find(".modal-dialog").attr('class', 'modal-dialog modal-lg')
+		}
 
-        // $(this).find("form").attr("action", link.attr("href"));
-        $(this).find(".modal-title").html(link.attr("title"));
-        $(this).find(".cod").html(data[id].cod)
-        $(this).find(".descricao").html(data[id].descricao)
-        $(this).find(".categoria").html(data[id].descricao_categoria)
-        $(this).find(".valor").html("R$ " + data[id].valor)
-        $(this).find(".estoque").html(data[id].estoque)
-        $(this).find(".data").html(data[id].data.data)
-        $(this).find(".horario").html(data[id].data.horario)
-        $(this).find(".usuario").html(data[id].nome_usuario)
+		// $(this).find("form").attr("action", link.attr("href"));
+		$(this).find(".modal-title").html(link.attr("title"));
+		$(this).find(".cod").html(data[id].cod)
+		$(this).find(".descricao").html(data[id].descricao)
+		$(this).find(".categoria").html(data[id].descricao_categoria)
+		$(this).find(".valor").html("R$ " + data[id].valor)
+		$(this).find(".estoque").html(data[id].estoque)
+		$(this).find(".data").html(data[id].data.data)
+		$(this).find(".horario").html(data[id].data.horario)
+		$(this).find(".usuario").html(data[id].nome_usuario)
 
-       
-    });
+
+	});
 
 	$("#modal_editar").on("show.bs.modal", function(e) {
 		var link = $(e.relatedTarget);
@@ -268,7 +268,7 @@
 			$(this).find(".modal-dialog").attr('class', 'modal-dialog modal-lg')
 		}
 
-		// $(this).find("form").attr("action", link.attr("href"));
+		$(this).find("form").attr("action", link.attr("href"));
 		$(this).find(".modal-title").html(link.attr("title"));
         $(this).find("[name='cod']").val(data[id].cod)
         $(this).find("[name='descricao']").val(data[id].descricao)

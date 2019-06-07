@@ -64,8 +64,44 @@
 		
 		}
 
-		public function alterProduto(){
-	
+		public function alterProduto($id){
+			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+				// Sanitize POST data
+				$_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
+				// Init data
+				$data = [
+					'id' => $id,
+					'cod' => trim($_POST['cod']),
+					'descricao' => trim($_POST['descricao']),
+					'valor' => trim($_POST['valor']),
+					'estoque' => trim($_POST['estoque']),
+					'categoria' => trim($_POST['categoria']),
+				];
+
+				// Validade all 
+				if (!empty($data['cod']) && !empty($data['descricao']) && !empty($data['categoria']) && !empty($data['valor']) && !empty($data['estoque'])) {
+					//Validated
+
+					// Load function register
+					if ($this->produtoModel->updateProduto($data)) {
+						flash("produtos", "Produto atualizado com Sucesso !");
+						redirect("/produtos/");	
+					}else{
+						flash("produtos", "Não foi possível atualizar o produto!", "alert-danger");
+						redirect("/produtos/");
+					}
+					
+				}else{
+					// Load view errors
+					$this->view('/produtos/');
+				}
+
+			}else{
+				// Load view
+				$this->view('/produtos/');
+			}
 		}
 
 		public function deleteProduto($id){
@@ -127,6 +163,56 @@
 				$this->view('/produtos/categorias/index');
 			}
 		
+		}
+
+		public function deleteCategoria($id) {
+			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+				if ($this->produtoModel->deleteCategoria($id)) {
+					flash("categoria", "Categoria Excluida com Sucesso !");
+					redirect("/produtos/categorias/");
+				}else{
+					flash("categoria", "Não foi possível excluir a Categoria !", "alert-danger");
+					redirect("/produtos/categorias/");
+				}
+
+			}
+		
+		}
+
+		public function alterCategoria($id) {
+			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+				// Sanitize POST data
+				$_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
+				// Init data
+				$data = [
+					'id' => $id,
+					'descricao' => trim($_POST['descricao']),
+				];
+
+				// Validade all 
+				if (!empty($data['descricao']) && !empty($data['id'])) {
+					//Validated
+
+					// Load function register
+					if ($this->produtoModel->alterCategoria($data)) {	
+						flash("produtos", "Categoria atualizada com Sucesso !");
+						redirect("/produtos/categorias/");
+					}else{
+						flash("produtos", "Não foi possível atualizar a Categoria!", "alert-danger");
+						redirect("/produtos/categorias/");
+					}
+					
+				}else{
+					// Load view errors
+					$this->view('/produtos/categoria/index');
+				}
+
+			}else{
+				// Load view
+				$this->view('/produtos/categoria/index');
+			}
 		}
 
 
