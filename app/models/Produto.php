@@ -29,7 +29,7 @@
 		}
 
 		public function getProdutos(){
-			$this->db->query("SELECT * FROM tb_produtos");
+			$this->db->query("SELECT p.id AS id_produto, p.cod, p.descricao, p.valor, p.estoque, p.data_registro, u.nome, c.id AS id_categoria, c.descricao AS descricao_categoria FROM tb_produtos AS p JOIN tb_categorias AS c ON p.id_categoria = c.id JOIN tb_usuarios AS u ON u.id = p.id_usuario");
 
 			if ($this->db->execute()) {
 				return $this->db->resultSet();

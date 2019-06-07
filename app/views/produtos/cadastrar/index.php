@@ -34,18 +34,18 @@
 						<tbody>
 							<?php foreach ($data['produtos'] as $key => $value): ?>
 								<tr>
-									<td class="text-center"><?php echo $value->id ?></td>
+									<td class="text-center"><?php echo $value->id_produto ?></td>
 									<td class="text-center"><?php echo $value->cod ?></td>
 									<td><?php echo $value->descricao ?></td>
 									<td class="text-center"><?php echo $value->estoque ?></td>
 									<td class="text-center">
-										<a class="btn btn-warning btn-circle btn-sm" href="<?php echo URLROOT ?>/users/updateUser/<?php echo $value->id ?>" id="<?php echo $value->id ?>" data-toggle="modal" data-placement="top" data-target="#modal_editar" title="Editar Usuario" modal-size="modal-lg">
+										<a class="btn btn-warning btn-circle btn-sm" href="<?php echo URLROOT ?>/produtos/updateProduto/<?php echo $value->id ?>" id="<?php echo $value->id_produto ?>" data-toggle="modal" data-placement="top" data-target="#modal_editar" title="Editar Usuario" modal-size="modal-lg">
 											<i class="fas fa-edit"></i>
 										</a>
-										<a class="btn btn-info btn-circle btn-sm" href="#" id="<?php echo $value->id ?>" data-toggle="modal" data-placement="top" data-target="#modal_info" title="Informações do Usuario">
+										<a class="btn btn-info btn-circle btn-sm" href="#" id="<?php echo $value->id_produto ?>" data-toggle="modal" data-placement="top" data-target="#modal_info" title="Informações do Produto">
 											<i class="fas fa-info"></i>
 										</a>
-										<a class="btn btn-danger btn-circle btn-sm" href="<?php echo URLROOT ?>/produtos/deleteProduto/<?php echo $value->id ?>" data-toggle="modal" data-placement="top" data-target="#modal_excluir" title="Excluir Produto" text="Deseja Realmente excluir este Produto ?">
+										<a class="btn btn-danger btn-circle btn-sm" href="<?php echo URLROOT ?>/produtos/deleteProduto/<?php echo $value->id_produto ?>" data-toggle="modal" data-placement="top" data-target="#modal_excluir" title="Excluir Produto" text="Deseja Realmente excluir este Produto ?">
 											<i class="fas fa-trash"></i>
 										</a>
 									</td>
@@ -107,6 +107,55 @@
 		</div>
 	</div>
 </div>
+<div class="modal fade" id="modal_editar" tabindex="-1" role="dialog" aria-labelledby="tituloModalBase" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Modal Title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form class="user" action="" method="post" enctype="multpart/form-data">
+                <div class="modal-body">
+                	<div class="form-group row">
+						<div class="col-lg-2 mb-3 mb-lg-0">
+							<label>Código:</label>
+							<input type="tel" name="cod" class="form-control form-control-user" placeholder="Código" required="">
+						</div>
+						<div class="col-lg-10">
+							<label>Descrição:</label>
+							<input type="text" name="descricao" class="form-control form-control-user" placeholder="Descrição do produto.." required="">
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-lg-4 mb-3 mb-lg-0">
+							<label>Categoria:</label>
+							<select name="categoria" class="form-control" required="">
+								<option selected=""></option>
+								<?php foreach ($data['categorias'] as $key => $value): ?>
+									<option value="<?php echo $value->id ?>"><?php echo $value->descricao ?></option>
+								<?php endforeach ?>
+							</select>
+						</div>
+						<div class="col-lg-3 mb-3 mb-lg-0">
+							<label>Valor:</label>
+							<input type="tel" name="valor" class="form-control form-control-user" placeholder="R$ Valor" required="">
+						</div>
+						<div class="col-lg-3 mb-3 mb-lg-0">
+							<label>Estoque:</label>
+							<input type="tel" name="estoque" class="form-control form-control-user" placeholder="Qtd em estoque.." required="">
+						</div>
+					</div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-warning">Salvar Alterações <i class="fas fa-edit"></i></button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 <div class="modal fade" id="modal_info" tabindex="-1" role="dialog" aria-labelledby="tituloModalBase" aria-hidden="true">
     <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
@@ -118,21 +167,39 @@
             </div>
             <div class="modal-body">
                 <div class="form-group row">
-					<div class="col-lg-6">
-						<label class="m-0 font-weight-bold text-info">Nome:</label>
-						<p class="nome"></p>
+					<div class="col-lg-2">
+						<label class="m-0 font-weight-bold text-info">Cod:</label>
+						<p class="cod"></p>
 					</div>
-					<div class="col-lg-6">
-						<label class="m-0 font-weight-bold text-info">Email:</label>
-						<p class="email"></p>
+					<div class="col-lg-5">
+						<label class="m-0 font-weight-bold text-info">Descrição:</label>
+						<p class="descricao"></p>
 					</div>
-					<div class="col-lg-6">
-						<label class="m-0 font-weight-bold text-info">Nivel:</label>
-						<p class="nivel"></p>
+					<div class="col-lg-2">
+						<label class="m-0 font-weight-bold text-info">Valor:</label>
+						<p class="valor"></p>
 					</div>
-					<div class="col-lg-6">
-						<label class="m-0 font-weight-bold text-info">Status:</label><br>
-						<h5 class="status"></h5>
+					<div class="col-lg-3">
+						<label class="m-0 font-weight-bold text-info">Estoque:</label><br>
+						<p class="estoque">45</p>
+					</div>
+				</div>
+				<div class="form-group row">
+					<div class="col-lg-3">
+						<label class="m-0 font-weight-bold text-info">Data:</label><br>
+						<p class="data"></p>
+					</div>
+					<div class="col-lg-3">
+						<label class="m-0 font-weight-bold text-info">Horário:</label><br>
+						<p class="horario"></p>
+					</div>
+					<div class="col-lg-3">
+						<label class="m-0 font-weight-bold text-info">Categoria:</label><br>
+						<p class="categoria"></p>
+					</div>
+					<div class="col-lg-3">
+						<label class="m-0 font-weight-bold text-info">Usuário:</label><br>
+						<p class="usuario"></p>
 					</div>
 				</div>
             </div>
@@ -144,3 +211,71 @@
 </div>
 
 <?php require_once APPROOT . '/views/inc/footer.php'; ?>
+
+<?php  
+	$data_json = array();
+	foreach ($data['produtos'] as $key => $value) {
+		$data_json[$value->id_produto]['id'] = $value->id_produto;
+		$data_json[$value->id_produto]['cod'] = $value->cod;
+		$data_json[$value->id_produto]['descricao'] = $value->descricao;
+		$data_json[$value->id_produto]['id_categoria'] = $value->id_categoria;
+		$data_json[$value->id_produto]['descricao_categoria'] = $value->descricao_categoria;
+		$data_json[$value->id_produto]['valor'] = $value->valor;
+		$data_json[$value->id_produto]['estoque'] = $value->estoque;
+		$data_json[$value->id_produto]['data'] = breakDateTime($value->data_registro);
+		$data_json[$value->id_produto]['nome_usuario'] = $value->nome;
+	}
+
+	$data_json = json_encode($data_json);
+
+
+?>
+
+<script type="text/javascript">
+	var data = JSON.parse('<?php echo $data_json ?>');
+
+	 $("#modal_info").on("show.bs.modal", function(e) {
+        var link = $(e.relatedTarget);
+        var id = link.attr('id');
+
+        if(link.attr("modal-size")!= undefined){
+            $(this).find(".modal-dialog").attr('class', 'modal-dialog '+link.attr("modal-size"))
+        } else{
+            $(this).find(".modal-dialog").attr('class', 'modal-dialog modal-lg')
+        }
+
+        // $(this).find("form").attr("action", link.attr("href"));
+        $(this).find(".modal-title").html(link.attr("title"));
+        $(this).find(".cod").html(data[id].cod)
+        $(this).find(".descricao").html(data[id].descricao)
+        $(this).find(".categoria").html(data[id].descricao_categoria)
+        $(this).find(".valor").html("R$ " + data[id].valor)
+        $(this).find(".estoque").html(data[id].estoque)
+        $(this).find(".data").html(data[id].data.data)
+        $(this).find(".horario").html(data[id].data.horario)
+        $(this).find(".usuario").html(data[id].nome_usuario)
+
+       
+    });
+
+	$("#modal_editar").on("show.bs.modal", function(e) {
+		var link = $(e.relatedTarget);
+		var id = link.attr('id');
+
+		if(link.attr("modal-size")!= undefined){
+			$(this).find(".modal-dialog").attr('class', 'modal-dialog '+link.attr("modal-size"))
+		} else{
+			$(this).find(".modal-dialog").attr('class', 'modal-dialog modal-lg')
+		}
+
+		// $(this).find("form").attr("action", link.attr("href"));
+		$(this).find(".modal-title").html(link.attr("title"));
+        $(this).find("[name='cod']").val(data[id].cod)
+        $(this).find("[name='descricao']").val(data[id].descricao)
+        $(this).find("[name='categoria']").val(data[id].id_categoria)
+        $(this).find("[name='valor']").val(data[id].valor)
+        $(this).find("[name='estoque']").val(data[id].estoque)
+
+
+	});
+</script>

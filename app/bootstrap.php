@@ -5,6 +5,7 @@
 	// Load helpers
 	require_once 'helpers/url-helper.php';
 	require_once 'helpers/session-helper.php';
+	require_once 'helpers/data-helper.php';
 
 	// Load libraries
 	// require_once 'libraries/Core.php';
