@@ -14,6 +14,33 @@
         <link href="<?php echo URLROOT; ?>/css/sb-admin-2.min.css" rel="stylesheet">
         <!-- Custom styles for this page -->
         <link href="<?php echo URLROOT; ?>/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+        <style type="text/css">
+            .nav-caixa .nav-tabs .nav-link{
+                color: #6e707e !important;
+            }
+
+            .tab-content .tab-pane h6{
+                font-size: 0.9rem !important;
+            }
+
+            .nav-caixa .nav-tabs .nav-link.active{
+                color: #6e707e !important;
+                background-color: #fff !important;
+                border: none !important;
+                border-bottom: 2.5px solid #15bf82 !important;
+
+            }
+
+            #table-pro thead tr th, #table-pro tfoot tr th{
+                padding: .5rem !important;
+                font-size: 0.9rem !important;
+            }
+
+            #table-pro tbody tr td{
+                padding: .5rem !important;
+                font-size: 0.9rem !important;
+            }
+        </style>
     </head>
     <body id="page-top">
         <!-- Page Wrapper -->

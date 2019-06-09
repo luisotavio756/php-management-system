@@ -17,9 +17,8 @@
 		require_once 'libraries/'. $className .'.php';
 	});
 
-	// if (!isset($_SESSION['id_usuario'])) {
-	// 	header('location: '.URLROOT.'/users/login');
-	// }
+	date_default_timezone_set('America/Sao_Paulo');
+
 
 
 ?>

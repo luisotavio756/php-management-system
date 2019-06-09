@@ -1,8 +1,5 @@
 					</div>
-                    <!-- /.container-fluid -->
                 </div>
-                <!-- End of Main Content -->
-                <!-- Footer -->
                 <footer class="sticky-footer bg-white">
                     <div class="container my-auto">
                         <div class="copyright text-center my-auto">
@@ -10,12 +7,8 @@
                         </div>
                     </div>
                 </footer>
-                <!-- End of Footer -->
             </div>
-            <!-- End of Content Wrapper -->
         </div>
-        <!-- End of Page Wrapper -->
-        <!-- Scroll to Top Button-->
         <a class="scroll-to-top rounded" href="#page-top">
         	<i class="fas fa-angle-up"></i>
         </a>
@@ -73,10 +66,15 @@
         <!-- Page level plugins -->
         <script src="<?php echo URLROOT; ?>/vendor/datatables/jquery.dataTables.min.js"></script>
         <script src="<?php echo URLROOT; ?>/vendor/datatables/dataTables.bootstrap4.min.js"></script>
+        <script src="<?php echo URLROOT; ?>/vendor/mask/jquery.mask.js"></script>
 
         <!-- Page level custom scripts -->
         <script src="<?php echo URLROOT; ?>/js/demo/datatables-demo.js"></script>
         <script type="text/javascript">
+            $("#btn-actions").click(function(){
+                $(".panel-action").fadeToggle();
+            })
+
             $("#modal_excluir").on("show.bs.modal", function(e) {
                 var link = $(e.relatedTarget);
                 var text = link.attr("text");
@@ -90,6 +88,8 @@
                 $(this).find("b").text(text)
                 $(this).find(".modal-title").html(link.attr("title"));
             });
+
+            $('.money').mask("#.##0,00", {reverse: true});
         </script>
     </body>
 </html>

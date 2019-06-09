@@ -4,9 +4,16 @@
 		public function __construct(){
 			
 			$this->userModel = $this->model('User');
+			$this->caixaModel = $this->model('Caixa');
+
 		}
 
 		public function index() {
+
+			if (!isset($_SESSION['id_usuario'])) {
+				redirect("/users/login");
+			}
+
 			$users = $this->userModel->getUsers();
 
 			$data = [
@@ -182,6 +189,9 @@
 			$_SESSION['sobrenome'] = $user->sobrenome;
 			$_SESSION['email'] = $user->email;
 			$_SESSION['senha'] = $user->senha;
+			if ($this->caixaModel->verifyOpen()) {
+				$_SESSION['id_caixa'] = $this->caixaModel->idCaixa();
+			}
 			// $_SESSION['data_registro'] = $user->data_registro;
 
 			redirect('/');
