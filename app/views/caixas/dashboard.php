@@ -151,6 +151,16 @@
 											<label>Valor:</label>
 											<input type="text" name="valor" class="form-control form-control-user money" placeholder="R$ Valor da Receita.." required="">
 										</div>
+										<div class="col-lg-12 text-right mt-4">
+											<div class="custom-control custom-radio custom-control-inline">
+												<input type="radio" checked="" id="customRadioInline2" name="customRadioInline1" class="custom-control-input">
+												<label class="custom-control-label" for="customRadioInline2"><i class="fas fa-dollar-sign"></i> Dinheiro</label>
+											</div>
+											<div class="custom-control custom-radio custom-control-inline">
+												<input type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input">
+												<label class="custom-control-label" for="customRadioInline1"><i class="far fa-credit-card"></i> Cartão</label>
+											</div>
+										</div>
 									</div>
 								</div>
 								<div class="tab-pane fade col-12 pt-3" id="nav-comandas" role="tabpanel" aria-labelledby="comandas">
