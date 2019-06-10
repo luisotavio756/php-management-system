@@ -1,12 +1,12 @@
 					</div>
                 </div>
-                <footer class="sticky-footer bg-white">
+                <!-- <footer class="sticky-footer bg-white">
                     <div class="container my-auto">
                         <div class="copyright text-center my-auto">
                             <span>Copyright &copy; Assakabrasa 2019</span>
                         </div>
                     </div>
-                </footer>
+                </footer> -->
             </div>
         </div>
         <a class="scroll-to-top rounded" href="#page-top">

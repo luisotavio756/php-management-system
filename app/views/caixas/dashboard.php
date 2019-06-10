@@ -71,7 +71,7 @@
 			</div>
 		</div>
 	</div>
-    <div class="text-center" style="position: absolute; z-index: 999; right: 30px; bottom: 80px; width: 150px">
+    <div class="text-center" style="position: absolute; z-index: 999; right: 30px; bottom: 40px; width: 150px">
 	    <div class="panel-action mb-2" style="display: none;  height: <?= $h ?>px;background-color: #ffffff;border-radius: 10px;box-shadow: -1px 0px 20px 2px #b7b9cc;" class="mb-2 w-100"> 
 	        <?php if (isset($_SESSION['id_caixa'])): ?>
 		        <div style="height: 33%" class="d-flex align-items-center">
@@ -130,128 +130,132 @@
 	                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 	                        <span aria-hidden="true">&times;</span>
 	                    </button>
-	                </div>
-	                <form class="user" action="<?php echo URLROOT; ?>/caixas/insertReceita/" method="POST" enctype="multpart/form-data">
+	                </div>	
 	                    <div class="modal-body" style="max-height: 400px; overflow-x:auto;">
 	                    	<nav class="nav-caixa" style="margin-top: -10px">
-								<div class="nav nav-tabs" id="nav-tab" role="tablist">
+								<div id="myTab" class="nav nav-tabs" role="tablist">
 									<a class="nav-item nav-link active" id="receita_normal" data-toggle="tab" href="#nav-receita-simples" role="tab" aria-controls="nav-receita-simples" aria-selected="true">Receita Normal</a>
 									<a class="nav-item nav-link" id="comandas" data-toggle="tab" href="#nav-comandas" role="tab" aria-controls="nav-comandas" aria-selected="false">Comandas</a>
 								</div>
 							</nav>
 							<div class="tab-content" id="nav-tabContent">
 								<div class="tab-pane fade show active col-12 pt-3" id="nav-receita-simples" role="tabpanel" aria-labelledby="receita_normal">
-									<input type="hidden" name="action" value="1">
-									<div class="form-group row">
-										<div class="col-lg-8 mb-3 mb-lg-0">
-											<label>Descrição:</label>
-											<input type="tel" name="descricao" class="form-control form-control-user" placeholder="Descreve sobre esta receita.." required="">
-										</div>
-										<div class="col-lg-4">
-											<label>Valor:</label>
-											<input type="text" name="valor" class="form-control form-control-user money" placeholder="R$ Valor da Receita.." required="">
-										</div>
-										<div class="col-lg-12 text-right mt-4">
-											<div class="custom-control custom-radio custom-control-inline">
-												<input type="radio" checked="" id="customRadioInline2" name="customRadioInline1" class="custom-control-input">
-												<label class="custom-control-label" for="customRadioInline2"><i class="fas fa-dollar-sign"></i> Dinheiro</label>
+									<form class="user receita_normal" action="<?php echo URLROOT; ?>/caixas/insertReceita/" method="POST" enctype="multpart/form-data" >
+										<input type="hidden" name="action" value="1">
+										<div class="form-group row">
+											<div class="col-lg-8 mb-3 mb-lg-0">
+												<label>Descrição:</label>
+												<input type="tel" name="descricao" class="form-control form-control-user" placeholder="Descreve sobre esta receita.." required="">
+												<div class="invalid-feedback"></div>
 											</div>
-											<div class="custom-control custom-radio custom-control-inline">
-												<input type="radio" id="customRadioInline1" name="customRadioInline1" class="custom-control-input">
-												<label class="custom-control-label" for="customRadioInline1"><i class="far fa-credit-card"></i> Cartão</label>
+											<div class="col-lg-4">
+												<label>Valor:</label>
+												<input type="text" name="valor" class="form-control form-control-user money" placeholder="R$ Valor da Receita.." required="">
+												<div class="invalid-feedback"></div>
+											</div>
+											<div class="col-lg-12 text-right mt-4">
+												<div class="custom-control custom-radio custom-control-inline">
+													<input type="radio" checked="" id="customRadioInline2" name="modo_pagamento" class="custom-control-input" value="1">
+													<label class="custom-control-label" for="customRadioInline2"><i class="fas fa-dollar-sign"></i> Dinheiro</label>
+												</div>
+												<div class="custom-control custom-radio custom-control-inline">
+													<input type="radio" id="customRadioInline1" name="modo_pagamento" class="custom-control-input" value="2">
+													<label class="custom-control-label" for="customRadioInline1"><i class="far fa-credit-card"></i> Cartão</label>
+												</div>
 											</div>
 										</div>
-									</div>
+									</form>
 								</div>
 								<div class="tab-pane fade col-12 pt-3" id="nav-comandas" role="tabpanel" aria-labelledby="comandas">
-									<input type="hidden" name="action" value="1">
-									<div class="form-group row">
-										<div class="col-lg-5 mb-3 mb-lg-0">
-											<label>Digite o numero da comanda:</label>
-											<input style="padding: 1.2rem 1rem; font-size: 1rem;" type="tel" name="descricao" class="form-control form-control-user" placeholder="N° Comanda.." required="">
+									<form class="user comandas" action="<?php echo URLROOT; ?>/caixas/insertReceita/" method="POST" enctype="multpart/form-data" >
+										<input type="hidden" name="action" value="1">
+										<div class="form-group row">
+											<div class="col-lg-5 mb-3 mb-lg-0">
+												<label>Digite o numero da comanda:</label>
+												<input style="font-size: 1rem; padding: 1.2rem 1rem" type="tel" name="n_comanda" class="form-control form-control-user" placeholder="N° Comanda.." required="">
+											</div>
+											<div class="col-lg-3 d-flex align-items-end">
+												<a href="#" class="btn btn-info btn-icon-split">
+													<span class="icon text-white-50">
+														<i class="fas fa-search"></i>
+													</span>
+													<span class="text">Consultar</span>
+												</a>
+											</div>
 										</div>
-										<div class="col-lg-3 d-flex align-items-end">
-											<a href="#" class="btn btn-info btn-icon-split">
-												<span class="icon text-white-50">
-													<i class="fas fa-search"></i>
-												</span>
-												<span class="text">Consultar</span>
-											</a>
+										<div class="row">
+											<div class="col-lg-6">
+												<h6>Cliente: <b>Luis Otávio Lima Caminha</b></h6>
+											</div>
+											<div class="col-lg-3">
+												<h6>Comanda: <b>123</b></h6>
+											</div>
+											<div class="col-lg-3">
+												<h6>Horário: <b>Hoje as 12:34:34</b></h6>
+											</div>
 										</div>
-									</div>
-									<div class="row">
-										<div class="col-lg-6">
-											<h6>Cliente: <b>Luis Otávio Lima Caminha</b></h6>
+										<div class="row">
+											<div class="col-12">
+												<table id="table-pro" style="max-height: 85%; overflow-y: auto" class="table table-hover table-striped">
+													<thead>
+														<tr>
+															<th class="text-center">#</th>
+															<th>Pedidos</th>
+															<th class="text-center">Qtd.</th>
+															<th class="text-center">Valor</th>
+														</tr>
+													</thead>
+													<tfoot>
+														<tr>
+															<th  class="text-center">5</th>
+															<th  class="text-center">---------</th>
+															<th  class="text-center">---------</th>
+															<th  class="text-center">R$ 77,00</th>
+														</tr>
+													</tfoot>
+													<tbody>
+														<tr>
+															<td class="text-center">1</td>
+															<td>Hamburguer</td>
+															<td class="text-center">2x</td>
+															<td class="text-center">R$ 10,00</td>
+														</tr>
+														<tr>
+															<td class="text-center">2</td>
+															<td>Refrigerante Pepsi 1L</td>
+															<td class="text-center">2x</td>
+															<td class="text-center">R$ 9,00</td>
+														</tr>
+														<tr>
+															<td class="text-center">3</td>
+															<td>Bata Frita Porção</td>
+															<td class="text-center">2x</td>
+															<td class="text-center">R$ 13,00</td>
+														</tr>
+														<tr>
+															<td class="text-center">4</td>
+															<td>Cerveja Skol 300ml</td>
+															<td class="text-center">2x</td>
+															<td class="text-center">R$ 10,00</td>
+														</tr>
+														<tr>
+															<td class="text-center">1</td>
+															<td>Cerveja Boemia 300ml</td>
+															<td class="text-center">10x</td>
+															<td class="text-center">R$ 35,00</td>
+														</tr>
+													</tbody>
+												</table>
+											</div>	
 										</div>
-										<div class="col-lg-3">
-											<h6>Comanda: <b>123</b></h6>
-										</div>
-										<div class="col-lg-3">
-											<h6>Horário: <b>Hoje as 12:34:34</b></h6>
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-12">
-											<table id="table-pro" style="max-height: 85%; overflow-y: auto" class="table table-hover table-striped">
-												<thead>
-													<tr>
-														<th class="text-center">#</th>
-														<th>Pedidos</th>
-														<th class="text-center">Qtd.</th>
-														<th class="text-center">Valor</th>
-													</tr>
-												</thead>
-												<tfoot>
-													<tr>
-														<th  class="text-center">5</th>
-														<th  class="text-center">---------</th>
-														<th  class="text-center">---------</th>
-														<th  class="text-center">R$ 77,00</th>
-													</tr>
-												</tfoot>
-												<tbody>
-													<tr>
-														<td class="text-center">1</td>
-														<td>Hamburguer</td>
-														<td class="text-center">2x</td>
-														<td class="text-center">R$ 10,00</td>
-													</tr>
-													<tr>
-														<td class="text-center">2</td>
-														<td>Refrigerante Pepsi 1L</td>
-														<td class="text-center">2x</td>
-														<td class="text-center">R$ 9,00</td>
-													</tr>
-													<tr>
-														<td class="text-center">3</td>
-														<td>Bata Frita Porção</td>
-														<td class="text-center">2x</td>
-														<td class="text-center">R$ 13,00</td>
-													</tr>
-													<tr>
-														<td class="text-center">4</td>
-														<td>Cerveja Skol 300ml</td>
-														<td class="text-center">2x</td>
-														<td class="text-center">R$ 10,00</td>
-													</tr>
-													<tr>
-														<td class="text-center">1</td>
-														<td>Cerveja Boemia 300ml</td>
-														<td class="text-center">10x</td>
-														<td class="text-center">R$ 35,00</td>
-													</tr>
-												</tbody>
-											</table>
-										</div>	
-									</div>
+									</form>
 								</div>
 							</div>	  	             
 	                    </div>
 	                    <div class="modal-footer">
 	                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-	                        <button type="submit" class="btn btn-success">Confirmar <i class="fas fa-check-circle"></i></button>
+	                        <button id="button-submit-form" type="button" class="btn btn-success">Confirmar <i class="fas fa-check-circle"></i></button>
 	                    </div>
-	                </form>
 	            </div>
 	        </div>
 	    </div>
@@ -259,7 +263,7 @@
 	        <div class="modal-dialog modal-lg" role="document">
 	            <div class="modal-content">
 	                <div class="modal-header">
-	                    <h5 class="modal-title" id="exampleModalLabel">Modal Title</h5>
+	                    <h5 class="modal-title" id="exampleModalLabel">Nova Despesa</h5>
 	                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 	                        <span aria-hidden="true">&times;</span>
 	                    </button>
@@ -274,6 +278,16 @@
 								<div class="col-lg-4">
 									<label>Valor:</label>
 									<input type="text" name="valor" class="form-control form-control-user money" placeholder="R$ Valor da Despesa.." required="">
+								</div>
+								<div class="col-lg-12 text-right mt-4">
+									<div class="custom-control custom-radio custom-control-inline">
+										<input type="radio" checked="" id="customRadioInline3" name="modo_pagamento" class="custom-control-input" value="1">
+										<label class="custom-control-label" for="customRadioInline3"><i class="fas fa-dollar-sign"></i> Dinheiro</label>
+									</div>
+									<div class="custom-control custom-radio custom-control-inline">
+										<input type="radio" id="customRadioInline4" name="modo_pagamento" class="custom-control-input" value="2">
+										<label class="custom-control-label" for="customRadioInline4"><i class="far fa-credit-card"></i> Cartão</label>
+									</div>
 								</div>
 							</div>
 	                    </div>
@@ -314,5 +328,56 @@
 	<?php endif; ?>
 <?php require_once APPROOT . '/views/inc/footer.php'; ?>
 <script type="text/javascript">
-	$("#modal_receita_caixa").modal("show")
+	var form = 'receita_normal';
+
+	$('#myTab a').on('click', function (e) {
+		form = $(this).attr("id");
+	})
+
+	$("#button-submit-form").on('click', function(){
+		if(verificarInputs()){
+			$(".modal-body .tab-content .tab-pane > ." + form).submit();
+		}
+		
+	})
+
+    $(".modal-body .tab-content .tab-pane > ." + form + " input").on("change keyup", function (){
+        $(this).removeClass('is-invalid')
+        $(this).parent().find('.invalid-feedback').html('')
+    })
+
+    function verificarInputs() {
+        var $inputs = $(".modal-body .tab-content .tab-pane > ." + form + " input"),
+            $button = $("#button-submit-form")
+            ;
+
+        var limpos = 0;
+
+        // verificação inicial
+        var array = [];
+        $inputs.each(function () {
+            var $this = $(this);
+            var val = $this.val();
+            if ($this.val() == '') {
+                array.push($this.attr('name'))
+            }
+            val || limpos++;
+            $this.data("val-antigo", val);
+        
+        });
+      
+        if (limpos == 0) {
+            return true;
+        }
+        else{
+            // alert(JSON.stringify(array))
+            array.forEach(function(valor, chave){   
+                $('[name="'+ valor +'"]').addClass('is-invalid')
+                $('[name="'+ valor +'"]').parent().find('.invalid-feedback').html('Campo Obrigatório')
+            });     
+
+            return false;
+        }
+    
+    }
 </script>

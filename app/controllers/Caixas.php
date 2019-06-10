@@ -97,33 +97,40 @@
 				// Sanitize POST data
 				$_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
-				
-				// Init data
-				$data = [
-					'descricao' => trim($_POST['descricao']),
-					'data_registro' => date('Y-m-d H:i:s'),
-					'valor' => $this->tofloat($_POST['valor']),
-					'tipo' => 1,
-				];
+				if ($_POST['action'] == 1) {
+					// Init data
+					$data = [
+						'descricao' => trim($_POST['descricao']),
+						'data_registro' => date('Y-m-d H:i:s'),
+						'valor' => $this->tofloat($_POST['valor']),
+						'tipo' => 1,
+						'action' => ($_POST['action']),
+						'modo_pagamento' => ($_POST['modo_pagamento'])
+					];
 
 
-				if (isset($data['descricao']) && isset($data['data_registro']) && isset($data['valor'])) {
+					if (isset($data['descricao']) && isset($data['data_registro']) && isset($data['valor']) && isset($data['action']) && isset($data['modo_pagamento'])) {
+						if ($this->caixaModel->verifyOpen() == true) {
+							$id_caixa = $this->caixaModel->idCaixa();
 
-					if ($this->caixaModel->verifyOpen() == true) {
-						$id_caixa = $this->caixaModel->idCaixa();
-
-						if ($this->caixaModel->movimentoCaixa($data, $id_caixa)) {
-							flash("caixa", "Receita inserida com Sucesso !");
-							redirect("/caixas/");
+							if ($this->caixaModel->movimentoCaixa($data, $id_caixa)) {
+								flash("caixa", "Receita inserida com Sucesso !");
+								redirect("/caixas/");
+							}else{
+								flash("caixa", "Não foi possível adicionar a receita !", "alert-danger");
+								redirect("/caixas/");
+							}
 						}else{
-							flash("caixa", "Não foi possível adicionar a receita !", "alert-danger");
+							flash("caixa", "Não foi possível adicionar a receita, não existe um caixa aberto !", "alert-danger");
 							redirect("/caixas/");
-						}
-					}else{
-						flash("caixa", "Não foi possível adicionar a receita, não existe um caixa aberto !", "alert-danger");
-						redirect("/caixas/");
+						}			
 					}
+				}elseif ($_POST['action'] == 2) {
+					echo "<pre>";
+					print_r($_POST);
 				}
+				
+
 
 			}else{
 				flash("caixa", "Ação Bloqueada !", "alert-danger");
@@ -144,6 +151,7 @@
 					'data_registro' => date('Y-m-d H:i:s'),
 					'valor' => $this->tofloat($_POST['valor']),
 					'tipo' => 2,
+					'modo_pagamento' => ($_POST['modo_pagamento'])
 				];
 
 

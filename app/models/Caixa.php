@@ -36,9 +36,10 @@
 		}
 
 		public function movimentoCaixa($data, $id_caixa) {
-			$this->db->query("INSERT INTO tb_movimento_caixa(descricao, tipo, valor, data_registro, id_caixa) VALUES (:descricao, :tipo, :valor, :data_registro, :id_caixa)");
+			$this->db->query("INSERT INTO tb_movimento_caixa(descricao, tipo, modo_pagamento, valor, data_registro, id_caixa) VALUES (:descricao, :tipo, :modo_pagamento, :valor, :data_registro, :id_caixa)");
 			$this->db->bind(":descricao", $data['descricao']);
 			$this->db->bind(":tipo", $data['tipo']);
+			$this->db->bind(":modo_pagamento", $data['modo_pagamento']);
 			$this->db->bind(":valor", $data['valor']);
 			$this->db->bind(":data_registro", $data['data_registro']);
 			$this->db->bind(":id_caixa", $id_caixa);

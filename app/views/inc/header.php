@@ -117,9 +117,15 @@
                     <span>Configurações</span></a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="<?php echo URLROOT; ?>/users/logout">
-                    	<i class="fas fa-sign-out-alt"></i>
-                    <span>Sair</span></a>
+                    <?php if (isset($_SESSION['id_caixa'])): ?>
+                        <a class="nav-link" href="#logoutModal">
+                            <i class="fas fa-sign-out-alt"></i>
+                        <span>Sair</span></a>
+                    <?php else: ?>
+                        <a class="nav-link" href="<?php echo URLROOT; ?>/users/logout">
+                        	<i class="fas fa-sign-out-alt"></i>
+                        <span>Sair</span></a>
+                    <?php endif; ?>
                 </li>
                 <!-- Divider -->
                 <hr class="sidebar-divider d-none d-md-block">
