@@ -1,5 +1,12 @@
 <?php require_once APPROOT . '/views/inc/header.php'; ?>
 <?php (isset($_SESSION['id_caixa']) ? $h = 150 : $h = 75); ?>
+<?php  
+	// echo "<pre>";
+	// print_r($_SESSION);
+	
+
+	
+?>
 	<div class="row">
 		<div class="col-12">
 			<div class="d-sm-flex align-items-center justify-content-between mb-4">
@@ -308,7 +315,7 @@
 	                        <span aria-hidden="true">&times;</span>
 	                    </button>
 	                </div>
-	                <form class="user" action="<?php echo URLROOT; ?>/caixas/closeCaixa/" method="POST" enctype="multpart/form-data">
+	                <form class="user" action="<?php echo URLROOT . '/caixas/closeCaixa/' . $_SESSION['id_caixa'] ?>" method="POST" enctype="multpart/form-data">
 	                    <div class="modal-body">
 	                        <div class="row">
 	                            <div class="col-12 my-3">

@@ -72,7 +72,7 @@
 					<div class="form-group row">
 						<div class="col-lg-2 mb-3 mb-lg-0">
 							<label>Código:</label>
-							<input type="tel" name="cod" class="form-control form-control-user" placeholder="Código" required="">
+							<input type="number"  min="0" name="cod" class="form-control form-control-user" placeholder="Código" required="">
 						</div>
 						<div class="col-lg-10">
 							<label>Descrição:</label>
@@ -91,11 +91,11 @@
 						</div>
 						<div class="col-lg-3 mb-3 mb-lg-0">
 							<label>Valor:</label>
-							<input type="tel" name="valor" class="form-control form-control-user" placeholder="R$ Valor" required="">
+							<input type="tel"  min="0" name="valor" class="form-control form-control-user money" placeholder="R$ Valor" required="">
 						</div>
 						<div class="col-lg-3 mb-3 mb-lg-0">
 							<label>Estoque:</label>
-							<input type="tel" name="estoque" class="form-control form-control-user" placeholder="Qtd em estoque.." required="">
+							<input type="number"  min="0" name="estoque" class="form-control form-control-user" placeholder="Qtd em estoque.." required="">
 						</div>
 					</div>
 				</div>
@@ -121,7 +121,7 @@
                 	<div class="form-group row">
 						<div class="col-lg-2 mb-3 mb-lg-0">
 							<label>Código:</label>
-							<input type="tel" name="cod" class="form-control form-control-user" placeholder="Código" required="">
+							<input type="number"  min="0" name="cod" class="form-control form-control-user" placeholder="Código" required="">
 						</div>
 						<div class="col-lg-10">
 							<label>Descrição:</label>
@@ -140,11 +140,11 @@
 						</div>
 						<div class="col-lg-3 mb-3 mb-lg-0">
 							<label>Valor:</label>
-							<input type="tel" name="valor" class="form-control form-control-user" placeholder="R$ Valor" required="">
+							<input type="tel"  min="0" name="valor" class="form-control form-control-user money" placeholder="R$ Valor" required="">
 						</div>
 						<div class="col-lg-3 mb-3 mb-lg-0">
 							<label>Estoque:</label>
-							<input type="tel" name="estoque" class="form-control form-control-user" placeholder="Qtd em estoque.." required="">
+							<input type="number"  min="0" name="estoque" class="form-control form-control-user" placeholder="Qtd em estoque.." required="">
 						</div>
 					</div>
                 </div>

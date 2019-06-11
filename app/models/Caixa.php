@@ -19,6 +19,7 @@
 			}else{
 				return false;
 			}
+		
 		}
 
 		public function close($id, $saldo){
@@ -33,6 +34,7 @@
 			}else{
 				return false;
 			}
+		
 		}
 
 		public function movimentoCaixa($data, $id_caixa) {
@@ -49,6 +51,7 @@
 			}else{
 				return false;
 			}
+		
 		}
 
 		public function consultarMovimentos($tipo, $id_caixa) {
@@ -61,6 +64,7 @@
 			}else{
 				return false;
 			}
+		
 		}
  
 		public function verifyOpen(){
@@ -72,6 +76,7 @@
 			}else{
 				return false;
 			}
+		
 		}
 
 		public function idCaixa(){
@@ -82,6 +87,7 @@
 			}else{
 				return false;
 			}
+		
 		}
 
 		public function saldoInicial($id){
@@ -91,6 +97,18 @@
 			if ($this->db->execute() && $this->db->rowCount() > 0) {
 				$row = $this->db->singleSet();
 				return $row->saldo_inicial;
+			}else{
+				return false;
+			}
+		
+		}
+
+		public function getMovimentos($id) {
+			$this->db->query("SELECT * FROM tb_movimento_caixa WHERE id_caixa = :id");
+			$this->db->bind(":id", $id);
+
+			if ($this->db->execute() && $this->db->rowCount() > 0) {
+				return $this->db->resultSet();
 			}else{
 				return false;
 			}

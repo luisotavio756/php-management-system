@@ -34,7 +34,7 @@
 					'cod' => trim($_POST['cod']),
 					'descricao' => trim($_POST['descricao']),
 					'categoria' => trim($_POST['categoria']),
-					'valor' => trim($_POST['valor']),
+					'valor' => numberHelper(str_replace(",", '.', $_POST['valor'])),
 					'estoque' => trim($_POST['estoque']),
 					'id_usuario' => $_SESSION['id_usuario'],
 				];
@@ -75,7 +75,7 @@
 					'id' => $id,
 					'cod' => trim($_POST['cod']),
 					'descricao' => trim($_POST['descricao']),
-					'valor' => trim($_POST['valor']),
+					'valor' => numberHelper(str_replace(",", '.', $_POST['valor'])),
 					'estoque' => trim($_POST['estoque']),
 					'categoria' => trim($_POST['categoria']),
 				];
@@ -94,13 +94,13 @@
 					}
 					
 				}else{
-					// Load view errors
-					$this->view('/produtos/');
+					flash("produtos", "Não foi possível atualizar o produto!", "alert-danger");
+					redirect("/produtos/");
 				}
 
 			}else{
-				// Load view
-				$this->view('/produtos/');
+				flash("produtos", "Ação Bloqueada !", "alert-danger");
+				redirect("/produtos/");
 			}
 		}
 
@@ -213,12 +213,8 @@
 				// Load view
 				$this->view('/produtos/categoria/index');
 			}
+		
 		}
-
-
-		
-		
-
 		
 	}
 
