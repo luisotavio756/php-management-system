@@ -39,7 +39,7 @@
 									<td><?php echo $value->descricao ?></td>
 									<td class="text-center"><?php echo $value->estoque ?></td>
 									<td class="text-center">
-										<a class="btn btn-warning btn-circle btn-sm" href="<?php echo URLROOT ?>/produtos/alterProduto/<?php echo $value->id_produto ?>" id="<?php echo $value->id_produto ?>" data-toggle="modal" data-placement="top" data-target="#modal_editar" title="Editar Usuario" modal-size="modal-lg">
+										<a class="btn btn-warning btn-circle btn-sm" href="<?php echo URLROOT ?>/produtos/alterProduto/<?php echo $value->id_produto ?>" id="<?php echo $value->id_produto ?>" data-toggle="modal" data-placement="top" data-target="#modal_editar" title="Editar Produto" modal-size="modal-lg">
 											<i class="fas fa-edit"></i>
 										</a>
 										<a class="btn btn-info btn-circle btn-sm" href="#" id="<?php echo $value->id_produto ?>" data-toggle="modal" data-placement="top" data-target="#modal_info" title="Informações do Produto">
@@ -226,6 +226,9 @@
 		$data_json[$value->id_produto]['nome_usuario'] = $value->nome;
 	}
 
+	// echo "<pre>";
+	// print_r($data_json);
+
 	$data_json = json_encode($data_json);
 
 
@@ -238,6 +241,7 @@
 		var link = $(e.relatedTarget);
 		var id = link.attr('id');
 
+		// alert(JSON.stringify(data[id].data))
 		if(link.attr("modal-size")!= undefined){
 			$(this).find(".modal-dialog").attr('class', 'modal-dialog '+link.attr("modal-size"))
 		} else{

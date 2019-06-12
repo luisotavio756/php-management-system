@@ -42,18 +42,25 @@
 												
 										</td>
 										<td class="text-center">
-											<a class="btn btn-secondary btn-circle btn-sm" href="#" id="<?php echo $value->id ?>" data-toggle="modal" data-placement="top" data-target="#modal_comandas" title="Comandas da Mesa">
-												<i class="fas fa-bookmark"></i>
-											</a>
-											<a class="btn btn-warning btn-circle btn-sm" href="<?php echo URLROOT ?>/mesas/alterMesa/<?php echo $value->id ?>" id="<?php echo $value->id ?>" data-toggle="modal" data-placement="top" data-target="#modal_editar" title="Editar Mesa" modal-size="modal-lg">
-												<i class="fas fa-edit"></i>
-											</a>
-											<a class="btn btn-info btn-circle btn-sm" href="#" id="<?php echo $value->id ?>" data-toggle="modal" data-placement="top" data-target="#modal_info" title="Informações da Mesa">
-												<i class="fas fa-info"></i>
-											</a>
-											<a class="btn btn-danger btn-circle btn-sm" href="<?php echo URLROOT ?>/mesas/deleteMesa/<?php echo $value->id ?>" data-toggle="modal" data-placement="top" data-target="#modal_excluir" title="Excluir Mesa" text="Deseja Realmente excluir esta Mesa ?">
-												<i class="fas fa-trash"></i>
-											</a>
+											<?php if ($value->status == 1): ?>
+												<a class="btn btn-secondary btn-circle btn-sm" href="#" id="<?php echo $value->id ?>" data-toggle="modal" data-placement="top" data-target="#modal_comandas" title="Comandas da Mesa">
+													<i class="fas fa-bookmark"></i>
+												</a>
+												<a class="btn btn-info btn-circle btn-sm" href="#" id="<?php echo $value->id ?>" data-toggle="modal" data-placement="top" data-target="#modal_info" title="Informações da Mesa">
+													<i class="fas fa-info"></i>
+												</a>
+												
+											<?php elseif ($value->status == 0) : ?>
+												<a class="btn btn-info btn-circle btn-sm" href="#" id="<?php echo $value->id ?>" data-toggle="modal" data-placement="top" data-target="#modal_info" title="Informações da Mesa">
+													<i class="fas fa-info"></i>
+												</a>
+												<a class="btn btn-warning btn-circle btn-sm" href="<?php echo URLROOT ?>/mesas/alterMesa/<?php echo $value->id ?>" id="<?php echo $value->id ?>" data-toggle="modal" data-placement="top" data-target="#modal_editar" title="Editar Mesa">
+													<i class="fas fa-edit"></i>
+												</a>
+												<a class="btn btn-danger btn-circle btn-sm" href="<?php echo URLROOT ?>/mesas/deleteMesa/<?php echo $value->id ?>" data-toggle="modal" data-placement="top" data-target="#modal_excluir" title="Excluir Mesa" text="Deseja Realmente excluir esta Mesa ?">
+													<i class="fas fa-trash"></i>
+												</a>
+											<?php endif; ?>
 
 										</td>
 									</tr>
@@ -66,7 +73,7 @@
 		</div>
 	</div>
 	<div class="modal fade" id="adicionar_mesa" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-		<div class="modal-dialog modal-lg" role="document">
+		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">
 					<h5 class="modal-title" id="exampleModalLabel">Adicionar Mesa</h5>
@@ -77,13 +84,9 @@
 				<form class="user" action="<?php echo URLROOT; ?>/mesas/add/" method="POST">
 					<div class="modal-body">
 						<div class="form-group row">
-							<div class="col-lg-3 mb-3 mb-lg-0">
+							<div class="col-lg-12 mb-3 mb-lg-0">
 								<label>Número:</label>
 								<input type="number" min="0" name="num" class="form-control form-control-user" placeholder="Nº" required="">
-							</div>
-							<div class="col-lg-9">
-								<label>Descrição:</label>
-								<input type="text" name="descricao" class="form-control form-control-user" placeholder="Ex: Mesa 1.." required="">
 							</div>
 						</div>
 					</div>
@@ -107,13 +110,9 @@
 	            <form class="user" action="" method="post" enctype="multpart/form-data">
 	                <div class="modal-body">
 	                	<div class="form-group row">
-	                		<div class="col-lg-3 mb-3 mb-lg-0">
+	                		<div class="col-lg-12 mb-3 mb-lg-0">
 								<label>Número:</label>
 								<input type="number" min="0" name="num" class="form-control form-control-user" placeholder="Nº" required="">
-							</div>
-							<div class="col-lg-9">
-								<label>Descrição:</label>
-								<input type="text" name="descricao" class="form-control form-control-user" placeholder="Ex: Mesa 1.." required="">
 							</div>
 						</div>
 	                </div>
@@ -156,7 +155,6 @@
 		$(this).find("form").attr("action", link.attr("href"));
 		$(this).find(".modal-title").html(link.attr("title"));
 		$(this).find("[name='num']").val(data[id].id)
-        $(this).find("[name='descricao']").val(data[id].descricao)
 
 	});
 </script>

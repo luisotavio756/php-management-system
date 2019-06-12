@@ -1,10 +1,8 @@
 <?php require_once APPROOT . '/views/inc/header.php'; ?>
-<?php (isset($_SESSION['id_caixa']) ? $h = 150 : $h = 75); ?>
+<?php (isset($_SESSION['id_caixa']) ? $h = 200 : $h = 75); ?>
 <?php  
 	// echo "<pre>";
-	// print_r($_SESSION);
-	
-
+	// print_r($data);
 	
 ?>
 	<div class="row">
@@ -16,14 +14,13 @@
 		<div class="col-12">
 			<?php echo flash("caixa"); ?>
 		</div>
-		<!-- Earnings (Monthly) Card Example -->
 		<div class="col-xl-3 col-md-6 mb-4">
 			<div class="card border-left-success shadow h-100 py-2">
 				<div class="card-body">
 					<div class="row no-gutters align-items-center">
 						<div class="col mr-2">
 							<div class="text-xs font-weight-bold text-gray-800 text-uppercase mb-1">Receitas (Hoje)</div>
-							<div class="h5 mb-0 font-weight-bold text-success">$<?php echo $data['receitas'] ?></div>
+							<div class="h5 mb-0 font-weight-bold text-success">$<?php echo str_replace(".", ',', $data['receitas']) ?></div>
 						</div>
 						<div class="col-auto">
 							<i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -38,7 +35,7 @@
 					<div class="row no-gutters align-items-center">
 						<div class="col mr-2">
 							<div class="text-xs font-weight-bold text-gray-800 text-uppercase mb-1">Despesas (Hoje)</div>
-							<div class="h5 mb-0 font-weight-bold text-danger">$<?php echo $data['despesas'] ?></div>
+							<div class="h5 mb-0 font-weight-bold text-danger">$<?php echo str_replace(".", ',', $data['despesas']) ?></div>
 						</div>
 						<div class="col-auto">
 							<i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -53,7 +50,7 @@
 					<div class="row no-gutters align-items-center">
 						<div class="col mr-2">
 							<div class="text-xs font-weight-bold text-gray-800 text-uppercase mb-1">Saldo Inicial(Hoje)</div>
-							<div class="h5 mb-0 font-weight-bold text-info">$<?php echo ($data['saldo_inicial']) ?></div>
+							<div class="h5 mb-0 font-weight-bold text-info">$<?php echo str_replace(".", ',', $data['saldo_inicial']) ?></div>
 						</div>
 						<div class="col-auto">
 							<i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -68,7 +65,7 @@
 					<div class="row no-gutters align-items-center">
 						<div class="col mr-2">
 							<div class="text-xs font-weight-bold text-gray-800 text-uppercase mb-1">Saldo Final(Hoje)</div>
-							<div class="h5 mb-0 font-weight-bold text-warning">$<?php echo ($data['saldo_final']) ?></div>
+							<div class="h5 mb-0 font-weight-bold text-warning">$<?php echo str_replace(".", ',', $data['saldo_final']) ?></div>
 						</div>
 						<div class="col-auto">
 							<i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -78,18 +75,22 @@
 			</div>
 		</div>
 	</div>
-    <div class="text-center" style="position: absolute; z-index: 999; right: 30px; bottom: 40px; width: 150px">
+    <div class="text-center" style="position: absolute; z-index: 999; right: 30px; bottom: 40px; width: 180px">
 	    <div class="panel-action mb-2" style="display: none;  height: <?= $h ?>px;background-color: #ffffff;border-radius: 10px;box-shadow: -1px 0px 20px 2px #b7b9cc;" class="mb-2 w-100"> 
 	        <?php if (isset($_SESSION['id_caixa'])): ?>
-		        <div style="height: 33%" class="d-flex align-items-center">
+		        <div style="height: 25%" class="d-flex align-items-center">
 		            <a style="font-size: 16.5px; font-weight: 700" class="btn text-success mx-auto" href="#modal_receita_caixa" data-toggle="modal"><i style="font-size: 13px" class="fa fa-plus"></i> Receita</a>
 		        </div>
 		        <hr class="my-0 py-0">
-		        <div style="height: 33%" class="d-flex align-items-center">
+		        <div style="height: 25%" class="d-flex align-items-center">
 		            <a style=" font-size: 16.5px; font-weight: 700" class="btn text-danger mx-auto" href="#modal_despesa_caixa" data-toggle="modal"><i style="font-size: 13px" class="fa fa-minus"></i> Despesa</a>
 		        </div>
 		        <hr class="my-0 py-0">
-		        <div style="height: 33.5%" class="d-flex align-items-center">
+		        <div style="height: 25%" class="d-flex align-items-center">
+		            <a style=" font-size: 16.5px; font-weight: 700" class="btn text-info mx-auto" href="#modal_saldo_caixa" data-toggle="modal"><i style="font-size: 13px" class="fas fa-file-excel"></i> Saldo Detalhado</a>
+		        </div>
+		        <hr class="my-0 py-0">
+		        <div style="height: 25%" class="d-flex align-items-center">
 		            <a style=" font-size: 16.5px; font-weight: 700" class="btn text-secondary mx-auto" href="#modal_fechar_caixa" data-toggle="modal"><i style="font-size: 13px" class="fa fa-lock"></i> Fechar Caixa</a>
 		        </div>
 	        <?php else: ?>
@@ -327,6 +328,63 @@
 	                    <div class="modal-footer">
 	                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
 	                        <button type="submit" class="btn btn-info">Confirmar e Imprimir Relatório <i class="fas fa-check-circle"></i></button>
+	                    </div>
+	                </form>
+	            </div>
+	        </div>
+	    </div>
+	    <div class="modal fade" id="modal_saldo_caixa" tabindex="-1" role="dialog" aria-labelledby="tituloModalBase" aria-hidden="true">
+	        <div class="modal-dialog modal-lg" role="document">
+	            <div class="modal-content">
+	                <div class="modal-header">
+	                    <h5 class="modal-title" id="exampleModalLabel">Saldo Detalhado</h5>
+	                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	                        <span aria-hidden="true">&times;</span>
+	                    </button>
+	                </div>
+	                 <form class="user" action="<?php echo URLROOT; ?>/caixas/insertDespesa/" method="POST" enctype="multpart/form-data">
+	                    <div class="modal-body">
+	                    	<table class="table table-striped table-hover">
+	                    		<thead>
+	                    			<tr>
+	                    				<th class="text-center center">#</th>
+										<th>Descrição</th>
+										<th class="text-center center">Modo</th>
+										<th class="text-center center">Tipo</th>
+										<th class="text-center center">Valor</th>
+	                    			</tr>
+	                    		</thead>
+	                    		<tbody>
+	                    			<tr>
+										<td class="text-center">----</td>
+										<td>Saldo Inicial</td>
+										<td class="text-center">----</td>
+										<td class="text-center">----</td>
+										<td class="text-center">R$ <?php echo str_replace('.', ',', $data['saldo_inicial']) ?></td>
+									</tr>
+	                    			<?php if ($data['movimentos']): ?>
+				                    	<?php 
+				                    		$cont = 1;
+				                    		foreach ($data['movimentos'] as $key => $value) :
+				                    	?>
+				                    		<tr>
+												<td class="text-center"><?php echo $cont ?></td>
+												<td><?php echo $value->descricao ?></td>
+												<td class="text-center"><?php echo ($value->modo_pagamento == 1 ? "Cartão" : "Dinheiro") ?></td>
+												<td class="text-center"><?php echo ($value->tipo == 1 ? "Receita" : "Despesa") ?></td>
+												<td class="text-center">R$ <?php echo str_replace('.', ',', $value->valor) ?></td>
+											</tr>
+				                    	<?php 
+				                    		$cont++;
+				                    		endforeach; 
+				                    	?>
+	                    			<?php endif ?>
+	                    			
+	                    		</tbody>
+	                    	</table>
+	                    </div>
+	                    <div class="modal-footer">
+	                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
 	                    </div>
 	                </form>
 	            </div>

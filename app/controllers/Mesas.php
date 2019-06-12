@@ -16,6 +16,7 @@
 			// }
 
 			$this->gerenciar();
+		
 		}
 		
 		public function salao(){
@@ -26,6 +27,7 @@
 			];
 
 			$this->view('mesas/salao', $data);
+		
 		}
 
 		public function gerenciar(){
@@ -48,7 +50,7 @@
 				// Init data
 				$data = [
 					'id' => ($_POST['num']),
-					'descricao' => trim($_POST['descricao']),
+					'descricao' => 'Mesa '.$_POST['num'],
 					'data_registro' => date('Y-m-d H:m:s'),
 					'id_usuario' => $_SESSION['id_usuario'],
 					'status' => 0,
@@ -68,7 +70,7 @@
 							redirect("/mesas");
 						}
 					}else{
-						flash("mesas", "Erro ! O código não pode ser o mesmo de uma mesa existente !", "alert-danger");
+						flash("mesas", "Não foi possível cadastrar a Mesa, já existe uma mesa com este código !", "alert-danger");
 						redirect("/mesas");
 					}
 					
@@ -94,13 +96,13 @@
 				$data = [
 					'id' => $id,
 					'new_id' => ($_POST['num']),
-					'descricao' => trim($_POST['descricao']),
+					'descricao' => 'Mesa '.$_POST['num'],
 				];
 
 				// Validade all 
 				if (isset($data['id']) && isset($data['descricao']) && isset($data['new_id'])) {
 					//Validated
-					if ($this->mesaModel->verify($data['new_id']) == false) {
+					if ($data['id'] == $data['new_id']) {
 						// Load function register
 						if ($this->mesaModel->update($data)) {
 							flash("mesas", "Mesa alterarada com Sucesso !");
@@ -109,8 +111,22 @@
 							flash("mesas", "Não foi possível alterar a Mesa !", "alert-danger");
 							redirect("/mesas");
 						}
+					}elseif ($data['id'] != $data['new_id']) {
+						if ($this->mesaModel->verify($data['new_id']) == false) {
+							// Load function register
+							if ($this->mesaModel->update($data)) {
+								flash("mesas", "Mesa alterarada com Sucesso !");
+								redirect("/mesas/");
+							}else{
+								flash("mesas", "Não foi possível alterar a Mesa !", "alert-danger");
+								redirect("/mesas");
+							}
+						}else{
+							flash("mesas", "Não foi possível alterar a Mesa, já existe uma mesa com este código !", "alert-danger");
+							redirect("/mesas");
+						}
 					}else{
-						flash("mesas", "Ação Inválida, você não pode ter o número da mesa duplicado !", "alert-danger");
+						flash("mesas", "Não foi possível alterar a Mesa !", "alert-danger");
 						redirect("/mesas");
 					}
 					
@@ -128,11 +144,16 @@
 
 		public function deleteMesa($id) {
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-				if ($this->mesaModel->delete($id)) {
-					flash("mesas", "Mesa Excluida com Sucesso !");
-					redirect("/mesas/");
+				if ($this->mesaModel->verifyDis($id) == false) {
+					if ($this->mesaModel->delete($id)) {
+						flash("mesas", "Mesa Excluida com Sucesso !");
+						redirect("/mesas/");
+					}else{
+						flash("mesas", "Não foi possível excluir a Mesa !", "alert-danger");
+						redirect("/mesas/");
+					}
 				}else{
-					flash("mesas", "Não foi possível excluir a Mesa !", "alert-danger");
+					flash("mesas", "Não foi possível excluir uma mesa que está em Uso !", "alert-danger");
 					redirect("/mesas/");
 				}
 
@@ -142,8 +163,7 @@
 			}
 		
 		}
-
-		
+	
 	}
 
 ?>

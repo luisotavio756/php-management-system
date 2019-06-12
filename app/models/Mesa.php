@@ -56,6 +56,18 @@
 			}
 		}
 
+		public function verifyDis($id) {
+			$this->db->query("SELECT * FROM tb_mesas WHERE id = :id AND status = 1");
+			$this->db->bind(":id", $id);
+			$this->db->execute();
+
+			if ($this->db->rowCount() > 0) {
+				return true;
+			}else{
+				return false;
+			}
+		}
+
 		public function update($data) {
 			$this->db->query("UPDATE tb_mesas SET id = :new_id, descricao = :descricao WHERE id = :id");
 			$this->db->bind(":id", $data['id']);

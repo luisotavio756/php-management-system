@@ -32,7 +32,7 @@
 
 				// Init data
 				$data = [
-					'name' => trim($_POST['nome']),
+					'nome' => trim($_POST['nome']),
 					'sobrenome' => trim($_POST['sobrenome']),
 					'email' => trim($_POST['email']),
 					'password' => trim($_POST['senha']),
@@ -117,6 +117,7 @@
 				// Load view
 				$this->view('/users/register', $data);
 			}
+		
 		}
 
 		public function login(){
@@ -181,6 +182,7 @@
 				// Load view
 				$this->view('/users/login', $data);
 			}
+		
 		}
 
 		public function createUserSession($user) {
@@ -192,12 +194,11 @@
 			if ($this->caixaModel->verifyOpen()) {
 				$_SESSION['id_caixa'] = $this->caixaModel->idCaixa();
 			}
-			// $_SESSION['data_registro'] = $user->data_registro;
 
 			redirect('/');
+		
 		}
 
-		// Logout user
 		public function logout() {
 			unset($_SESSION['id_usuario']);
 			unset($_SESSION['nome']);
@@ -215,7 +216,6 @@
 
 				// Sanitize POST data
 				$_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-
 				
 				// Init data
 				$data = [
@@ -228,56 +228,71 @@
 					'status' => trim($_POST['status']),
 				];
 
-				// // Validate confirm password
-				// if (empty($data['confirm_password'])) {
-				// 	$data['confirm_password_err'] = 'Digite a confirmação senha';
-				// }elseif (strlen($data['confirm_password']) <= 6) {
-				// 	$data['confirm_password_err'] = 'A senha deve ter no mínimo 6 caracteres';
-				// }elseif ($data['password'] != $data['confirm_password']) {
-				// 	$data['confirm_password_err'] = 'As senhas não coincidem !';
-				// }
+				// Validate confirm password
+				if (empty($data['confirm_password'])) {
+					$data['confirm_password_err'] = 'Digite a confirmação senha';
+				}elseif (strlen($data['confirm_password']) <= 6) {
+					$data['confirm_password_err'] = 'A senha deve ter no mínimo 6 caracteres';
+				}elseif ($data['password'] != $data['confirm_password']) {
+					$data['confirm_password_err'] = 'As senhas não coincidem !';
+				}
 
 				// Validade all 
-				if (!empty($data['nome']) && !empty($data['sobrenome']) && !empty($data['email']) && !empty($data['password']) && !empty($data['nivel']) && isset($data['status'])) {
+				if (isset($data['nome']) && isset($data['sobrenome']) && isset($data['email']) && isset($data['password']) && isset($data['confirm_password']) && isset($data['nivel']) && isset($data['status'])) {
 					//Validated
+					if ($this->userModel->findUserByEmail($data['email']) == false) {
+						if ($data['password'] === $data['confirm_password']) {
+							if ($data['password'] >= 6) {
+								// Hash password
+								$data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
 
-					// Hash password
-					$data['password'] = password_hash($data['password'], PASSWORD_DEFAULT);
-
-					// Load function register
-					if ($this->userModel->registerUser($data)) {
-						flash("users", "Usuário adicionado com sucesso !");
-						redirect("/users/");
+								// Load function register
+								if ($this->userModel->registerUser($data)) {
+									flash("users", "Usuário adicionado com sucesso !");
+									redirect("/users/");
+								}else{
+									flash("users", "Não foi possível adicionar o Usuário !", "alert-danger");
+									redirect("/users/");
+								}
+							}else{
+								flash("users", "Não foi possível adicionar o Usuário, a senha deve ter no mínimo 6 caracteres !", "alert-danger");
+								redirect("/users/");
+							}
+						}else{
+							flash("users", "Não foi possível adicionar o Usuário, as senha não coincidem !", "alert-danger");
+							redirect("/users/");
+						}
 					}else{
-						flash("users", "Não foi possível adicionar o Usuário !", "alert-danger");
+						flash("users", "Não foi possível adicionar o Usuário, este email já está sendo usado !", "alert-danger");
 						redirect("/users/");
 					}
 					
 				}else{
 					// Load view errors
-					echo "<pre>";
-					print_r($data);
-					die("Erro");
+					flash("users", "Não foi possível adicionar o Usuário, verifique todos os campos !", "alert-danger");
 					$this->view('/users/index');
 				}
 
 			}else{
 				// Load view
+				flash("users", "Ação Bloqueada !", "alert-danger");
 				$this->view('/users/index');
 			}
-
-			// $password = password_hash($data['senha'], PASSWORD_DEFAULT);
-
-			
+		
 		}
 
 		public function deleteUser($id){
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-				if ($this->userModel->deleteUser($id)) {
-					flash("users", "Usuário Excluido com Sucesso !");
-					redirect("/users/");
+				if ($id != $_SESSION['id_usuario']) {
+					if ($this->userModel->deleteUser($id)) {
+						flash("users", "Usuário Excluido com Sucesso !");
+						redirect("/users/");
+					}else{
+						flash("users", "Não foi possível excluir o Usuário !", "alert-danger");
+						redirect("/users/");
+					}
 				}else{
-					flash("users", "Não foi possível excluir o Usuário !", "alert-danger");
+					flash("users", "Você não pode excluir seu próprio Usuário !", "alert-danger");
 					redirect("/users/");
 				}
 
@@ -300,12 +315,19 @@
 					'status' => trim($_POST['status']),
 				];
 
-				if ($this->userModel->updateUser($id, $data)) {
-					flash("users", "Usuário editado com Sucesso !");
-					redirect("/users/");
-				}else{
-					flash("users", "Não foi possível editado o Usuário !", "alert-danger");
-					redirect("/users/");
+				if (isset($data['nome']) && isset($data['sobrenome']) && isset($data['email']) && isset($data['nivel']) && isset($data['status'])) {
+					if ($this->userModel->findUserByEmail($data['email']) == false) {
+						if ($this->userModel->updateUser($id, $data)) {
+							flash("users", "Usuário editado com Sucesso !");
+							redirect("/users/");
+						}else{
+							flash("users", "Não foi possível editar o Usuário !", "alert-danger");
+							redirect("/users/");
+						}
+					}else{
+						flash("users", "Não foi possível editar o Usuário, este email já está sendo usado !", "alert-danger");
+							redirect("/users/");
+					}
 				}
 
 			}

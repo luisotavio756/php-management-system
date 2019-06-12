@@ -34,24 +34,26 @@
 						</thead>
 						<tbody>
 							<?php foreach ($data['users'] as $key => $value): ?>
-								<tr>
-									<td class="text-center"><?php echo $value->id ?></td>
-									<td><?php echo $value->nome . " " . $value->sobrenome ?></td>
-									<td><?php echo $value->email ?></td>
-									<td class="text-center"><?php echo $value->nivel == 1 ? 'Administrador' : 'Funcionário';?></td>
-									<td class="text-center"><?php echo $value->status == 1 ? 'Ativo' : 'Inativo'; ?></td>
-									<td class="text-center">
-										<a class="btn btn-warning btn-circle btn-sm" href="<?php echo URLROOT ?>/users/updateUser/<?php echo $value->id ?>" id="<?php echo $value->id ?>" data-toggle="modal" data-placement="top" data-target="#modal_editar" title="Editar Usuario" modal-size="modal-lg">
-											<i class="fas fa-edit"></i>
-										</a>
-										<a class="btn btn-info btn-circle btn-sm" href="#" id="<?php echo $value->id ?>" data-toggle="modal" data-placement="top" data-target="#modal_info" title="Informações do Usuario">
-											<i class="fas fa-info"></i>
-										</a>
-										<a class="btn btn-danger btn-circle btn-sm" href="<?php echo URLROOT ?>/users/deleteUser/<?php echo $value->id ?>" data-toggle="modal" data-placement="top" data-target="#modal_excluir" title="Excluir Usuario" text="Deseja Realmente excluir este Usuário ?">
-											<i class="fas fa-trash"></i>
-										</a>
-									</td>
-								</tr>
+								<?php if ($value->id != $_SESSION['id_usuario']): ?>
+									<tr>
+										<td class="text-center"><?php echo $value->id ?></td>
+										<td><?php echo $value->nome . " " . $value->sobrenome ?></td>
+										<td><?php echo $value->email ?></td>
+										<td class="text-center"><?php echo $value->nivel == 1 ? 'Administrador' : 'Funcionário';?></td>
+										<td class="text-center"><?php echo $value->status == 1 ? 'Ativo' : 'Inativo'; ?></td>
+										<td class="text-center">
+											<a class="btn btn-info btn-circle btn-sm" href="#" id="<?php echo $value->id ?>" data-toggle="modal" data-placement="top" data-target="#modal_info" title="Informações do Usuario">
+												<i class="fas fa-info"></i>
+											</a>
+											<a class="btn btn-warning btn-circle btn-sm" href="<?php echo URLROOT ?>/users/updateUser/<?php echo $value->id ?>" id="<?php echo $value->id ?>" data-toggle="modal" data-placement="top" data-target="#modal_editar" title="Editar Usuario" modal-size="modal-lg">
+												<i class="fas fa-edit"></i>
+											</a>
+											<a class="btn btn-danger btn-circle btn-sm" href="<?php echo URLROOT ?>/users/deleteUser/<?php echo $value->id ?>" data-toggle="modal" data-placement="top" data-target="#modal_excluir" title="Excluir Usuario" text="Deseja Realmente excluir este Usuário ?">
+												<i class="fas fa-trash"></i>
+											</a>
+										</td>
+									</tr>
+								<?php endif; ?>
 							<?php endforeach ?>
 						</tbody>
 					</table>

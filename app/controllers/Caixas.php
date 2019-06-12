@@ -15,6 +15,7 @@
 				'despesas' => $this->getDespesas(),
 				'saldo_inicial' => $this->getSaldoInicial(),
 				'saldo_final' => $this->getSaldo(),
+				'movimentos' => $this->caixaModel->getMovimentos($this->caixaModel->idCaixa()),
 			];
 
 			$this->view('/caixas/dashboard', $data);
@@ -230,7 +231,7 @@
 			$saldo = ($saldoInicial + $receitas) - $despesas; 
 			// echo "<pre>";
 			// print_r($receitas);
-			return $saldo;
+			return number_format($saldo, 2);
 		
 		}
 

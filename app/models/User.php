@@ -12,7 +12,7 @@
 			$this->db->query("INSERT INTO tb_usuarios(nome, sobrenome, email, senha, nivel, status) VALUES (:nome, :sobrenome, :email, :senha, :nivel, :status)");
 
 			//Bind values
-			$this->db->bind(":nome", $data['name']);
+			$this->db->bind(":nome", $data['nome']);
 			$this->db->bind(":sobrenome", $data['sobrenome']);
 			$this->db->bind(":email", $data['email']);
 			$this->db->bind(":senha", $data['password']);
@@ -24,6 +24,7 @@
 			}else{
 				return false;
 			}
+		
 		}
 
 		public function deleteUser($id){
@@ -35,6 +36,7 @@
 			}else{
 				return false;
 			}
+		
 		}
 
 		// Find user by email
@@ -50,6 +52,7 @@
 			}else{
 				return false;
 			}
+		
 		}
 
 		// Login user
