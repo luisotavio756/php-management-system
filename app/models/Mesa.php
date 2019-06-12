@@ -8,8 +8,8 @@
 		}
 
 		public function addMesa($data) {
-			$this->db->query('INSERT INTO tb_mesas(num, descricao, data_registro, id_usuario, status) VALUES (:num, :descricao, :data_registro, :id_usuario, :status)');
-			$this->db->bind(":num", $data['num']);
+			$this->db->query('INSERT INTO tb_mesas(id, descricao, data_registro, id_usuario, status) VALUES (:id, :descricao, :data_registro, :id_usuario, :status)');
+			$this->db->bind(":id", $data['id']);
 			$this->db->bind(":descricao", $data['descricao']);
 			$this->db->bind(":data_registro", $data['data_registro']);
 			$this->db->bind(":id_usuario", $data['id_usuario']);
@@ -34,7 +34,7 @@
 		}
 
 		public function getMesas() {
-			$this->db->query("SELECT * FROM tb_mesas WHERE status = 1");
+			$this->db->query("SELECT * FROM tb_mesas");
 			
 
 			if ($this->db->execute()) {
@@ -44,9 +44,30 @@
 			}
 		}
 
-		// public function verify($id) {
-		// 	$this->db->query("SELECT * FROM tb_mesas WHER")
-		// }
+		public function verify($id) {
+			$this->db->query("SELECT * FROM tb_mesas WHERE id = :id");
+			$this->db->bind(":id", $id);
+			$this->db->execute();
+
+			if ($this->db->rowCount() > 0) {
+				return true;
+			}else{
+				return false;
+			}
+		}
+
+		public function update($data) {
+			$this->db->query("UPDATE tb_mesas SET id = :new_id, descricao = :descricao WHERE id = :id");
+			$this->db->bind(":id", $data['id']);
+			$this->db->bind(":new_id", $data['new_id']);
+			$this->db->bind(":descricao", $data['descricao']);
+
+			if ($this->db->execute()) {
+				return true;
+			}else{
+				return false;
+			}
+		}
 
 	}
 

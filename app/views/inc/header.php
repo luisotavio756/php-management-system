@@ -76,7 +76,7 @@
                     </a>
                     <div id="mesas" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" href="<?php echo URLROOT; ?>/mesas/gerenciar">Mostrar Salão</a>   
+                            <a class="collapse-item" href="<?php echo URLROOT; ?>/mesas/salao">Mostrar Salão</a>   
                             <a class="collapse-item" href="<?php echo URLROOT; ?>/mesas/gerenciar">Gerenciar</a>   
                             <a class="collapse-item" href="<?php echo URLROOT; ?>/mesas/comandas">Comandas</a>          
                         </div>

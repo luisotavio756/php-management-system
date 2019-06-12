@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 08-Jun-2019 às 15:33
+-- Generation Time: 12-Jun-2019 às 02:25
 -- Versão do servidor: 10.1.40-MariaDB
 -- versão do PHP: 7.3.5
 
@@ -30,8 +30,8 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `tb_caixa` (
   `id` int(11) NOT NULL,
-  `saldo_inicial` double NOT NULL,
-  `saldo_final` double DEFAULT NULL,
+  `saldo_inicial` decimal(10,2) NOT NULL,
+  `saldo_final` decimal(10,2) DEFAULT NULL,
   `data_aberto` datetime NOT NULL,
   `data_fechado` datetime DEFAULT NULL,
   `id_usuario` int(11) NOT NULL,
@@ -43,7 +43,8 @@ CREATE TABLE `tb_caixa` (
 --
 
 INSERT INTO `tb_caixa` (`id`, `saldo_inicial`, `saldo_final`, `data_aberto`, `data_fechado`, `id_usuario`, `status`) VALUES
-(7, 200, NULL, '2019-06-08 14:35:33', NULL, 7, 1);
+(35, '200.00', '242.02', '2019-06-11 09:12:09', '2019-06-11 09:21:31', 7, 0),
+(36, '200.69', '256.06', '2019-06-11 09:21:41', '2019-06-11 10:54:17', 7, 0);
 
 -- --------------------------------------------------------
 
@@ -108,12 +109,22 @@ CREATE TABLE `tb_comandas_produtos` (
 
 CREATE TABLE `tb_mesas` (
   `id` int(11) NOT NULL,
-  `num` int(11) NOT NULL,
   `descricao` varchar(255) NOT NULL,
   `data_registro` datetime NOT NULL,
   `id_usuario` int(11) NOT NULL,
   `status` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+
+--
+-- Extraindo dados da tabela `tb_mesas`
+--
+
+INSERT INTO `tb_mesas` (`id`, `descricao`, `data_registro`, `id_usuario`, `status`) VALUES
+(1, 'Mesa 1', '0000-00-00 00:00:00', 6, 1),
+(2, 'Mesa 2', '2019-06-11 20:06:00', 7, 0),
+(3, 'Mesa 3', '2019-06-11 20:06:27', 7, 0),
+(4, 'Mesa 4', '0000-00-00 00:00:00', 7, 1),
+(5, 'Mesa 5', '0000-00-00 00:00:00', 7, 0);
 
 -- --------------------------------------------------------
 
@@ -125,7 +136,8 @@ CREATE TABLE `tb_movimento_caixa` (
   `id` int(11) NOT NULL,
   `descricao` varchar(60) DEFAULT NULL,
   `tipo` int(1) NOT NULL,
-  `valor` double(10,2) NOT NULL,
+  `modo_pagamento` int(1) NOT NULL,
+  `valor` decimal(10,2) NOT NULL,
   `data_registro` datetime NOT NULL,
   `id_caixa` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
@@ -134,22 +146,18 @@ CREATE TABLE `tb_movimento_caixa` (
 -- Extraindo dados da tabela `tb_movimento_caixa`
 --
 
-INSERT INTO `tb_movimento_caixa` (`id`, `descricao`, `tipo`, `valor`, `data_registro`, `id_caixa`) VALUES
-(1, 'Agua', 1, 40.00, '2019-06-08 14:46:49', 7),
-(2, 'Pizza', 1, 35.00, '2019-06-08 02:47:33', 7),
-(3, 'Comidas', 1, 1.00, '2019-06-08 14:49:08', 7),
-(4, 'Comidas', 1, 4.00, '2019-06-08 09:54:37', 7),
-(5, 'Comidas', 2, 12.00, '2019-06-08 09:55:52', 7),
-(6, 'Comidas', 1, 40.00, '2019-06-08 09:56:03', 7),
-(7, 'Comidas', 2, 40.00, '2019-06-08 09:56:12', 7),
-(8, 'teste', 1, 40.00, '2019-06-08 10:10:01', 7),
-(9, 'Comidas', 2, 4.00, '2019-06-08 10:10:16', 7),
-(10, '234324', 2, 40.00, '2019-06-08 10:10:23', 7),
-(11, 'Comidas', 2, 4.55, '2019-06-08 10:10:31', 7),
-(12, 'Comidas34', 2, 4.00, '2019-06-08 10:11:37', 7),
-(13, 'Comidas', 1, 4.00, '2019-06-08 10:11:53', 7),
-(14, 'Comidas', 1, 4.36, '2019-06-08 10:12:58', 7),
-(15, '234324', 2, 40.12, '2019-06-08 10:13:12', 7);
+INSERT INTO `tb_movimento_caixa` (`id`, `descricao`, `tipo`, `modo_pagamento`, `valor`, `data_registro`, `id_caixa`) VALUES
+(69, '1,66666666', 1, 1, '40.00', '2019-06-11 09:13:13', 35),
+(70, 'Comidas', 1, 1, '1.00', '2019-06-11 09:13:34', 35),
+(71, 'Comidas', 1, 1, '1.00', '2019-06-11 09:14:05', 35),
+(72, 'Comidas', 2, 1, '1.67', '2019-06-11 09:19:19', 35),
+(73, 'Comidas', 1, 1, '1.69', '2019-06-11 09:19:37', 35),
+(74, 'Comidas', 1, 1, '43.69', '2019-06-11 09:22:12', 36),
+(75, 'Comidas', 2, 1, '1.69', '2019-06-11 09:22:24', 36),
+(76, 'Comidas', 1, 1, '13.89', '2019-06-11 09:28:35', 36),
+(77, 'Comidas', 2, 1, '0.69', '2019-06-11 09:28:44', 36),
+(78, 'Comidas', 1, 1, '1.78', '2019-06-11 09:37:56', 36),
+(79, 'Comidas', 2, 1, '1.61', '2019-06-11 09:38:10', 36);
 
 -- --------------------------------------------------------
 
@@ -159,9 +167,9 @@ INSERT INTO `tb_movimento_caixa` (`id`, `descricao`, `tipo`, `valor`, `data_regi
 
 CREATE TABLE `tb_produtos` (
   `id` int(11) NOT NULL,
-  `cod` float(11,0) NOT NULL,
+  `cod` int(11) NOT NULL,
   `descricao` varchar(255) NOT NULL,
-  `valor` float(10,2) NOT NULL,
+  `valor` decimal(10,2) NOT NULL,
   `estoque` int(10) NOT NULL,
   `data_registro` datetime NOT NULL,
   `id_categoria` int(11) NOT NULL,
@@ -173,9 +181,16 @@ CREATE TABLE `tb_produtos` (
 --
 
 INSERT INTO `tb_produtos` (`id`, `cod`, `descricao`, `valor`, `estoque`, `data_registro`, `id_categoria`, `id_usuario`) VALUES
-(1, 7893, 'Pizza3', 50.00, 343, '0000-00-00 00:00:00', 2, 6),
-(2, 7898, 'Refrigerante', 50.00, 12, '0000-00-00 00:00:00', 1, 6),
-(12, 123, '123', 123.00, 123, '2019-06-07 16:49:28', 1, 7);
+(1, 7893, 'Pizza3', '50.00', 343, '0000-00-00 00:00:00', 2, 6),
+(2, 7898, 'Refrigerante', '50.00', 12, '0000-00-00 00:00:00', 1, 6),
+(12, 123, '123', '123.00', 123, '2019-06-07 16:49:28', 1, 7),
+(14, 13234, 'Comidas', '16.98', 11, '2019-06-11 09:41:00', 2, 7),
+(15, 11234334, '234324', '40.00', 123, '2019-06-11 09:47:00', 2, 7),
+(16, 124143, 'Comidas', '4.00', 123, '2019-06-11 09:47:41', 3, 7),
+(17, 124143, 'Comidas', '1200.00', 123, '2019-06-11 09:52:13', 2, 7),
+(18, 13, 'Comidas', '1.69', 123, '2019-06-11 09:52:43', 1, 7),
+(19, 12, 'Comidas', '39.43', 123, '2019-06-11 09:57:29', 2, 7),
+(20, 12, 'nrger', '87.90', 1232, '0000-00-00 00:00:00', 2, 7);
 
 -- --------------------------------------------------------
 
@@ -240,7 +255,7 @@ ALTER TABLE `tb_comandas_produtos`
 -- Indexes for table `tb_mesas`
 --
 ALTER TABLE `tb_mesas`
-  ADD PRIMARY KEY (`id`),
+  ADD PRIMARY KEY (`id`) USING BTREE,
   ADD KEY `fk_tb_mesas_tb_usuarios_1` (`id_usuario`) USING BTREE;
 
 --
@@ -254,7 +269,7 @@ ALTER TABLE `tb_movimento_caixa`
 -- Indexes for table `tb_produtos`
 --
 ALTER TABLE `tb_produtos`
-  ADD PRIMARY KEY (`id`),
+  ADD PRIMARY KEY (`id`,`cod`) USING BTREE,
   ADD KEY `fk_tb_produtos_tb_usuarios_1` (`id_usuario`) USING BTREE,
   ADD KEY `id_categoria` (`id_categoria`);
 
@@ -272,7 +287,7 @@ ALTER TABLE `tb_usuarios`
 -- AUTO_INCREMENT for table `tb_caixa`
 --
 ALTER TABLE `tb_caixa`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=37;
 
 --
 -- AUTO_INCREMENT for table `tb_categorias`
@@ -293,22 +308,16 @@ ALTER TABLE `tb_comandas_produtos`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
--- AUTO_INCREMENT for table `tb_mesas`
---
-ALTER TABLE `tb_mesas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
-
---
 -- AUTO_INCREMENT for table `tb_movimento_caixa`
 --
 ALTER TABLE `tb_movimento_caixa`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
 
 --
 -- AUTO_INCREMENT for table `tb_produtos`
 --
 ALTER TABLE `tb_produtos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT for table `tb_usuarios`
@@ -330,8 +339,8 @@ ALTER TABLE `tb_caixa`
 -- Limitadores para a tabela `tb_comandas`
 --
 ALTER TABLE `tb_comandas`
-  ADD CONSTRAINT `fk_tb_comandas_tb_mesas_1` FOREIGN KEY (`id_mesa`) REFERENCES `tb_mesas` (`id`),
-  ADD CONSTRAINT `fk_tb_comandas_tb_usuarios_1` FOREIGN KEY (`id_usuario`) REFERENCES `tb_usuarios` (`id`);
+  ADD CONSTRAINT `fk_tb_comandas_tb_usuarios_1` FOREIGN KEY (`id_usuario`) REFERENCES `tb_usuarios` (`id`),
+  ADD CONSTRAINT `tb_comandas_ibfk_1` FOREIGN KEY (`id_mesa`) REFERENCES `tb_mesas` (`id`);
 
 --
 -- Limitadores para a tabela `tb_comandas_produtos`

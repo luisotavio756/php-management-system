@@ -25,8 +25,8 @@
 							<thead>
 								<tr>
 									<th class="text-center">#</th>
-									<th class="text-center">Cod</th>
 									<th>Descrição</th>
+									<th class="text-center">Status</th>
 									<th class="text-center">Ações</th>
 								</tr>
 							</thead>
@@ -34,9 +34,17 @@
 								<?php foreach ($data['mesas'] as $key => $value): ?>
 									<tr>
 										<td class="text-center"><?php echo $value->id ?></td>
-										<td class="text-center"><?php echo $value->num ?></td>
 										<td><?php echo $value->descricao ?></td>
 										<td class="text-center">
+											<?php 
+												echo $value->status == 1 ? '<span class="badge badge-pill badge-danger p-1">Ocupada</span>' : '<span class="badge badge-pill badge-success p-1">Disponível</span>' 
+											?>
+												
+										</td>
+										<td class="text-center">
+											<a class="btn btn-secondary btn-circle btn-sm" href="#" id="<?php echo $value->id ?>" data-toggle="modal" data-placement="top" data-target="#modal_comandas" title="Comandas da Mesa">
+												<i class="fas fa-bookmark"></i>
+											</a>
 											<a class="btn btn-warning btn-circle btn-sm" href="<?php echo URLROOT ?>/mesas/alterMesa/<?php echo $value->id ?>" id="<?php echo $value->id ?>" data-toggle="modal" data-placement="top" data-target="#modal_editar" title="Editar Mesa" modal-size="modal-lg">
 												<i class="fas fa-edit"></i>
 											</a>
@@ -123,7 +131,7 @@
 <?php  
 	$data_json = array();
 	foreach ($data['mesas'] as $key => $value) {
-		$data_json[$value->id]['num'] = $value->num;
+		$data_json[$value->id]['id'] = $value->id;
 		$data_json[$value->id]['descricao'] = $value->descricao;
 	}
 
@@ -147,7 +155,7 @@
 
 		$(this).find("form").attr("action", link.attr("href"));
 		$(this).find(".modal-title").html(link.attr("title"));
-		$(this).find("[name='num']").val(data[id].num)
+		$(this).find("[name='num']").val(data[id].id)
         $(this).find("[name='descricao']").val(data[id].descricao)
 
 	});
