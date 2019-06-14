@@ -202,12 +202,22 @@
 		                    		</tbody>
 		                    	</table>
 	                    	</div>
+	                    	<div id="data-trash-caixa" style="display: none">
+	                    		<div class="row">
+		                            <div class="col-12 my-3 text-center">
+		                                <h5 class="mb-0"><b>Deseja Realmente encerrar este Caixa ?</b></h5>
+		                                <p class="mt-1 text-danger" style="font-size: 15px; font-weight: 600">OBS: A ação não poderá ser desfeita</p>
+		                            </div>
+		                        </div>
+	                    	</div>
 	                    </div>
 	                    <div class="modal-footer">
 	                    	<button type="button" class="btn btn-info mr-auto" id="btn-voltar" style="display: none"><i class="fas fa-chevron-circle-left"></i> Voltar</button>
-	                        <a href="#" class="btn btn-danger btn-trash" style="display: none"><i class="fas fa-trash"></i> Apagar Caixa</a>
+	                        <!-- <button type="button" class="btn btn-danger btn-trash" style="display: none"><i class="fas fa-trash"></i> Apagar Caixa</button> -->
 	                    	<a href="#" class="btn btn-success btn-download" style="display: none"><i class="fas fa-file-excel"></i> Download</a>
-	                        <button type="button" class="btn btn-secondary btn-back" data-dismiss="modal">Fechar</button>
+	                        <button type="button" class="btn btn-secondary btn-back" data-dismiss="modal">Fechar</button>	       
+	                        <a href="#" id="btn-trash-caixa" ste="0" class="btn btn-danger" style="display: none"><i class="fas fa-trash"></i></a>
+	                        <!-- Confirmar e Apagar Caixa -->
 	                    </div>
 	                </form>
 	            </div>
@@ -538,7 +548,8 @@
         }
     
     }
-
+    var link = '#';
+    var t = 0;
     $("#modal_befores_caixa  #saldo-detalhado").click(function(){
     	var id = $(this).attr('cod');
     	var nome = $(this).attr('nome');
@@ -601,9 +612,11 @@
 	        		//Set
 	        		$("#data-befores-movimentos .table-movimentos tbody").append(data_movimentos);
 	        		$("#data-befores-movimentos").fadeIn();
-	        		$("#modal_befores_caixa #btn-voltar, #modal_befores_caixa .btn-download, #modal_befores_caixa .btn-trash").fadeIn();
+	        		$("#modal_befores_caixa #btn-voltar, #modal_befores_caixa .btn-download, #modal_befores_caixa #btn-trash-caixa").fadeIn();
 	        		$("#modal_befores_caixa .btn-download").attr("href", "<?php echo URLROOT ?>" + "/caixas/pdf/" + id + "/Caixa");
-	        		$("#modal_befores_caixa .btn-trash").attr("href", "<?php echo URLROOT ?>" + "/caixas/deleteCaixa/" + id);
+	        		link = "<?php echo URLROOT ?>" + "/caixas/deleteCaixa/" + id;
+	        		
+
 	        	}else{
 	        		$("#data-befores-caixa, #modal_befores_caixa .btn-back").hide();
 	        		//Data Caixa
@@ -633,9 +646,9 @@
 	        		//Set
 	        		$("#data-befores-movimentos .table-movimentos tbody").append(data_movimentos);
 	        		$("#data-befores-movimentos").fadeIn();
-	        		$("#modal_befores_caixa #btn-voltar, #modal_befores_caixa .btn-download, #modal_befores_caixa .btn-trash").fadeIn();
+	        		$("#modal_befores_caixa #btn-voltar, #modal_befores_caixa .btn-download, #modal_befores_caixa #btn-trash-caixa").fadeIn();
 	        		$("#modal_befores_caixa .btn-download").attr("href", "<?php echo URLROOT ?>" + "/caixas/pdf/" + id + "/Caixa");
-	        		$("#modal_befores_caixa .btn-trash").attr("href", "<?php echo URLROOT ?>" + "/caixas/deleteCaixa/" + id);
+	        		link = "<?php echo URLROOT ?>" + "/caixas/deleteCaixa/" + id;
 	        	}
 	        },
 	        error: function (e) {
@@ -644,25 +657,30 @@
 	        }
 	    });
 
-	    $("#modal_befores_caixa #btn-voltar").click(function(){
-	    	//Data Caixa
+    })
 
-	    	$("#modal_befores_caixa #idC").html('');
-    		$("#modal_befores_caixa #User").html('');
-    		$("#modal_befores_caixa #Dat").html('');
+    $("#modal_befores_caixa #btn-voltar").click(function(){
+    	//Data Caixa
 
-    		//Saldos
-	    	$("#data-befores-movimentos .table-movimentos tbody").html('');
-	    	$("#data-befores-movimentos .table-movimentos tfoot").html('');
+    	$("#modal_befores_caixa #idC").html('');
+		$("#modal_befores_caixa #User").html('');
+		$("#modal_befores_caixa #Dat").html('');
 
-	    	//Reset
-	    	$("#data-befores-caixa, #modal_befores_caixa .btn-back").fadeIn();
-	    	$("#data-befores-movimentos, #modal_befores_caixa #btn-voltar, #modal_befores_caixa .btn-download, #modal_befores_caixa .btn-trash").hide();
-	    	$("#modal_befores_caixa .btn-download").fadeOut();
-	        $("#modal_befores_caixa .btn-download").attr("href", "#");
-	        $("#modal_befores_caixa .btn-trash").attr("href", "#");
+		//Saldos
+    	$("#data-befores-movimentos .table-movimentos tbody").html('');
+    	$("#data-befores-movimentos .table-movimentos tfoot").html('');
 
-	    })
+    	//Reset
+    	$("#data-befores-caixa, #modal_befores_caixa .btn-back").fadeIn();
+    	$("#data-befores-movimentos, #modal_befores_caixa #btn-voltar, #modal_befores_caixa .btn-download, #modal_befores_caixa #btn-trash-caixa, #data-trash-caixa").hide();
+    	$("#modal_befores_caixa .btn-download").fadeOut();
+        $("#modal_befores_caixa .btn-download").attr("href", "#");
+        $("#modal_befores_caixa #btn-trash-caixa").attr("href", "#");
+        // $("#modal_befores_caixa .btn-confim-trash").attr("href", "#");
+        $("#modal_befores_caixa #btn-trash-caixa").html('<i class="fas fa-trash"></i>').attr('ste', 0);
+        // $("#modal_befores_caixa .btn-trash").addClass("btn-trash").removeClass("btn-confim-trash");
+        link = "#";
+
     })
 
 	$('#modal_befores_caixa').on('hidden.bs.modal', function(e){ 
@@ -678,9 +696,28 @@
 
     	//Reset
     	$("#data-befores-caixa, #modal_befores_caixa .btn-back").fadeIn();
-    	$("#data-befores-movimentos, #modal_befores_caixa #btn-voltar, #modal_befores_caixa .btn-download, #modal_befores_caixa .btn-trash").hide();
+    	$("#data-befores-movimentos, #modal_befores_caixa #btn-voltar, #modal_befores_caixa .btn-download, #modal_befores_caixa #btn-trash-caixa").hide();
     	$("#modal_befores_caixa .btn-download").fadeOut();
         $("#modal_befores_caixa .btn-download").attr("href", "#");
-        $("#modal_befores_caixa .btn-trash").attr("href", "#");
-    }) ;
+        $("#modal_befores_caixa #btn-trash-caixa").attr("href", "#");
+        $("#modal_befores_caixa #btn-trash-caixa").html('<i class="fas fa-trash"></i>').attr('ste', 0);
+        // $("#modal_befores_caixa .btn-trash").addClass("btn-trash").removeClass("btn-confim-trash");
+        link = "#";
+    });
+
+	
+
+
+    $("#btn-trash-caixa").on('click', function(){
+    	var ste = $(this).attr('ste');
+
+    	if (ste == 0) {
+    		$("#modal_befores_caixa #btn-trash-caixa").append(' Confirmar e Apagar Caixa ?');
+    		$(this).attr('ste', 1);
+    	}else{
+    		$("#modal_befores_caixa #btn-trash-caixa").attr("href", link);
+    	}
+   
+    })
+
 </script>
