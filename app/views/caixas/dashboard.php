@@ -1,5 +1,5 @@
 <?php require_once APPROOT . '/views/inc/header.php'; ?>
-<?php (isset($_SESSION['id_caixa']) ? $h = 200 : $h = 75); ?>
+<?php (isset($_SESSION['id_caixa']) ? $h = 200 : $h = 100); ?>
 <?php  
 	// echo "<pre>";
 	// print_r($data);
@@ -20,7 +20,7 @@
 					<div class="row no-gutters align-items-center">
 						<div class="col mr-2">
 							<div class="text-xs font-weight-bold text-gray-800 text-uppercase mb-1">Receitas (Hoje)</div>
-							<div class="h5 mb-0 font-weight-bold text-success">$<?php echo str_replace(".", ',', $data['receitas']) ?></div>
+							<div class="h5 mb-0 font-weight-bold text-success">R$<?php echo str_replace('.',',', number_format($data['receitas'], 2, '.', '')) ?></div>
 						</div>
 						<div class="col-auto">
 							<i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -35,7 +35,7 @@
 					<div class="row no-gutters align-items-center">
 						<div class="col mr-2">
 							<div class="text-xs font-weight-bold text-gray-800 text-uppercase mb-1">Despesas (Hoje)</div>
-							<div class="h5 mb-0 font-weight-bold text-danger">$<?php echo str_replace(".", ',', $data['despesas']) ?></div>
+							<div class="h5 mb-0 font-weight-bold text-danger">R$<?php echo str_replace('.',',', number_format($data['despesas'], 2, '.', '')) ?></div>
 						</div>
 						<div class="col-auto">
 							<i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -50,7 +50,7 @@
 					<div class="row no-gutters align-items-center">
 						<div class="col mr-2">
 							<div class="text-xs font-weight-bold text-gray-800 text-uppercase mb-1">Saldo Inicial(Hoje)</div>
-							<div class="h5 mb-0 font-weight-bold text-info">$<?php echo str_replace(".", ',', $data['saldo_inicial']) ?></div>
+							<div class="h5 mb-0 font-weight-bold text-info">R$<?php echo str_replace('.',',', number_format($data['saldo_inicial'], 2, '.', '')) ?></div>
 						</div>
 						<div class="col-auto">
 							<i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -65,7 +65,7 @@
 					<div class="row no-gutters align-items-center">
 						<div class="col mr-2">
 							<div class="text-xs font-weight-bold text-gray-800 text-uppercase mb-1">Saldo Final(Hoje)</div>
-							<div class="h5 mb-0 font-weight-bold text-warning">$<?php echo str_replace(".", ',', $data['saldo_final']) ?></div>
+							<div class="h5 mb-0 font-weight-bold text-warning">R$<?php echo str_replace('.',',', number_format($data['saldo_final'], 2, '.', '')) ?></div>
 						</div>
 						<div class="col-auto">
 							<i class="fas fa-dollar-sign fa-2x text-gray-300"></i>
@@ -95,8 +95,11 @@
 		        </div>
 	        <?php else: ?>
 	        <hr class="my-0 py-0">
-		        <div style="height: 100%" class="d-flex align-items-center">
-		            <a style=" font-size: 16.5px; font-weight: 700" class="btn text-success mx-auto" href="#modal_abrir_caixa" data-toggle="modal"><i style="font-size: 13px" class="fa fa-lock"></i> Abrir Caixa</a>
+		        <div style="height: 50%" class="d-flex align-items-center">
+		            <a style=" font-size: 16.5px; font-weight: 700" class="btn text-success mx-auto" href="#modal_abrir_caixa" data-toggle="modal"><i style="font-size: 13px" class="fa fa-lock"></i> Abrir novo Caixa</a>
+		        </div>
+		        <div style="height: 50%" class="d-flex align-items-center">
+		            <a style=" font-size: 16.5px; font-weight: 700" class="btn text-secondary mx-auto" href="#modal_befores_caixa" data-toggle="modal"><i style="font-size: 13px" class="fas fa-archive"></i> Caixas Anteriores</a>
 		        </div>
 		    <?php endif; ?>
 	    </div>
@@ -124,6 +127,87 @@
 	                    <div class="modal-footer">
 	                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
 	                        <button type="submit" class="btn btn-info">Confirmar <i class="fas fa-check-circle"></i></button>
+	                    </div>
+	                </form>
+	            </div>
+	        </div>
+	    </div>
+	    <div class="modal fade" id="modal_befores_caixa" tabindex="-1" role="dialog" aria-labelledby="tituloModalBase" aria-hidden="true">
+	        <div class="modal-dialog modal-lg" role="document">
+	            <div class="modal-content">
+	                <div class="modal-header">
+	                    <h5 class="modal-title" id="exampleModalLabel">Caixas Anteriores</h5>
+	                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	                        <span aria-hidden="true">&times;</span>
+	                    </button>
+	                </div>
+	                <form class="user" action="" method="POST" enctype="multpart/form-data">
+	                    <div class="modal-body" style="height: 400px; overflow-x:auto;">
+	                    	<div id="data-befores-caixa">
+		                    	<table class="table" style="font-size: 15px">
+		                    		<thead>
+		                    			<tr>
+		                    				<th class="text-center">#</th>
+											<th class="text-center">Data Aberto</th>
+											<th class="text-center">Data Fechado</th>
+											<th class="text-center">Ações</th>
+		                    			</tr>
+		                    		</thead>
+		                    		<tbody>
+		                    			<?php if ($data['caixas']): ?>
+			                    			<?php foreach ($data['caixas'] as $key => $value): ?>
+			                    				<tr>
+				                    				<td class="text-center"><?php echo $value->id ?></td>
+													<td class="text-center"><?php echo toBrDateTime($value->data_aberto) ?></td>
+													<td class="text-center"><?php echo toBrDateTime($value->data_fechado) ?></td>
+													<td class="text-center">
+														<a style="border-radius: 30px" id="saldo-detalhado" class="btn btn-info" href="#" cod="<?php echo $value->id ?>" nome="<?php echo $value->nome.' '.$value->sobrenome ?>" data="<?php echo toBrDateTime($value->data_aberto) ?>" sI="<?php echo $value->saldo_inicial ?>" sF="<?php echo $value->saldo_final ?>" title="Mais Ações">Info 
+															<i class="fas fa-chevron-circle-right"></i>
+															<!-- <i class="fas fa-file-excel"></i> -->
+														</a>
+													</td>
+				                    			</tr>
+			                    			<?php endforeach ?>		                    
+		                    			<?php endif ?>
+		                    		</tbody>
+		                    	</table>
+	                    	</div>
+	                    	<div id="data-befores-movimentos" style="display: none">
+	                    		<div class="row mt-2 mb-3">
+	                    			<div class="col-4">
+	                    				<h6>ID Caixa: <b id="idC"></b></h6>
+	                    			</div>
+	                    			<div class="col-4">
+	                    				<h6>Aberto por: <b id="User">Luis Otávio</b></h6>
+	                    			</div>
+	                    			<div class="col-4">
+	                    				<h6>Data: <b id="Dat"></b></h6>
+	                    			</div>
+	                    		</div>
+	                    		<table class="table table-movimentos" style="font-size: 15px">
+		                    		<thead>
+		                    			<tr>
+		                    				<th class="text-center center">#</th>
+											<th>Descrição</th>
+											<th class="text-center center">Modo</th>
+											<th class="text-center center">Tipo</th>
+											<th class="text-center center">Valor</th>
+		                    			</tr>
+		                    		</thead>
+		                    		<tfoot>
+
+		                    		</tfoot>
+		                    		<tbody>		                    					           
+		                    			
+		                    		</tbody>
+		                    	</table>
+	                    	</div>
+	                    </div>
+	                    <div class="modal-footer">
+	                    	<button type="button" class="btn btn-info mr-auto" id="btn-voltar" style="display: none"><i class="fas fa-chevron-circle-left"></i> Voltar</button>
+	                        <a href="#" class="btn btn-danger btn-trash" style="display: none"><i class="fas fa-trash"></i> Apagar Caixa</a>
+	                    	<a href="#" class="btn btn-success btn-download" style="display: none"><i class="fas fa-file-excel"></i> Download</a>
+	                        <button type="button" class="btn btn-secondary btn-back" data-dismiss="modal">Fechar</button>
 	                    </div>
 	                </form>
 	            </div>
@@ -343,8 +427,8 @@
 	                    </button>
 	                </div>
 	                 <form class="user" action="<?php echo URLROOT; ?>/caixas/insertDespesa/" method="POST" enctype="multpart/form-data">
-	                    <div class="modal-body">
-	                    	<table class="table table-striped table-hover">
+	                    <div class="modal-body" style="max-height: 400px; overflow-x:auto;">
+	                    	<table class="table">
 	                    		<thead>
 	                    			<tr>
 	                    				<th class="text-center center">#</th>
@@ -354,6 +438,15 @@
 										<th class="text-center center">Valor</th>
 	                    			</tr>
 	                    		</thead>
+	                    		<tfoot>
+	                    			<tr style="background-color: #bfffc2; color: #333">
+	                    				<th class="text-center center">---</th>
+										<th>Saldo Final</th>
+										<th class="text-center center">---</th>
+										<th class="text-center center">---</th>
+										<th class="text-center center">R$ <?php echo str_replace('.',',', number_format($data['saldo_final'], 2, '.', '')) ?></th>
+	                    			</tr>
+	                    		</tfoot>
 	                    		<tbody>
 	                    			<tr>
 										<td class="text-center">----</td>
@@ -367,12 +460,12 @@
 				                    		$cont = 1;
 				                    		foreach ($data['movimentos'] as $key => $value) :
 				                    	?>
-				                    		<tr>
+				                    		<tr style="color: <?php echo $value->tipo == 1 ? '#1cc88a' : '#e74a3b'; ?> !important; font-weight: 600">
 												<td class="text-center"><?php echo $cont ?></td>
 												<td><?php echo $value->descricao ?></td>
 												<td class="text-center"><?php echo ($value->modo_pagamento == 1 ? "Cartão" : "Dinheiro") ?></td>
 												<td class="text-center"><?php echo ($value->tipo == 1 ? "Receita" : "Despesa") ?></td>
-												<td class="text-center">R$ <?php echo str_replace('.', ',', $value->valor) ?></td>
+												<td class="text-center"><?php echo $value->tipo == 1 ? '+' : '-'; ?> R$ <?php echo str_replace('.', ',', $value->valor) ?></td>
 											</tr>
 				                    	<?php 
 				                    		$cont++;
@@ -445,4 +538,149 @@
         }
     
     }
+
+    $("#modal_befores_caixa  #saldo-detalhado").click(function(){
+    	var id = $(this).attr('cod');
+    	var nome = $(this).attr('nome');
+    	var date = $(this).attr('data');
+    	var sI = $(this).attr('sI');
+    	var sF = $(this).attr('sF');
+
+    	$.ajax({
+            type: 'GET',
+            url: 'getMovimentos/' + id,
+            dataType: 'json',
+
+	        // Antes de carregar os registros, mostra para o usuário que está
+	        // sendo carregado.
+	        beforeSend: function(xhr) {
+	            
+
+	        },
+	        // Após carregar, coloca a lista dentro do select de cidades.
+	        success: function(data) {
+	        	var data_movimentos;
+	        	if (data != false) {
+	        		$("#data-befores-caixa, #modal_befores_caixa .btn-back").hide();
+
+	        		for (var i = 0; i <= data.length - 1; i++) {
+	        			data_movimentos +=
+	        			'<tr style="color: ' + (data[i].tipo == 1 ? "#1cc88a" : "#e74a3b") + ' !important; font-weight: 600">\
+							<td class="text-center">' + (i + 1) + '</td>\
+							<td>' + data[i].descricao + '</td>\
+							<td class="text-center">' + (data[i].modo_pagamento == 1 ? "Cartão" : "Dinheiro") + '</td>\
+							<td class="text-center">' + (data[i].tipo == 1 ? "Receita" : "Despesa") + '</td>\
+							<td class="text-center">' + (data[i].tipo == 1 ? "+ " : "- ") + data[i].valor +'</td>\
+						</tr>';
+	        		}
+	        		//Data Caixa
+
+	        		$("#modal_befores_caixa #idC").html(id);
+	        		$("#modal_befores_caixa #User").html(nome);
+	        		$("#modal_befores_caixa #Dat").html(date);
+
+	        		//Saldos
+	        		$("#data-befores-movimentos .table-movimentos tbody").append(
+	        							'<tr>\
+											<td class="text-center">----</td>\
+											<td>Saldo Inicial</td>\
+											<td class="text-center">----</td>\
+											<td class="text-center">----</td>\
+											<td class="text-center">R$ ' + sI + '</td>\
+										</tr>');
+
+	        		$("#data-befores-movimentos .table-movimentos tfoot").append(
+	        							'<tr style="background-color: #bfffc2; color: #333">\
+											<td class="text-center">----</td>\
+											<td>Saldo Final</td>\
+											<td class="text-center">----</td>\
+											<td class="text-center">----</td>\
+											<td class="text-center">R$ ' + sF + '</td>\
+										</tr>');
+
+	        		//Set
+	        		$("#data-befores-movimentos .table-movimentos tbody").append(data_movimentos);
+	        		$("#data-befores-movimentos").fadeIn();
+	        		$("#modal_befores_caixa #btn-voltar, #modal_befores_caixa .btn-download, #modal_befores_caixa .btn-trash").fadeIn();
+	        		$("#modal_befores_caixa .btn-download").attr("href", "<?php echo URLROOT ?>" + "/caixas/pdf/" + id + "/Caixa");
+	        		$("#modal_befores_caixa .btn-trash").attr("href", "<?php echo URLROOT ?>" + "/caixas/deleteCaixa/" + id);
+	        	}else{
+	        		$("#data-befores-caixa, #modal_befores_caixa .btn-back").hide();
+	        		//Data Caixa
+
+	        		$("#modal_befores_caixa #idC").html(id);
+	        		$("#modal_befores_caixa #User").html(nome);
+	        		$("#modal_befores_caixa #Dat").html(date);
+
+	        		//Saldos
+	        		$("#data-befores-movimentos .table-movimentos tbody").append(
+	        							'<tr>\
+											<td class="text-center">----</td>\
+											<td>Saldo Inicial</td>\
+											<td class="text-center">----</td>\
+											<td class="text-center">----</td>\
+											<td class="text-center">R$ ' + sI + '</td>\
+										</tr>');
+
+	        		$("#data-befores-movimentos .table-movimentos tfoot").append(
+	        							'<tr style="background-color: #bfffc2; color: #333">\
+											<td class="text-center">----</td>\
+											<td>Saldo Final</td>\
+											<td class="text-center">----</td>\
+											<td class="text-center">----</td>\
+											<td class="text-center">R$ ' + sF + '</td>\
+										</tr>');
+	        		//Set
+	        		$("#data-befores-movimentos .table-movimentos tbody").append(data_movimentos);
+	        		$("#data-befores-movimentos").fadeIn();
+	        		$("#modal_befores_caixa #btn-voltar, #modal_befores_caixa .btn-download, #modal_befores_caixa .btn-trash").fadeIn();
+	        		$("#modal_befores_caixa .btn-download").attr("href", "<?php echo URLROOT ?>" + "/caixas/pdf/" + id + "/Caixa");
+	        		$("#modal_befores_caixa .btn-trash").attr("href", "<?php echo URLROOT ?>" + "/caixas/deleteCaixa/" + id);
+	        	}
+	        },
+	        error: function (e) {
+	            //called when there is an error
+	            console.log(e.message);
+	        }
+	    });
+
+	    $("#modal_befores_caixa #btn-voltar").click(function(){
+	    	//Data Caixa
+
+	    	$("#modal_befores_caixa #idC").html('');
+    		$("#modal_befores_caixa #User").html('');
+    		$("#modal_befores_caixa #Dat").html('');
+
+    		//Saldos
+	    	$("#data-befores-movimentos .table-movimentos tbody").html('');
+	    	$("#data-befores-movimentos .table-movimentos tfoot").html('');
+
+	    	//Reset
+	    	$("#data-befores-caixa, #modal_befores_caixa .btn-back").fadeIn();
+	    	$("#data-befores-movimentos, #modal_befores_caixa #btn-voltar, #modal_befores_caixa .btn-download, #modal_befores_caixa .btn-trash").hide();
+	    	$("#modal_befores_caixa .btn-download").fadeOut();
+	        $("#modal_befores_caixa .btn-download").attr("href", "#");
+	        $("#modal_befores_caixa .btn-trash").attr("href", "#");
+
+	    })
+    })
+
+	$('#modal_befores_caixa').on('hidden.bs.modal', function(e){ 
+        //Data Caixa
+
+    	$("#modal_befores_caixa #idC").html('');
+		$("#modal_befores_caixa #User").html('');
+		$("#modal_befores_caixa #Dat").html('');
+
+		//Saldos
+    	$("#data-befores-movimentos .table-movimentos tbody").html('');
+    	$("#data-befores-movimentos .table-movimentos tfoot").html('');
+
+    	//Reset
+    	$("#data-befores-caixa, #modal_befores_caixa .btn-back").fadeIn();
+    	$("#data-befores-movimentos, #modal_befores_caixa #btn-voltar, #modal_befores_caixa .btn-download, #modal_befores_caixa .btn-trash").hide();
+    	$("#modal_befores_caixa .btn-download").fadeOut();
+        $("#modal_befores_caixa .btn-download").attr("href", "#");
+        $("#modal_befores_caixa .btn-trash").attr("href", "#");
+    }) ;
 </script>

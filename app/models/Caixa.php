@@ -104,7 +104,7 @@
 		}
 
 		public function getMovimentos($id) {
-			$this->db->query("SELECT * FROM tb_movimento_caixa WHERE id_caixa = :id");
+			$this->db->query("SELECT mc.*, c.saldo_inicial, c.saldo_final, c.data_aberto, u.nome, u.sobrenome FROM tb_movimento_caixa AS mc JOIN tb_caixa AS c ON c.id = mc.id_caixa JOIN tb_usuarios AS u ON u.id = c.id_usuario WHERE mc.id_caixa = :id");
 			$this->db->bind(":id", $id);
 
 			if ($this->db->execute() && $this->db->rowCount() > 0) {
@@ -112,6 +112,54 @@
 			}else{
 				return false;
 			}
+		}
+
+		public function getCaixa($id) {
+			$this->db->query("SELECT c.*, u.nome, u.sobrenome FROM tb_caixa AS c JOIN tb_usuarios AS u ON u.id = c.id_usuario WHERE c.status = 0 AND c.id = :id LIMIT 1");
+			$this->db->bind(":id", $id);
+
+			$this->db->execute();
+
+			if ($this->db->rowCount() > 0) {
+				return $this->db->resultSet();
+			}else{
+				return false;
+			}
+		}
+
+		public function getCaixas() {
+			$this->db->query("SELECT c.*, u.nome, u.sobrenome FROM tb_caixa AS c JOIN tb_usuarios AS u ON u.id = c.id_usuario WHERE c.status = 0");
+			$this->db->execute();
+
+			if ($this->db->rowCount() > 0) {
+				return $this->db->resultSet();
+			}else{
+				return false;
+			}
+		}
+
+		public function deleteMovimentosAll($id) {
+			$this->db->query("DELETE FROM tb_movimento_caixa WHERE id_caixa = :id");
+			$this->db->bind(":id", $id);
+
+			if ($this->db->execute()) {
+				return true;
+			}else{
+				return false;
+			}
+
+		}
+
+		public function deleteCaixa($id) {
+			$this->db->query("DELETE FROM tb_caixa WHERE id = :id");
+			$this->db->bind(":id", $id);
+
+			if ($this->db->execute()) {
+				return true;
+			}else{
+				return false;
+			}
+
 		}
 
 	}

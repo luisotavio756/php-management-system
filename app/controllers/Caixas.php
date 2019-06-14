@@ -16,6 +16,8 @@
 				'saldo_inicial' => $this->getSaldoInicial(),
 				'saldo_final' => $this->getSaldo(),
 				'movimentos' => $this->caixaModel->getMovimentos($this->caixaModel->idCaixa()),
+				'caixas' => $this->caixaModel->getCaixas(),
+				// 'm' => $this->getMovimentos(39),
 			];
 
 			$this->view('/caixas/dashboard', $data);
@@ -158,7 +160,7 @@
 
 
 				if (isset($data['descricao']) && isset($data['data_registro']) && isset($data['valor'])) {
-					if ($data['valor'] < $this->getSaldo()) {
+					if ($data['valor'] <= $this->getSaldo()) {
 						if ($this->caixaModel->verifyOpen() == true) {
 							$id_caixa = $this->caixaModel->idCaixa();
 
@@ -173,6 +175,7 @@
 							flash("caixa", "Não foi possível adicionar a Despesa, não existe um caixa aberto !", "alert-danger");
 							redirect("/caixas/");
 						}
+
 					}else{
 						flash("caixa", "Ops.. Seu Saldo é Insuficiente para esta Despesa.", "alert-danger");
 						redirect("/caixas/");
@@ -231,7 +234,7 @@
 			$saldo = ($saldoInicial + $receitas) - $despesas; 
 			// echo "<pre>";
 			// print_r($receitas);
-			return number_format($saldo, 2);
+			return ($saldo);
 		
 		}
 
@@ -249,8 +252,9 @@
 		
 		}
 
-		public function pdf($id) {
+		public function pdf($id, $nome = 'Relatório Caixa') {
 			$movimentos = $this->caixaModel->getMovimentos($id);
+			$caixa = $this->caixaModel->getCaixa($id);
 
 			$body = '<!DOCTYPE html>
 			<html>
@@ -302,10 +306,17 @@
 							<th class="left">Descrição</th>
 							<th class="center">Modo</th>
 							<th class="center">Tipo</th>
-							<th class="center">num</th>
+							<th class="center">Valor</th>
 						</tr>
 					</thead>
 					<tbody>
+						<tr>
+							<th class="center">--</th>
+							<th class="left">Saldo Inicial</th>
+							<th class="center">--</th>
+							<th class="center">--</th>
+							<th class="center">R$ '.str_replace('.', ',', $caixa[0]->saldo_inicial).'</th>
+						</tr>
 						';	
 							$cont = 1;
 							foreach ($movimentos as $key => $value) { 
@@ -315,7 +326,7 @@
 										<td class="left">'.$value->descricao.'</td>
 										<td class="center">'.($value->modo_pagamento == 1 ? "Cartão" : "Dinheiro").'</td>
 										<td class="center">'.($value->tipo == 1 ? "Receita" : "Despesa").'</td>
-										<td class="center">R$ '.str_replace('.', ',', $value->valor).'</td>
+										<td class="center">'.($value->tipo == 1 ? "+" : "-").' R$ '.str_replace('.', ',', $value->valor).'</td>
 									</tr>';
 								$cont++;
 							}
@@ -325,10 +336,10 @@
 					<foot>
 						<tr>
 							<th class="center">--</th>
-							<th class="left">--</th>
+							<th class="left">Saldo Final</th>
 							<th class="center">--</th>
 							<th class="center">--</th>
-							<th class="center">R$ 100,00</th>
+							<th class="center">R$ '.str_replace('.', ',', $caixa[0]->saldo_final).'</th>
 						</tr>
 					</foot>
 
@@ -360,11 +371,46 @@
 
 			$mpdf->WriteHTML($body);
 
-			$mpdf->Output('filename.pdf', \Mpdf\Output\Destination::INLINE);
+			$mpdf->Output("$nome.pdf", \Mpdf\Output\Destination::DOWNLOAD);
 
 		}
 
+		public function getMovimentos($id) {
+			$movimentos = $this->caixaModel->getMovimentos($id);
+			echo json_encode($movimentos);
+		
+		}
 
+		public function deleteCaixa($id) {
+			if ($_SERVER['REQUEST_METHOD'] == 'GET') {
+				// Sanitize POST data
+				$_GET = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
+
+				if (isset($id)) {
+					if ($this->caixaModel->deleteMovimentosAll($id)) {
+						if ($this->caixaModel->deleteCaixa($id)) {
+							flash("caixa", "Caixa excluído com Sucesso !");
+							redirect("/caixas/");
+						}else{
+							flash("caixa", "Não foi possível deletar o caixa 1 !", "alert-danger");
+							redirect("/caixas/");
+						}
+					}else{
+						flash("caixa", "Não foi possível deletar o caixa  2!", "alert-danger");
+						redirect("/caixas/");
+					}
+				}else{
+					flash("caixa", "Não foi possível deletar o caixa 3 !", "alert-danger");
+					redirect("/caixas/");
+				}
+
+			}else{
+				flash("caixa", "Ação Bloqueada !", "alert-danger");
+				redirect("/caixas/");
+			}
+				
+		}
 		
 	}
 
