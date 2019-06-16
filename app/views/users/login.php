@@ -12,8 +12,30 @@
 		<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
 		<!-- Custom styles for this template-->
 		<link href="<?php echo URLROOT; ?>/css/sb-admin-2.min.css" rel="stylesheet">
+		<style type="text/css">
+			body{
+				background-image: url('../img/img2.jpg') !important;
+
+				
+				/* Full height */
+				height: 100% !important;
+
+				/* Center and scale the image nicely */
+				background-position: center !important;
+				background-repeat: no-repeat !important;
+				background-size: cover !important;
+
+			}
+
+			.card{
+
+    			background-color: rgba(255, 255, 255, 0.4);
+    			box-shadow: 0px 0px 21px white !important;
+
+			}
+		</style>
 	</head>
-	<body class="bg-gradient-primary">
+	<body class="bg-gradient-primary" style="display: flex; align-content: center !important; align-items: center; height: 100vh !important">
 		<div class="container">
 			<!-- Outer Row -->
 
@@ -23,7 +45,9 @@
 						<div class="card-body p-0">
 							<!-- Nested Row within Card Body -->
 							<div class="row">
-								<div class="col-lg-6 d-none d-lg-block bg-login-image"></div>
+								<div class="col-lg-6 d-none d-lg-block">
+									<img src="../img/img1.jpg" class="img-fluid">
+								</div>
 								<div class="col-lg-6">
 									<div class="p-5">
 										<?php flash('login'); ?>
@@ -57,13 +81,13 @@
 											<i class="fab fa-facebook-f fa-fw"></i> Login with Facebook
 											</a> -->
 										</form>
-										<hr>
+										<!-- <hr> -->
 <!-- 										<div class="text-center">
 											<a class="small" href="forgot-password.html">Forgot Password?</a>
 										</div> -->
-										<div class="text-center">
+										<!-- <div class="text-center">
 											<a class="small" href="<?php echo URLROOT ?>/users/register">Crie uma conta!</a>
-										</div>
+										</div> -->
 									</div>
 								</div>
 							</div>

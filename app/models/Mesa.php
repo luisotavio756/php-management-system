@@ -20,6 +20,7 @@
 			}else{
 				return false;
 			}
+		
 		}
 
 		public function delete($id) {
@@ -31,6 +32,7 @@
 			}else{
 				return false;
 			}
+		
 		}
 
 		public function getMesas() {
@@ -42,6 +44,7 @@
 			}else{
 				return false;
 			}
+		
 		}
 
 		public function verify($id) {
@@ -54,6 +57,7 @@
 			}else{
 				return false;
 			}
+		
 		}
 
 		public function verifyDis($id) {
@@ -66,6 +70,7 @@
 			}else{
 				return false;
 			}
+		
 		}
 
 		public function update($data) {
@@ -79,6 +84,20 @@
 			}else{
 				return false;
 			}
+		
+		}
+
+		public function getProdutos($query) {
+			$this->db->query("SELECT id, descricao, valor FROM tb_produtos WHERE descricao LIKE :query");
+			$this->db->bind(":query", '%'.$query.'%');
+
+			$this->db->execute();
+			if ($this->db->rowCount() > 0) {
+				return $this->db->resultSet();
+			}else{
+				return false;
+			}
+			
 		}
 
 	}

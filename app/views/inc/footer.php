@@ -67,6 +67,7 @@
         <script src="<?php echo URLROOT; ?>/vendor/datatables/jquery.dataTables.min.js"></script>
         <script src="<?php echo URLROOT; ?>/vendor/datatables/dataTables.bootstrap4.min.js"></script>
         <script src="<?php echo URLROOT; ?>/vendor/mask/jquery.mask.js"></script>
+        <script src="<?php echo URLROOT; ?>/vendor/bootstrap-ajax-typeahead/js/typeahead.js"></script>
 
         <!-- Page level custom scripts -->
         <script src="<?php echo URLROOT; ?>/js/demo/datatables-demo.js"></script>

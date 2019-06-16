@@ -163,6 +163,13 @@
 			}
 		
 		}
+
+		public function getProdutos($query) {
+
+			$row = $this->mesaModel->getProdutos(strtolower($query));
+
+			echo json_encode($row);
+		}
 	
 	}
 
