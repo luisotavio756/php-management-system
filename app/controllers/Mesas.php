@@ -166,9 +166,87 @@
 
 		public function getProdutos($query) {
 
+
 			$row = $this->mesaModel->getProdutos(strtolower($query));
 
 			echo json_encode($row);
+		}
+
+		// COMANDAS
+		public function addComanda() {
+			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+				// Sanitize POST data
+				$_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
+				// Init data
+				$data = [
+					'cliente' => (isset($_POST['cliente']) ? trim($_POST['cliente']) : ''),
+					'data_registro' => date('Y-m-d H:i:s'),
+					'mesa' => $_POST['mesa'],
+					'id_usuario' => $_SESSION['id_usuario'],
+					'status' => 0,
+				];
+
+				// Validate all 
+				if (isset($data['mesa']) && isset($data['id_usuario'])) {
+					//Validated
+					if ($this->mesaModel->verifyDis($data['mesa']) == false) {
+						// Load function register
+						if ($this->mesaModel->addComanda($data)) {
+							if ($this->mesaModel->setMesa($data['mesa'], 1)) {
+								flash("salao", "Comanda adicionada com Sucesso !");
+								redirect("/mesas/salao");									
+							}else{
+								flash("salao", "Não foi possível adicionar a Comanda, tente novamente mais tarde !", "alert-danger");
+								redirect("/mesas/salao");
+							}
+							
+						}else{
+							flash("salao", "Não foi possível adicionar a Comanda !", "alert-danger");
+							redirect("/mesas/salao");
+						}
+						
+					}else{
+						flash("salao", "Não foi possível adicionar a Comanda, a mesa escolhida não está disponível !", "alert-danger");
+						redirect("/mesas/salao");
+					}
+					
+				}else{
+					flash("salao", "Não foi possível cadastrar a Comanda, verifique todos os campos !", "alert-danger");
+					redirect("/mesas/salao");
+				}
+
+			}else{
+				flash("salao", "Ação Bloqueada !", "alert-danger");
+				redirect("/mesas/salao");
+			}
+		
+		}
+
+		public function adicionarPedido() {
+			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+				// Sanitize POST data
+				$_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
+				// Init data
+				$data = [
+					'id_comanda' => ($_POST['id_comanda']),
+					'id_mesa' => ($_POST['id_mesa']),
+					'pedidos' => ($_POST['pedidos']),
+				];
+
+				// foreach ($data['pedidos'] as $key => $value) {
+				// 	# code...
+				// }
+				echo "<pre>";
+				print_r($data);
+
+			}else{
+				flash("salao", "Ação Bloqueada !", "alert-danger");
+				redirect("/mesas/salao");
+			}
 		}
 	
 	}
