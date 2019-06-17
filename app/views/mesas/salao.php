@@ -1,8 +1,7 @@
 <?php require_once APPROOT . '/views/inc/header.php'; ?>
 	<style type="text/css">
 		table tbody td{
-			padding-left: 5px !important;
-    		padding-top: 7px !important;
+			padding: 7px !important;
     		vertical-align: baseline !important;
     		font-weight: 700;
 		}
@@ -35,9 +34,9 @@
 													</a>
 													<div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink" x-placement="bottom-end">
 														<?php if ($value->status == 1): ?>
-															<a class="dropdown-item" href="#modal_pedidos" data-toggle="modal" id="<?php echo $value->id_comanda ?>" mesa="<?php echo $value->id ?>">Comanda Ativa</a>
+															<a class="dropdown-item" href="#modal_pedidos" data-toggle="modal" id="<?php echo $value->id_comanda ?>" mesa="<?php echo $value->id ?>">Adicionar Pedidos</a>
 															<div class="dropdown-divider"></div>
-															<a class="dropdown-item" href="#">Ver Pedido</a>
+															<a class="dropdown-item" href="#modal_ver_pedidos" data-toggle="modal" id="<?php echo $value->id_comanda ?>" mesa="<?php echo $value->id ?>">Ver Pedido</a>
 															<div class="dropdown-divider"></div>
 															<a class="dropdown-item" href="#">Fechar Comanda</a>
 														<?php else: ?>
@@ -64,7 +63,7 @@
 	    <div class="modal-dialog modal-xl" role="document" style="">
 	        <div class="modal-content">
 	            <div class="modal-header">
-	                <h5 class="modal-title" id="exampleModalLabel">Adicionar Comanda</h5>
+	                <h5 class="modal-title" id="exampleModalLabel">Adicionar Pedidos</h5>
 	                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 	                    <span aria-hidden="true">&times;</span>
 	                </button>
@@ -78,7 +77,7 @@
 	                		<div class="col-6 px-2">
 			                	<div class="row">
 									<div class="col-lg-10 mb-3 mb-lg-0">
-	                					<h4 class="text-center">Produtos</h4>
+	                					<h4 class="text-center">Pesquisar Produtos</h4>
 										<input type="text" class="form-control form-control-user query-input mt-4" placeholder="Digite o nome do Produto..">
 									</div>
 									<div class="col-11" style="height: 297px; overflow-y: auto;">
@@ -94,12 +93,9 @@
 	                		<div class="col-6">
 	                			<div class="row">
 	                				<div class="col-12" style="height: 350px; overflow-y: auto;">
-	                				<h4 class="text-center">Pedidos</h4>
+	                					<h4 class="text-center">Produtos Adicionados</h4>
 	                					<table class="table mt-4">
-	                						<tbody id="tbody-produtos">
-	               							
-	                						</tbody>
-	                						
+	                						<tbody id="tbody-produtos"></tbody>
 	                					</table>
 	                				</div>
 	                			</div>	                			
@@ -108,17 +104,17 @@
 	                	<div class="col-6 order-produtos" style="position: absolute;bottom: 0px;right: 0px;">
 	                		<div class="row">
 	                			<div class="col-2">
-	                				<h6>Qtd: <b id="qtd"></b></h6>
+	                				<h6>Qtd: <b id="qtd">0</b></h6>
 	                			</div>
 	                			<div class="col-9 text-right">
-	                				<h6>Valor: <b id="total"></b></h6>
+	                				<h6>Valor: <b id="total">0.00</b></h6>
 	                			</div>
 	                		</div>
 	                	</div>	
 	                </div>
 	                <div class="modal-footer">
 	                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-	                    <button type="submit" class="btn btn-warning">Salvar Alterações <i class="fas fa-edit"></i></button>
+	                    <button type="submit" class="btn btn-success">Adicionar <i class="fas fa-check"></i></button>
 	                </div>
 
 	            </form>
@@ -169,14 +165,49 @@
 	        </div>
 	    </div>
 	</div>
+	<div class="modal fade" id="modal_ver_pedidos" tabindex="-1" role="dialog" aria-labelledby="tituloModalBase" aria-hidden="true">
+	    <div class="modal-dialog modal-lg" role="document" style="">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <h5 class="modal-title" id="exampleModalLabel">Ver Pedidos</h5>
+	                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	                    <span aria-hidden="true">&times;</span>
+	                </button>
+	            </div>
+	            <form class="user" action="<?php echo URLROOT ?>/mesas/addComanda" method="POST" enctype="multpart/form-data">
+	            	<div class="inputs-hidden-alter">
+	            		
+	            	</div>
+	            	<div class="inputs-hidden-delete">
+	            		
+	            	</div>
+	                <div class="modal-body">
+						<div class="row">
+							<div class="col-lg-12 px-5">
+								<table class="table mt-4">
+            						<tbody class="tbody">
+            							
+            						</tbody>
+            					</table>
+							</div>
+						</div>
+	                </div>
+	                <div class="modal-footer">
+	                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+	                    <button type="submit" class="btn btn-success">Salvar Alterações <i class="fas fa-check"></i></button>
+	                </div>
+	            </form>
+	        </div>
+	    </div>
+	</div>
 
 
 <?php require_once APPROOT . '/views/inc/footer.php'; ?>
 <script type="text/javascript">
 	var id_comanda;
 	var id_mesa;
-	var tbody = $("#tbody");
-	var tbody_p = $("#tbody-produtos");
+	var tbody = $("#modal_pedidos #tbody");
+	var tbody_p = $("#modal_pedidos #tbody-produtos");
 	var pedido = [];
 	var notPedidos = [];
 	var total = 0.00;
@@ -222,9 +253,54 @@
         id_mesa = 0;
         tbody.html('');
         tbody_p.html('');
+        setTotal(0);
+        setLength(0);
         
 	});
 
+	$("#modal_ver_pedidos").on("show.bs.modal", function(e) {
+		$("#modal_ver_pedidos .tbody").html('');
+		var link = $(e.relatedTarget);
+		var id = link.attr('id');
+		var mesa = link.attr('mesa');
+		var inputsHidden = $("#modal_ver_pedidos .inputs-hidden-alter");
+
+		$.ajax({
+            type: "GET",
+            url: "getPedido/" + id,  
+            data: {},        
+            dataType: "json",
+            success: function (data) {
+            	if (data != false) {
+            		data.forEach(function(valor, chave){
+            			$("#modal_ver_pedidos .tbody").append('<tr>\
+									<td>' + (chave+1) + '</td>\
+									<td style="width: 60%">' + valor.descricao + '</td>\
+									<td style="width: 15%"><input type="number" min="1" class="form-control form-control-sm" onchange="pedidoAlt(this.value , ' + valor.id_pedido + ')" value="' + valor.quantidade + '" required=""></td>\
+									<td style="width: 25%" class="text-center">R$ ' + valor.valor + '</td>\
+									<td style="width: 15%"><a href="#" class="text-danger" id="' + chave + '" onclick="removePedido(' + valor.id_pedido + ')" style="border-radius: 25px;"><i class="fa fa-minus"></i></a></td>\
+								</tr>');
+            			inputsHidden.append('<input type="hidden" name="pedidosAlter[' + valor.id_pedido + ']" value="' + valor.quantidade + '">')
+
+            			
+            		})
+
+            	}
+            },
+            error: function(e) {
+            	
+            }
+        });
+
+	});
+
+	function pedidoAlt(val, id_pedido) {
+		$('#modal_ver_pedidos .inputs-hidden-alter [name="pedidosAlter[' + id_pedido + ']"]').val(val);
+	}
+
+	function removePedido(id_pedido) {
+		$('#modal_ver_pedidos .inputs-hidden-delete').append('<input type="hidden" name="pedidosDel[' + id_pedido + ']">')
+	}
 
 	$('input.query-input').on('keyup', function(){
 		if ($(this).val().length == 0) {
@@ -308,6 +384,7 @@
 		setTotal(valor * (parseInt(val)))
 		
 		// alert(t);
+	
 	}
 
 	function addItem(id, id_produto, descricao, valor){
@@ -361,6 +438,7 @@
 		total = (parseFloat(total) + parseFloat(valor));
 
 		$(".order-produtos #total").html('R$ ' + getTotal());
+	
 	}
 
 	function setLength() {

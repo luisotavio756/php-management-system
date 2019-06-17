@@ -237,16 +237,31 @@
 					'pedidos' => ($_POST['pedidos']),
 				];
 
-				// foreach ($data['pedidos'] as $key => $value) {
-				// 	# code...
-				// }
-				echo "<pre>";
-				print_r($data);
+				if (isset($data['id_comanda']) && isset($data['id_mesa']) && isset($data['pedidos'])) {
+					$cont = 0;
+					foreach ($data['pedidos'] as $key => $value) {
+						$this->mesaModel->addPedido($data['id_comanda'], $key, $value);
+					}
+
+					flash("salao", "Pedido adicionado com Sucesso !");
+					redirect("/mesas/salao");
+					
+				}else{
+					flash("salao", "Não foi possível adicionar o pedido !", "alert-danger");
+					redirect("/mesas/salao");
+				}
 
 			}else{
 				flash("salao", "Ação Bloqueada !", "alert-danger");
 				redirect("/mesas/salao");
 			}
+		
+		}
+
+		public function getPedido($id){
+			$row = $this->mesaModel->getPedido($id);
+
+			echo json_encode($row);
 		}
 	
 	}

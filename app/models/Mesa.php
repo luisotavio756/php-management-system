@@ -153,6 +153,31 @@
 			}
 		}
 
+		public function addPedido($id_comanda, $id_produto, $qtd) {
+			$this->db->query("INSERT INTO tb_comandas_produtos(quantidade, id_comanda, id_produto) VALUES (:quantidade, :id_comanda, :id_produto)");
+			$this->db->bind(":quantidade", $qtd);
+			$this->db->bind(":id_comanda", $id_comanda);
+			$this->db->bind(":id_produto", $id_produto);
+
+			if ($this->db->execute()) {
+				return true;
+			}else{
+				return false;
+			}
+
+		}
+
+		public function getPedido($id) {
+			$this->db->query("SELECT cp.id AS id_pedido, p.id AS id_produto, m.id AS id_comanda, p.descricao, p.valor, cp.quantidade FROM tb_comandas_produtos AS cp JOIN tb_comandas AS m ON m.id = cp.id_comanda JOIN tb_produtos AS p ON cp.id_produto = p.id WHERE cp.id_comanda = :id ORDER BY cp.id ASC");
+			$this->db->bind(":id", $id);
+
+			if ($this->db->execute() && $this->db->rowCount() > 0) {
+				return $this->db->resultSet();
+			}else{
+				return false;
+			}
+		}
+
 	}
 
 
