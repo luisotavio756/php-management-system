@@ -26,6 +26,7 @@
 			$data = [
 				'mesas' => $mesas,
 				'comandas' => $this->getComandas(),
+				'comandasMesa' => $this->getComandaMesa(),
 			];
 
 			$this->view('mesas/salao', $data);
@@ -237,6 +238,20 @@
 
 			return $array;
 		
+		}
+
+		public function getComandaMesa() {
+			$array = array();
+			$row = $this->mesaModel->getMesas();
+
+			foreach ($row as $key => $value) {
+				if ($value->status == 1) {
+					$total = $this->mesaModel->getComandaMesa($value->id);
+					$array[$value->id] = $total[0];		
+				}
+			}
+
+			return $array;
 		}
 
 		public function adicionarPedido() {

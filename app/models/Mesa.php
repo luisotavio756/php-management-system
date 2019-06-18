@@ -36,7 +36,7 @@
 		}
 
 		public function getMesas() {
-			$this->db->query("SELECT m.*, c.id AS id_comanda, c.nome_cliente FROM tb_mesas AS m LEFT JOIN tb_comandas AS c ON c.id_mesa = m.id");
+			$this->db->query("SELECT m.* FROM tb_mesas AS m");
 			
 
 			if ($this->db->execute()) {
@@ -45,6 +45,19 @@
 				return false;
 			}
 		
+		}
+
+		public function getComandaMesa($id) {
+			$this->db->query("SELECT c.* FROM tb_comandas AS c JOIN tb_mesas AS m ON c.id_mesa = m.id WHERE c.status = 0 AND m.id = :id");
+			$this->db->bind(":id", $id);
+			$this->db->execute();
+
+			if ($this->db->rowCount() > 0) {
+				return $this->db->resultSet();
+			}else{
+				return false;
+			}
+
 		}
 
 		public function verify($id) {
@@ -115,6 +128,19 @@
 				return false;
 			}
 			
+		}
+
+		public function estoque($id) {
+			$this->db->query("SELECT estoque FROM tb_produtos WHERE id = :id");
+			$this->db->bind(":id", $id);
+			$this->db->execute();
+
+			if ($this->db->rowCount() > 0) {
+				return $this->db->resultSet();
+			}else{
+				return false;
+			}
+
 		}
 
 
@@ -242,18 +268,15 @@
 			}
 		}
 
-		// PRODUTOS
-		public function estoque($id) {
-			$this->db->query("SELECT estoque FROM tb_produtos WHERE id = :id");
-			$this->db->bind(":id", $id);
+		public function verifyComActive() {
+			$this->db->query("SELECT * FROM tb_comandas WHERE status = 0");
 			$this->db->execute();
 
 			if ($this->db->rowCount() > 0) {
-				return $this->db->resultSet();
+				return true;
 			}else{
 				return false;
 			}
-
 		}
 
 	}

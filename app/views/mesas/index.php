@@ -42,26 +42,12 @@
 												
 										</td>
 										<td class="text-center">
-											<?php if ($value->status == 1): ?>
-												<a class="btn btn-secondary btn-circle btn-sm" href="#" id="<?php echo $value->id ?>" data-toggle="modal" data-placement="top" data-target="#modal_comandas" title="Comandas da Mesa">
-													<i class="fas fa-bookmark"></i>
-												</a>
-												<a class="btn btn-info btn-circle btn-sm" href="#" id="<?php echo $value->id ?>" data-toggle="modal" data-placement="top" data-target="#modal_info" title="Informações da Mesa">
-													<i class="fas fa-info"></i>
-												</a>
-												
-											<?php elseif ($value->status == 0) : ?>
-												<a class="btn btn-info btn-circle btn-sm" href="#" id="<?php echo $value->id ?>" data-toggle="modal" data-placement="top" data-target="#modal_info" title="Informações da Mesa">
-													<i class="fas fa-info"></i>
-												</a>
-												<a class="btn btn-warning btn-circle btn-sm" href="<?php echo URLROOT ?>/mesas/alterMesa/<?php echo $value->id ?>" id="<?php echo $value->id ?>" data-toggle="modal" data-placement="top" data-target="#modal_editar" title="Editar Mesa">
-													<i class="fas fa-edit"></i>
-												</a>
-												<a class="btn btn-danger btn-circle btn-sm" href="<?php echo URLROOT ?>/mesas/deleteMesa/<?php echo $value->id ?>" data-toggle="modal" data-placement="top" data-target="#modal_excluir" title="Excluir Mesa" text="Deseja Realmente excluir esta Mesa ?">
-													<i class="fas fa-trash"></i>
-												</a>
-											<?php endif; ?>
-
+											<a class="btn btn-secondary btn-circle btn-sm" href="#" id="<?php echo $value->id ?>" data-toggle="modal" data-placement="top" data-target="#modal_comandas" title="Comandas da Mesa">
+												<i class="fas fa-bookmark"></i>
+											</a>											
+											<a class="btn btn-danger btn-circle btn-sm" href="<?php echo URLROOT ?>/mesas/deleteMesa/<?php echo $value->id ?>" data-toggle="modal" data-placement="top" data-target="#modal_excluir" title="Excluir Mesa" text="Deseja Realmente excluir esta Mesa ?">
+												<i class="fas fa-trash"></i>
+											</a>
 										</td>
 									</tr>
 								<?php endforeach ?>

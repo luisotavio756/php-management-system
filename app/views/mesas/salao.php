@@ -5,6 +5,32 @@
     		vertical-align: baseline !important;
     		font-weight: 700;
 		}
+
+		.dropdown-item {
+		    display: flex !important;
+		    height: 35px !important;
+		    align-items: center !important;
+		    font-size: 15px !important;
+		    font-weight: 600 !important;
+		}
+
+		.pulsate {
+		    -webkit-animation: pulsate 1.5s ease-out;
+		    -webkit-animation-iteration-count: infinite; 
+		    opacity: 0.5;
+		}
+
+		@-webkit-keyframes pulsate {
+		    0% { 
+		        opacity: 0.5;
+		    }
+		    50% { 
+		        opacity: 1.0;
+		    }
+		    100% { 
+		        opacity: 0.5;
+		    }
+		}
 	</style>
 	<div class="row">
 		<div class="col-lg-12">
@@ -22,25 +48,26 @@
 
 										<div class="row no-gutters align-items-center">
 											<div class="col mr-2">
-												<div class="text-xs font-weight-bold text-gray-800 text-uppercase mb-1"><?php echo $value->descricao ?>
-												<?php echo $value->status == 1 && !empty($value->id_comanda) ? " --- Comanda <b>$value->id_comanda</b>" : "" ?> </div>
-												<p class="my-0 text-<?php echo $value->status == 1 ? 'danger' : 'success' ?>"><?php echo $value->status == 1 ? 'Ocupada' : 'Disponível' ?></p>
+												<div style="font-size: 16px" class="font-weight-bold text-gray-800 text-uppercase mb-1"><?php echo $value->descricao ?>
+												<?php echo $value->status == 1 ? " --- Comanda <b>" . $data['comandasMesa'][$value->id]->id . "</b>" : "" ?> </div>
+												<p class="pulsate my-0 font-weight-bolder text-<?php echo $value->status == 1 ? 'danger' : 'success' ?>"><i class="fas fa-circle"></i> <?php echo $value->status == 1 ? 'Ocupada' : 'Disponível' ?></p>
 
 											</div>
 											<div class="col-auto">
 												<div class="dropdown no-arrow">
 													<a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-														<i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i>
+														<!-- <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i> -->
+														<i class="fas fa-bars text-gray-400"></i>
 													</a>
 													<div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink" x-placement="bottom-end">
 														<?php if ($value->status == 1): ?>
-															<a class="dropdown-item" href="#modal_pedidos" data-toggle="modal" id="<?php echo $value->id_comanda ?>" mesa="<?php echo $value->id ?>">Adicionar Pedidos</a>
+															<a class="dropdown-item" href="#modal_pedidos" data-toggle="modal" id="<?php echo $data['comandasMesa'][$value->id]->id ?>" mesa="<?php echo $value->id ?>">Adicionar Pedidos</a>
 															<div class="dropdown-divider"></div>
 
-															<a class="dropdown-item" href="#modal_ver_pedidos" data-toggle="modal" id="<?php echo $value->id_comanda ?>" mesa="<?php echo $value->id ?>" nome="<?php echo $value->nome_cliente ?>" data-registro="<?php echo $value->data_registro ?>">Ver Pedido</a>
+															<a class="dropdown-item" href="#modal_ver_pedidos" data-toggle="modal" id="<?php echo $data['comandasMesa'][$value->id]->id ?>" mesa="<?php echo $value->id ?>" nome="<?php echo $data['comandasMesa'][$value->id]->nome_cliente ?>" data-registro="<?php echo $data['comandasMesa'][$value->id]->data_registro ?>">Ver Pedido</a>
 															<div class="dropdown-divider"></div>
 
-															<a class="dropdown-item" href="#modal_fechar_comanda" data-toggle="modal" id="<?php echo $value->id_comanda ?>" nome="<?php echo $value->nome_cliente ?>" total="<?php echo $data['comandas'][ $value->id_comanda] ?>" mesa="<?php echo $value->id ?>">Fechar Comanda</a>
+															<a class="dropdown-item" href="#modal_fechar_comanda" data-toggle="modal" id="<?php echo $data['comandasMesa'][$value->id]->id ?>" nome="<?php echo $data['comandasMesa'][$value->id]->nome_cliente ?>" total="<?php echo $data['comandas'][$data['comandasMesa'][$value->id]->id] ?>" mesa="<?php echo $value->id ?>">Fechar Comanda</a>
 														<?php else: ?>
 															<a class="dropdown-item" href="#modal_add_comanda" id="<?php echo $value->id ?>" data-toggle="modal">Adicionar Comanda</a>
 															<div class="dropdown-divider"></div>
@@ -466,6 +493,7 @@
         tbody_p.html('');
         setTotal(0);
         setLength(0);
+        notPedidos = [];
         
 	});
 

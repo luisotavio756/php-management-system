@@ -7,6 +7,7 @@
 			}
 
 			$this->caixaModel = $this->model('Caixa');
+			$this->mesaModel = $this->model('Mesa');
 		}
 
 		public function index(){
@@ -68,15 +69,20 @@
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				if ($this->getSaldo() >= 0) {
 					if ($this->caixaModel->verifyOpen()) {
-						$id_caixa = $this->caixaModel->idCaixa();
-						$saldo = $this->getSaldo();
-						if ($this->caixaModel->close($id_caixa, $saldo)) {
-							// $this->pdf($id_caixa);
-							$this->deleteSessionCaixa();	
-							flash("caixa", "Caixa fechado com Sucesso !");
-							redirect("/caixas/");
+						if ($this->mesaModel->verifyComActive() == false) {
+							$id_caixa = $this->caixaModel->idCaixa();
+							$saldo = $this->getSaldo();
+							if ($this->caixaModel->close($id_caixa, $saldo)) {
+								// $this->pdf($id_caixa);
+								$this->deleteSessionCaixa();	
+								flash("caixa", "Caixa fechado com Sucesso !");
+								redirect("/caixas/");
+							}else{
+								flash("caixa", "Não foi possível fechar o caixa, tente mais tarde !", "alert-danger");
+								redirect("/caixas/");
+							}
 						}else{
-							flash("caixa", "Não foi possível fechar o caixa, tente mais tarde !", "alert-danger");
+							flash("caixa", "Não foi possível fechar o caixa, existe uma comanda ativa e você precisa paga-la !", "alert-danger");
 							redirect("/caixas/");
 						}
 					}else{
