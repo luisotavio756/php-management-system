@@ -73,6 +73,20 @@
 		
 		}
 
+
+		public function setMesa($id, $status) {
+			$this->db->query("UPDATE tb_mesas SET status = :status WHERE id = :id");
+			$this->db->bind(":id", $id);
+			$this->db->bind(":status", $status);
+
+			if ($this->db->execute()) {
+				return true;
+			}else{
+				return false;
+			}
+		
+		}
+
 		public function update($data) {
 			$this->db->query("UPDATE tb_mesas SET id = :new_id, descricao = :descricao WHERE id = :id");
 			$this->db->bind(":id", $data['id']);
@@ -87,6 +101,9 @@
 		
 		}
 
+
+		// PEDIDOS
+
 		public function getProdutos($query) {
 			$this->db->query("SELECT id, descricao, valor FROM tb_produtos WHERE descricao LIKE :query");
 			$this->db->bind(":query", '%'.$query.'%');
@@ -100,30 +117,8 @@
 			
 		}
 
-		public function setMesa($id, $status) {
-			$this->db->query("UPDATE tb_mesas SET status = :status WHERE id = :id");
-			$this->db->bind(":id", $id);
-			$this->db->bind(":status", $status);
-
-			if ($this->db->execute()) {
-				return true;
-			}else{
-				return false;
-			}
-		}
 
 		// COMANDAS
-
-		// public function verifyCom($num) {
-		// 	$this->db->query("SELECT * FROM tb_comandas WHERE  = :num");
-		// 	$this->db->bind(":num", $num);
-
-		// 	if ($this->db->execute() && $this->db->rowCount() > 0) {
-		// 		return true;
-		// 	}else{
-		// 		return false;
-		// 	}
-		// }
 
 		public function addComanda($data) {
 			$this->db->query("INSERT INTO tb_comandas(nome_cliente, data_registro, id_usuario, id_mesa, status) VALUES (:nome_cliente, :data_registro, :id_usuario, :id_mesa, :status)");
@@ -151,6 +146,40 @@
 			}else{
 				return false;
 			}
+		}
+
+		public function setCom($id, $status) {
+			$this->db->query("UPDATE tb_comandas SET status = :status WHERE id = :id");
+			$this->db->bind(":id", $id);
+			$this->db->bind(":status", $status);
+
+			if ($this->db->execute()) {
+				return true;
+			}else{
+				return false;
+			}
+		
+		}
+
+		public function closeComanda($id, $total) {
+			$this->db->query("UPDATE tb_comandas SET data_fechado = :data_fechado, total = :total, status = :status WHERE id = :id");
+			$this->db->bind(":data_fechado", date("Y-m-d H:i:s"));
+			$this->db->bind(":total", $total);
+			$this->db->bind(":status", 1);
+			$this->db->bind(":id", $id);
+
+			if ($this->db->execute()) {
+				return true;
+			}else{
+				return false;
+			}
+
+		}
+
+		public function getComAll() {
+			$this->db->query("SELECT * FROM tb_comandas WHERE status = 0");
+
+			return $this->db->resultSet();
 		}
 
 		public function addPedido($id_comanda, $id_produto, $qtd) {
@@ -203,11 +232,11 @@
 		}
 
 		public function getPedidoTotal($id) {
-			$this->db->query("SELECT m.id AS id_comanda, SUM(p.valor * cp.quantidade), cp.quantidade FROM tb_comandas_produtos AS cp JOIN tb_comandas AS m ON m.id = cp.id_comanda JOIN tb_produtos AS p ON cp.id_produto = p.id WHERE cp.id_comanda = :id");
+			$this->db->query("SELECT m.id AS id_comanda, SUM(p.valor * cp.quantidade) AS total, cp.quantidade FROM tb_comandas_produtos AS cp JOIN tb_comandas AS m ON m.id = cp.id_comanda JOIN tb_produtos AS p ON cp.id_produto = p.id WHERE cp.id_comanda = :id");
 			$this->db->bind(":id", $id);
 
 			if ($this->db->execute()) {
-				return true;
+				return $this->db->resultSet();
 			}else{
 				return false;
 			}

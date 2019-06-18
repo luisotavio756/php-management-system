@@ -7,6 +7,7 @@
 			}
 
 			$this->mesaModel = $this->model('Mesa');
+			$this->caixaModel = $this->model('Caixa');
 
 		}
 
@@ -23,7 +24,8 @@
 			$mesas = $this->mesaModel->getMesas();
 
 			$data = [
-				'mesas' => $mesas
+				'mesas' => $mesas,
+				'comandas' => $this->getComandas(),
 			];
 
 			$this->view('mesas/salao', $data);
@@ -224,6 +226,19 @@
 		
 		}
 
+		public function getComandas() {
+			$array = array();
+			$row = $this->mesaModel->getComAll();
+
+			foreach ($row as $key => $value) {
+				$total = $this->mesaModel->getPedidoTotal($value->id);
+				$array[$value->id] = $total[0]->total;
+			}
+
+			return $array;
+		
+		}
+
 		public function adicionarPedido() {
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
@@ -258,6 +273,13 @@
 		
 		}
 
+		public function getPedido($id){
+			$row = $this->mesaModel->getPedido($id);
+
+			echo json_encode($row);
+		
+		}
+
 		public function alterPedido() {
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
@@ -275,7 +297,7 @@
 					foreach ($data['pedidosAlter'] as $key => $value) {
 						$this->mesaModel->updatePedido($key, $value);
 					}
-					
+
 					foreach ($data['pedidosDel'] as $key => $value) {
 						$this->mesaModel->deletePedido($value);
 					}
@@ -295,11 +317,64 @@
 		
 		}
 
-		public function getPedido($id){
-			$row = $this->mesaModel->getPedido($id);
+		public function comandaTotal($id) {
 
-			echo json_encode($row);
 		}
+
+		public function fecharComanda() {
+			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+				// Sanitize POST data
+				$_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
+				// Init data
+				$data = [
+					'id_comanda' => ($_POST['id_comanda']),
+					'id_mesa' => ($_POST['id_mesa']),
+					'modo_pagamento' => $_POST['modo_pagamento'],
+					'descricao' => 'Pagamento Comanda ' . $_POST['id_comanda'],
+					'data_registro' => date('Y-m-d H:i:s'),
+					'valor' => numberHelper(str_replace(",", ".", $_POST['total_comanda'])),
+					'tipo' => 1,
+				];
+
+				if (isset($data['id_comanda']) && isset($data['id_mesa']) && isset($data['modo_pagamento']) && isset($data['descricao']) && isset($data['data_registro']) && isset($data['valor']) && isset($data['tipo'])) {
+					if ($this->caixaModel->verifyOpen()) {
+						$id_caixa = $this->caixaModel->idCaixa();
+	
+
+						if ($this->mesaModel->closeComanda($data['id_comanda'], $data['valor'])) {
+							$this->mesaModel->setMesa($data['id_mesa'], 0);
+							if ($this->caixaModel->movimentoCaixa($data, $id_caixa)) {
+								flash("salao", "Comanda fechada e inserida no caixa com Sucesso !");
+								redirect("/mesas/salao");
+							}else{
+								flash("salao", "Não foi possível fechar a comanda e adicionar ao caixa !", "alert-danger");
+								redirect("/mesas/salao");
+							}
+
+						}else{
+							flash("salao", "Não foi possível fechar a comanda !", "alert-danger");
+							redirect("/mesas/salao");
+						}
+						
+					}else{
+						flash("salao", "Não foi possível fechar a comanda, você precisa ter um caixa aberto para concluir esta ação !", "alert-danger");
+						redirect("/mesas/salao");
+					}
+					
+					
+				}else{
+					flash("salao", "Não foi possível fechar a comandasss !", "alert-danger");
+					redirect("/mesas/salao");
+				}
+
+			}else{
+				flash("salao", "Ação Bloqueada !", "alert-danger");
+				redirect("/mesas/salao");
+			}
+		}
+
 	
 	}
 

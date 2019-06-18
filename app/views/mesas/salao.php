@@ -36,9 +36,11 @@
 														<?php if ($value->status == 1): ?>
 															<a class="dropdown-item" href="#modal_pedidos" data-toggle="modal" id="<?php echo $value->id_comanda ?>" mesa="<?php echo $value->id ?>">Adicionar Pedidos</a>
 															<div class="dropdown-divider"></div>
+
 															<a class="dropdown-item" href="#modal_ver_pedidos" data-toggle="modal" id="<?php echo $value->id_comanda ?>" mesa="<?php echo $value->id ?>" nome="<?php echo $value->nome_cliente ?>" data-registro="<?php echo $value->data_registro ?>">Ver Pedido</a>
 															<div class="dropdown-divider"></div>
-															<a class="dropdown-item" href="#">Fechar Comanda</a>
+
+															<a class="dropdown-item" href="#modal_fechar_comanda" data-toggle="modal" id="<?php echo $value->id_comanda ?>" nome="<?php echo $value->nome_cliente ?>" total="<?php echo $data['comandas'][ $value->id_comanda] ?>" mesa="<?php echo $value->id ?>">Fechar Comanda</a>
 														<?php else: ?>
 															<a class="dropdown-item" href="#modal_add_comanda" id="<?php echo $value->id ?>" data-toggle="modal">Adicionar Comanda</a>
 															<div class="dropdown-divider"></div>
@@ -221,18 +223,61 @@
 	        </div>
 	    </div>
 	</div>
+	<div class="modal fade" id="modal_fechar_comanda" tabindex="-1" role="dialog" aria-labelledby="tituloModalBase" aria-hidden="true">
+	    <div class="modal-dialog modal-lg" role="document" style="">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <h5 class="modal-title" id="exampleModalLabel">Fechar Comanda</h5>
+	                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	                    <span aria-hidden="true">&times;</span>
+	                </button>
+	            </div>
+	            <form class="user" action="<?php echo URLROOT ?>/mesas/fecharComanda" method="POST" enctype="multpart/form-data">
+	            	<input type="hidden" name="id_comanda" value="">
+	            	<input type="hidden" name="id_mesa" value="">
+	            	<input type="hidden" name="total_comanda" value="">
+	                <div class="modal-body">
+	                	<div class="row">
+                            <div class="col-12 my-3 text-center">
+                                <h5 class="mb-0"><b>Tem certeza que deseja fechar a comanda <b class="id_comanda"></b> ?</b></h5>
+                                <p class="mt-1 text-danger" style="font-size: 15px; font-weight: 700">OBS: A ação não poderá ser desfeita</p>
+                            </div>
+                        </div>
+                        <div class="row">
+                        	<div class="col-12 text-center">
+                        		<h6>Mesa: <b class="id_mesa"></b></h6>
+                        		<h6>Cliente: <b class="nome"></b></h6>
+                        		<h6>Comanda Aberta em: <b>12/09/9000 12:12:12</b></h6>
+                        	</div>
+                        	<div class="col-lg-12 text-right">
+                        		<hr>
+                        		<h6 class="float-left mb-0">Total da Comanda: <b class="total-comanda"></b></h6>
+                        		Pagar com 
+								<div class="custom-control custom-radio custom-control-inline">
+									<input type="radio" checked="" id="customRadioInline2" name="modo_pagamento" class="custom-control-input" value="1">
+									<label class="custom-control-label" for="customRadioInline2"><i class="fas fa-dollar-sign"></i> Dinheiro</label>
+								</div>
+								<div class="custom-control custom-radio custom-control-inline">
+									<input type="radio" id="customRadioInline1" name="modo_pagamento" class="custom-control-input" value="2">
+									<label class="custom-control-label" for="customRadioInline1"><i class="far fa-credit-card"></i> Cartão</label>
+								</div>
+							</div>
+                        </div>
+						
+	                </div>
+	                <div class="modal-footer">
+	                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+	                    <button type="submit" class="btn btn-success">Confirmar e Fechar <i class="fas fa-check"></i></button>
+	                </div>
+	            </form>
+	        </div>
+	    </div>
+	</div>
 
 
 <?php require_once APPROOT . '/views/inc/footer.php'; ?>
 <script type="text/javascript">
-	var id_comanda;
-	var id_mesa;
-	var tbody = $("#modal_pedidos #tbody");
-	var tbody_p = $("#modal_pedidos #tbody-produtos");
-	var pedido = [];
-	var notPedidos = [];
-	var total = 0.00;
-	var inputTotal = $("#modal_ver_pedidos [name='total']");
+	// ADD COMANDA
 
 	$("#modal_add_comanda").on("show.bs.modal", function(e) {
 		var link = $(e.relatedTarget);
@@ -249,35 +294,47 @@
         $(this).find('form').submit(function(){
         	$(this).find("[name='mesa']").removeAttr('disabled');
         })
+	
 	});
 
-	$("#modal_pedidos").on("show.bs.modal", function(e) {
+	// FECHAR COMANDA
+
+	$("#modal_fechar_comanda").on("show.bs.modal", function(e) {
 		var link = $(e.relatedTarget);
 		var id = link.attr('id');
+		var nome = link.attr('nome');
+		var total = link.attr('total');
 		var mesa = link.attr('mesa');
 
         $(this).find('[name="id_comanda"]').val(id);
         $(this).find('[name="id_mesa"]').val(mesa);
-        id_comanda = id;
-        id_mesa = mesa;
-        
+        $(this).find('[name="total_comanda"]').val(total);
+        $(this).find('.id_comanda').html(id);
+        $(this).find('.id_mesa').html(mesa);
+        $(this).find('.nome').html(nome);
+        $(this).find(".total-comanda").html('R$ ' + total);
+
+
 	});
 
-	$("#modal_pedidos").on("hidden.bs.modal", function(e) {
+	$("#modal_fechar_comanda").on("hidden.bs.modal", function(e) {
 		var link = $(e.relatedTarget);
 		var id = link.attr('id');
 		var mesa = link.attr('mesa');
-		$(this).find('.inputs-hidden').html('');
-        $(this).find('[name="id_comanda"]').val('');
+
+		$(this).find('[name="id_comanda"]').val('');
+        $(this).find('[name="total_comanda"]').val('');
         $(this).find('[name="id_mesa"]').val('');
-        id_comanda = 0;
-        id_mesa = 0;
-        tbody.html('');
-        tbody_p.html('');
-        setTotal(0);
-        setLength(0);
+        $(this).find('.id_comanda').html('');
+        $(this).find('.id_mesa').html('');
+        $(this).find('.nome').html('');
+        $(this).find(".total-comanda").html('');
+
         
 	});
+
+
+	// PEDIDOS
 
 	$("#modal_ver_pedidos").on("show.bs.modal", function(e) {
 		$("#modal_ver_pedidos .tbody").html('');
@@ -286,7 +343,7 @@
 		var nome = link.attr('nome');
 		var data_registro = link.attr('data-registro');
 		var mesa = link.attr('mesa');
-		var inputsHidden = link.find(".inputs-hidden-alter");
+		var inputsHidden = $("#modal_ver_pedidos .inputs-hidden-alter");
 		
 
 		$.ajax({
@@ -317,8 +374,8 @@
 	            	
 
             	}else{
-            		// $("#modal_ver_pedidos .order-pedidos .total").html(0);
-	            	// $("#modal_ver_pedidos .order-pedidos .qtd").html(0);
+            		$("#modal_ver_pedidos .order-pedidos .total").html(0.00);
+	            	$("#modal_ver_pedidos .order-pedidos .qtd").html(0);
             	}
 
 
@@ -335,8 +392,8 @@
 
 	$("#modal_ver_pedidos").on("hidden.bs.modal", function(e) {
 		// inputTotal.val('');
-    	// $("#modal_ver_pedidos .order-pedidos .total").html(0.00);
-    	// $("#modal_ver_pedidos .order-pedidos .qtd").html(0);
+    	$("#modal_ver_pedidos .order-pedidos .total").html(0.00);
+    	$("#modal_ver_pedidos .order-pedidos .qtd").html(0);
     	$("#modal_ver_pedidos .nome_cliente").html('');
     	$("#modal_ver_pedidos .num_com").html('');
     	$("#modal_ver_pedidos .data").html('');
@@ -373,7 +430,44 @@
 
 	}
 
-	// PEDIDOS
+	// PRODUTOS
+
+	var id_comanda;
+	var id_mesa;
+	var tbody = $("#modal_pedidos #tbody");
+	var tbody_p = $("#modal_pedidos #tbody-produtos");
+	var pedido = [];
+	var notPedidos = [];
+	var total = 0.00;
+	var inputTotal = $("#modal_ver_pedidos [name='total']");
+
+	$("#modal_pedidos").on("show.bs.modal", function(e) {
+		var link = $(e.relatedTarget);
+		var id = link.attr('id');
+		var mesa = link.attr('mesa');
+
+        $(this).find('[name="id_comanda"]').val(id);
+        $(this).find('[name="id_mesa"]').val(mesa);
+        id_comanda = id;
+        id_mesa = mesa;
+        
+	});
+
+	$("#modal_pedidos").on("hidden.bs.modal", function(e) {
+		var link = $(e.relatedTarget);
+		var id = link.attr('id');
+		var mesa = link.attr('mesa');
+		$(this).find('.inputs-hidden').html('');
+        $(this).find('[name="id_comanda"]').val('');
+        $(this).find('[name="id_mesa"]').val('');
+        id_comanda = 0;
+        id_mesa = 0;
+        tbody.html('');
+        tbody_p.html('');
+        setTotal(0);
+        setLength(0);
+        
+	});
 
 	$('input.query-input').on('keyup', function(){
 		if ($(this).val().length == 0) {
