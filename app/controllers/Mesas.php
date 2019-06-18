@@ -258,6 +258,43 @@
 		
 		}
 
+		public function alterPedido() {
+			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+				// Sanitize POST data
+				$_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
+				// Init data
+				$data = [
+					'pedidosAlter' => ($_POST['pedidosAlter']),
+					'pedidosDel' => (isset($_POST['pedidosDel']) ? $_POST['pedidosDel'] : []),
+				];
+
+				if (isset($data['pedidosAlter']) && isset($data['pedidosDel'])) {
+
+					foreach ($data['pedidosAlter'] as $key => $value) {
+						$this->mesaModel->updatePedido($key, $value);
+					}
+					
+					foreach ($data['pedidosDel'] as $key => $value) {
+						$this->mesaModel->deletePedido($value);
+					}
+
+					flash("salao", "Pedido alterado com Sucesso !");
+					redirect("/mesas/salao");
+					
+				}else{
+					flash("salao", "Não foi possível alterar o pedido !", "alert-danger");
+					redirect("/mesas/salao");
+				}
+
+			}else{
+				flash("salao", "Ação Bloqueada !", "alert-danger");
+				redirect("/mesas/salao");
+			}
+		
+		}
+
 		public function getPedido($id){
 			$row = $this->mesaModel->getPedido($id);
 

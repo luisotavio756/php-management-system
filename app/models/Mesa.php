@@ -36,7 +36,7 @@
 		}
 
 		public function getMesas() {
-			$this->db->query("SELECT m.*, c.id AS id_comanda FROM tb_mesas AS m LEFT JOIN tb_comandas AS c ON c.id_mesa = m.id");
+			$this->db->query("SELECT m.*, c.id AS id_comanda, c.nome_cliente FROM tb_mesas AS m LEFT JOIN tb_comandas AS c ON c.id_mesa = m.id");
 			
 
 			if ($this->db->execute()) {
@@ -167,8 +167,32 @@
 
 		}
 
+		public function updatePedido($id, $valor) {
+			$this->db->query("UPDATE tb_comandas_produtos SET quantidade = :quantidade WHERE id = :id");
+			$this->db->bind(":quantidade", $valor);
+			$this->db->bind(":id", $id);
+
+			if ($this->db->execute()) {
+				return true;
+			}else{
+				return false;
+			}
+
+		}
+
+		public function deletePedido($id) {
+			$this->db->query("DELETE FROM tb_comandas_produtos WHERE id = :id");
+			$this->db->bind(":id", $id);
+
+			if ($this->db->execute()) {
+				return true;
+			}else{
+				return false;
+			}
+		}
+
 		public function getPedido($id) {
-			$this->db->query("SELECT cp.id AS id_pedido, p.id AS id_produto, m.id AS id_comanda, p.descricao, p.valor, cp.quantidade FROM tb_comandas_produtos AS cp JOIN tb_comandas AS m ON m.id = cp.id_comanda JOIN tb_produtos AS p ON cp.id_produto = p.id WHERE cp.id_comanda = :id ORDER BY cp.id ASC");
+			$this->db->query("SELECT cp.id AS id_pedido, p.id AS id_produto, m.id AS id_comanda, m.total, m.nome_cliente, m.data_registro, p.descricao, p.valor, cp.quantidade FROM tb_comandas_produtos AS cp JOIN tb_comandas AS m ON m.id = cp.id_comanda JOIN tb_produtos AS p ON cp.id_produto = p.id WHERE cp.id_comanda = :id ORDER BY cp.id ASC");
 			$this->db->bind(":id", $id);
 
 			if ($this->db->execute() && $this->db->rowCount() > 0) {
@@ -176,6 +200,31 @@
 			}else{
 				return false;
 			}
+		}
+
+		public function getPedidoTotal($id) {
+			$this->db->query("SELECT m.id AS id_comanda, SUM(p.valor * cp.quantidade), cp.quantidade FROM tb_comandas_produtos AS cp JOIN tb_comandas AS m ON m.id = cp.id_comanda JOIN tb_produtos AS p ON cp.id_produto = p.id WHERE cp.id_comanda = :id");
+			$this->db->bind(":id", $id);
+
+			if ($this->db->execute()) {
+				return true;
+			}else{
+				return false;
+			}
+		}
+
+		// PRODUTOS
+		public function estoque($id) {
+			$this->db->query("SELECT estoque FROM tb_produtos WHERE id = :id");
+			$this->db->bind(":id", $id);
+			$this->db->execute();
+
+			if ($this->db->rowCount() > 0) {
+				return $this->db->resultSet();
+			}else{
+				return false;
+			}
+
 		}
 
 	}

@@ -36,7 +36,7 @@
 														<?php if ($value->status == 1): ?>
 															<a class="dropdown-item" href="#modal_pedidos" data-toggle="modal" id="<?php echo $value->id_comanda ?>" mesa="<?php echo $value->id ?>">Adicionar Pedidos</a>
 															<div class="dropdown-divider"></div>
-															<a class="dropdown-item" href="#modal_ver_pedidos" data-toggle="modal" id="<?php echo $value->id_comanda ?>" mesa="<?php echo $value->id ?>">Ver Pedido</a>
+															<a class="dropdown-item" href="#modal_ver_pedidos" data-toggle="modal" id="<?php echo $value->id_comanda ?>" mesa="<?php echo $value->id ?>" nome="<?php echo $value->nome_cliente ?>" data-registro="<?php echo $value->data_registro ?>">Ver Pedido</a>
 															<div class="dropdown-divider"></div>
 															<a class="dropdown-item" href="#">Fechar Comanda</a>
 														<?php else: ?>
@@ -174,22 +174,43 @@
 	                    <span aria-hidden="true">&times;</span>
 	                </button>
 	            </div>
-	            <form class="user" action="<?php echo URLROOT ?>/mesas/addComanda" method="POST" enctype="multpart/form-data">
-	            	<div class="inputs-hidden-alter">
-	            		
-	            	</div>
-	            	<div class="inputs-hidden-delete">
-	            		
-	            	</div>
+	            <form class="user" action="<?php echo URLROOT ?>/mesas/alterPedido/" method="POST" enctype="multpart/form-data">
+	            	<input type="hidden" name="total" value="">
+	            	<div class="inputs-hidden-alter"></div>
+	            	<div class="inputs-hidden-delete"></div>
 	                <div class="modal-body">
-						<div class="row">
-							<div class="col-lg-12 px-5">
-								<table class="table mt-4">
+	                	<div class="row my-2 px-2">
+							<div class="col-lg-5">
+								<h6>Cliente: <b class="nome_cliente"></b></h6>
+							</div>
+							<div class="col-lg-3">
+								<h6>Comanda: <b class="num_com"></b></h6>
+							</div>
+							<div class="col-lg-4">
+								<h6>Horário: <b class="data"></b></h6>
+							</div>
+						</div>
+						<div class="row mt-3 px-2" style="height: 315px; overflow-y: auto">
+							<div class="col-lg-12">
+								<table class="table">
             						<tbody class="tbody">
             							
-            						</tbody>
+            						</tbody>            						
             					</table>
 							</div>
+						</div>
+						<div class="row mt-4 px-2">
+							<div class="col-12 order-pedidos">
+								<hr>
+		                		<div class="row">
+		                			<div class="col-3">
+		                				<h6>Qtd: <b class="qtd">0</b></h6>
+		                			</div>
+		                			<div class="col-9 text-right">
+		                				<h6>Valor: <b>R$ </b><b class="total">0.00</b></h6>
+		                			</div>
+		                		</div>
+		                	</div>	
 						</div>
 	                </div>
 	                <div class="modal-footer">
@@ -211,7 +232,7 @@
 	var pedido = [];
 	var notPedidos = [];
 	var total = 0.00;
-	// forPedidos();
+	var inputTotal = $("#modal_ver_pedidos [name='total']");
 
 	$("#modal_add_comanda").on("show.bs.modal", function(e) {
 		var link = $(e.relatedTarget);
@@ -262,8 +283,11 @@
 		$("#modal_ver_pedidos .tbody").html('');
 		var link = $(e.relatedTarget);
 		var id = link.attr('id');
+		var nome = link.attr('nome');
+		var data_registro = link.attr('data-registro');
 		var mesa = link.attr('mesa');
-		var inputsHidden = $("#modal_ver_pedidos .inputs-hidden-alter");
+		var inputsHidden = link.find(".inputs-hidden-alter");
+		
 
 		$.ajax({
             type: "GET",
@@ -272,35 +296,84 @@
             dataType: "json",
             success: function (data) {
             	if (data != false) {
+            		var tot = 0.00;
             		data.forEach(function(valor, chave){
-            			$("#modal_ver_pedidos .tbody").append('<tr>\
-									<td>' + (chave+1) + '</td>\
+            			$("#modal_ver_pedidos .tbody").append('\
+            					<tr id_p="' + valor.id_pedido + '">\
+									<td>#</td>\
 									<td style="width: 60%">' + valor.descricao + '</td>\
-									<td style="width: 15%"><input type="number" min="1" class="form-control form-control-sm" onchange="pedidoAlt(this.value , ' + valor.id_pedido + ')" value="' + valor.quantidade + '" required=""></td>\
+									<td style="width: 15%"><input type="number" min="1" class="form-control form-control-sm" onchange="pedidoAlt(this.value , ' + valor.id_pedido + ',' + valor.valor +')" value="' + valor.quantidade + '" required=""></td>\
 									<td style="width: 25%" class="text-center">R$ ' + valor.valor + '</td>\
-									<td style="width: 15%"><a href="#" class="text-danger" id="' + chave + '" onclick="removePedido(' + valor.id_pedido + ')" style="border-radius: 25px;"><i class="fa fa-minus"></i></a></td>\
+									<td style="width: 15%"><a href="#" class="text-danger" id="' + chave + '" onclick="removePedido(' + valor.id_pedido + ',' + valor.valor + ')" style="border-radius: 25px;" title="Remover Produto"><i class="fa fa-minus"></i></a></td>\
 								</tr>');
-            			inputsHidden.append('<input type="hidden" name="pedidosAlter[' + valor.id_pedido + ']" value="' + valor.quantidade + '">')
+            			inputsHidden.append('<input type="hidden" name="pedidosAlter[' + valor.id_pedido + ']" value="' + valor.quantidade + '">');
 
-            			
+            			tot = parseFloat(tot) + parseFloat(valor.valor) * valor.quantidade;
             		})
 
+            		inputTotal.val(tot.toFixed(2));
+	            	$("#modal_ver_pedidos .order-pedidos .total").html(tot.toFixed(2));
+	            	$("#modal_ver_pedidos .order-pedidos .qtd").html(data.length);
+	            	
+
+            	}else{
+            		// $("#modal_ver_pedidos .order-pedidos .total").html(0);
+	            	// $("#modal_ver_pedidos .order-pedidos .qtd").html(0);
             	}
+
+
             },
             error: function(e) {
             	
             }
         });
 
+		$("#modal_ver_pedidos .nome_cliente").html(nome);
+    	$("#modal_ver_pedidos .num_com").html(id);
+    	$("#modal_ver_pedidos .data").html(data_registro);
 	});
 
-	function pedidoAlt(val, id_pedido) {
+	$("#modal_ver_pedidos").on("hidden.bs.modal", function(e) {
+		// inputTotal.val('');
+    	// $("#modal_ver_pedidos .order-pedidos .total").html(0.00);
+    	// $("#modal_ver_pedidos .order-pedidos .qtd").html(0);
+    	$("#modal_ver_pedidos .nome_cliente").html('');
+    	$("#modal_ver_pedidos .num_com").html('');
+    	$("#modal_ver_pedidos .data").html('');
+	});
+
+	function pedidoAlt(val, id_pedido, valor) {
+		var tot = parseFloat($("#modal_ver_pedidos .order-pedidos .total").text());
+		var t = $('#modal_ver_pedidos .inputs-hidden-alter [name="pedidosAlter[' + id_pedido + ']"]').val();
+		tot = tot - parseFloat(valor * t);
+		$("#modal_ver_pedidos .order-pedidos .total").html(tot);
+
 		$('#modal_ver_pedidos .inputs-hidden-alter [name="pedidosAlter[' + id_pedido + ']"]').val(val);
+
+		tot = parseFloat(tot) + parseFloat(valor * val);
+
+		$("#modal_ver_pedidos .order-pedidos .total").html(tot.toFixed(2));
+
 	}
 
-	function removePedido(id_pedido) {
-		$('#modal_ver_pedidos .inputs-hidden-delete').append('<input type="hidden" name="pedidosDel[' + id_pedido + ']">')
+	function removePedido(id_pedido, valor) {
+		var tot = parseFloat($("#modal_ver_pedidos .order-pedidos .total").text());
+		$('#modal_ver_pedidos .inputs-hidden-delete').append('<input type="hidden" name="pedidosDel[]" value="' + id_pedido + '">');
+		var t = $('#modal_ver_pedidos .inputs-hidden-alter [name="pedidosAlter[' + id_pedido + ']"]').val();
+		tot = tot - parseFloat(valor * t);
+
+		$("#modal_ver_pedidos .order-pedidos .total").html(tot.toFixed(2));
+
+		var qtd = parseInt($("#modal_ver_pedidos .order-pedidos .qtd").text());
+		qtd = qtd - 1;
+		$("#modal_ver_pedidos .order-pedidos .qtd").html(qtd);
+
+		$("#modal_ver_pedidos .tbody [id_p='" + id_pedido +"']").remove();
+
+
 	}
+
+	// PEDIDOS
 
 	$('input.query-input').on('keyup', function(){
 		if ($(this).val().length == 0) {
