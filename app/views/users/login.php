@@ -29,9 +29,52 @@
 
 			.card{
 
-    			background-color: rgba(255, 255, 255, 0.4);
-    			box-shadow: 0px 0px 21px white !important;
+    			background-color: rgba(255, 255, 255, 1);
+    			box-shadow: 0px 0px 10px 1px white !important;
 
+			}
+
+			input, button{
+				box-shadow: 0px 0px 8px 0px #0000005e;
+
+			}
+
+			/*GOOGLE SANS*/
+
+
+			@font-face {
+			font-family: 'Product Sans Regular';
+			font-style: normal;
+			font-weight: normal;
+			src: local('Product Sans Regular'), url('../public/fontes/google-sans/ProductSans-Regular.woff') format('woff');
+			}
+
+
+			@font-face {
+			font-family: 'Product Sans Black Regular';
+			font-style: normal;
+			font-weight: normal;
+			src: local('Product Sans Black Regular'), url('../public/fontes/google-sans/ProductSans-Black.woff') format('woff');
+			}
+
+			@font-face {
+			font-family: 'Product Sans Bold';
+			font-style: normal;
+			font-weight: normal;
+			src: local('Product Sans Bold'), url('../public/fontes/google-sans/ProductSans-Bold.woff') format('woff');
+			}
+
+
+			.google-sans{
+				font-family: 'Product Sans Regular' !important;
+				font-size: 2rem;
+				font-weight: 500;
+				text-shadow: 4px 1px 30px #0000008c;
+
+			}
+
+			body{
+				font-family: 'Product Sans Regular' !important;
 			}
 		</style>
 	</head>
@@ -48,19 +91,19 @@
 								<div class="col-lg-6 d-none d-lg-block">
 									<img src="../img/img1.jpg" class="img-fluid">
 								</div>
-								<div class="col-lg-6">
-									<div class="p-5">
+								<div class="col-lg-6 d-flex align-items-center align-content-center">
+									<div class="p-4 p-md-5 w-100">
 										<?php flash('login'); ?>
 										<div class="text-center">
-											<h1 class="h4 text-gray-900 mb-4">Bem Vindo!</h1>
+											<h1 class="h4 google-sans mb-4">Bem Vindo!</h1>
 										</div>
 										<form class="user" action="<?php echo URLROOT; ?>/users/login" method="POST">
-											<div class="form-group">
+											<div class="form-group my-3">
 												<input type="email" name="email"  class="form-control form-control-user <?php echo (!empty($data['email_err'])) ? 'is-invalid' : ''; ?>" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Digite seu Email..." value="<?php echo $data['email'] ?>">
 												<span class="invalid-feedback"><?php echo $data['email_err']; ?></span>
 
 											</div>
-											<div class="form-group">
+											<div class="form-group my-3">
 												<input type="password" name="senha" class="form-control form-control-user <?php echo (!empty($data['password_err'])) ? 'is-invalid' : ''; ?>" id="exampleInputPassword" placeholder="Senha"  value="<?php echo $data['password'] ?>">
 												<span class="invalid-feedback"><?php echo $data['password_err']; ?></span>
 											</div>
@@ -70,7 +113,7 @@
 													<label class="custom-control-label" for="customCheck">Remember Me</label>
 												</div>
 											</div> -->
-											<button type="submit" class="btn btn-primary btn-user btn-block">
+											<button style="background-color: #eca225; color: white; font-size: 16px; padding: 0.5rem 1rem;" type="submit" class="btn btn-user btn-block mt-4">
 												Entrar
 											</button>
 											<hr>

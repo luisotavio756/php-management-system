@@ -83,7 +83,7 @@
 						<div class="col-lg-4 mb-3 mb-lg-0">
 							<label>Categoria:</label>
 							<select name="categoria" class="form-control form-control-user" required="">
-								<option selected=""></option>
+								<option value="" disabled selected>Selecione uma Categoria</option>
 								<?php foreach ($data['categorias'] as $key => $value): ?>
 									<option value="<?php echo $value->id ?>"><?php echo $value->descricao ?></option>
 								<?php endforeach ?>
@@ -131,8 +131,8 @@
 					<div class="form-group row">
 						<div class="col-lg-4 mb-3 mb-lg-0">
 							<label>Categoria:</label>
-							<select name="categoria" class="form-control" required="">
-								<option selected=""></option>
+							<select name="categoria" class="form-control form-control-user" required="">
+								<option value="" disabled>Selecione uma Categoria</option>
 								<?php foreach ($data['categorias'] as $key => $value): ?>
 									<option value="<?php echo $value->id ?>"><?php echo $value->descricao ?></option>
 								<?php endforeach ?>

@@ -90,16 +90,16 @@
 					<div class="form-group row">
 						<div class="col-lg-3 mb-3 mb-lg-0">
 							<label>Nivel:</label>
-							<select name="nivel" class="form-control" required="">
-								<option selected=""></option>
+							<select name="nivel" class="form-control form-control-user" required="" title="Selecione um Nivel">
+								<option value="" disabled selected>Selecione..</option>
 								<option value="1">Administrador</option>
 								<option value="2">Funcionário</option>
 							</select>
 						</div>
-						<div class="col-lg-2 mb-3 mb-lg-0">
+						<div class="col-lg-3 mb-3 mb-lg-0">
 							<label>Status:</label>
-							<select name="status" class="form-control" required="">
-								<option selected=""></option>
+							<select name="status" class="form-control form-control-user" required="" title="Selecione um Status">
+								<option value="" disabled selected>Selecione..</option>
 								<option value="1">Ativo</option>
 								<option value="0">Inativo</option>
 							</select>
@@ -150,16 +150,16 @@
 					<div class="form-group row">
 						<div class="col-lg-3 mb-3 mb-lg-0">
 							<label>Nivel:</label>
-							<select name="nivel" class="form-control" required="">
-								<option selected=""></option>
+							<select name="nivel" class="form-control form-control-user" required="">
+								<option value="" disabled>Selecione um Nível</option>
 								<option value="1">Administrador</option>
 								<option value="2">Funcionário</option>
 							</select>
 						</div>
 						<div class="col-lg-2 mb-3 mb-lg-0">
 							<label>Status:</label>
-							<select name="status" class="form-control" required="">
-								<option selected=""></option>
+							<select name="status" class="form-control form-control-user" required="">
+								<option value="" disabled>Selecione um Status</option>
 								<option value="1">Ativo</option>
 								<option value="0">Inativo</option>
 							</select>
