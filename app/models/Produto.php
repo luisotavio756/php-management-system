@@ -113,7 +113,19 @@
 			$this->db->execute();
 
 			if ($this->db->rowCount() > 0) {
-				return $this->db->resultSet()->estoque;
+				return $this->db->resultSet();
+			}else{
+				return false;
+			}
+		}
+
+		public function updateEstoque($id, $qtd) {
+			$this->db->query("UPDATE tb_produtos SET estoque = estoque - :qtd WHERE id = :id");
+			$this->db->bind(":id", $id);
+			$this->db->bind(":qtd", $qtd);
+
+			if ($this->db->execute()) {
+				return true;
 			}else{
 				return false;
 			}

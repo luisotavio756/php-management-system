@@ -5,6 +5,7 @@
 			$this->userModel = $this->model('User');
 			$this->mesaModel = $this->model('Mesa');
 			$this->caixaModel = $this->model('Caixa');
+			$this->produtoModel = $this->model('Produto');
 
 			if (!isset($_SESSION['id_usuario'])) {
 				redirect("/users/login");
@@ -277,6 +278,12 @@
 					$cont = 0;
 					foreach ($data['pedidos'] as $key => $value) {
 						$this->mesaModel->addPedido($data['id_comanda'], $key, $value);
+						$estoque = $this->produtoModel->verifEstoque($key)[0];
+						if ($estoque >= $value) {
+							$this->produtoModel->updateEstoque($key, $value);
+						}else{
+							$this->produtoModel->updateEstoque($key, $estoque);
+						}
 					}
 
 					flash("salao", "Pedido adicionado com Sucesso !");
@@ -317,10 +324,15 @@
 
 					foreach ($data['pedidosAlter'] as $key => $value) {
 						$this->mesaModel->updatePedido($key, $value);
+						$id = $this->mesaModel->getEstoquePedido($key)[0]->id;
+						$this->produtoModel->updateEstoque($id, $value);
 					}
 
 					foreach ($data['pedidosDel'] as $key => $value) {
 						$this->mesaModel->deletePedido($value);
+						$id = $this->mesaModel->getEstoquePedido($value)[0]->id;
+						$estoque = $this->mesaModel->getEstoquePedido($value)[0]->estoque;
+						$this->produtoModel->updateEstoque($id, (-$estoque));
 					}
 
 					flash("salao", "Pedido alterado com Sucesso !");

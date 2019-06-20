@@ -252,6 +252,19 @@
 
 		}
 
+		public function getEstoquePedido($id) {
+			$this->db->query("SELECT p.estoque, p.id FROM tb_produtos AS p JOIN tb_comandas_produtos AS cp ON cp.id_produto = p.id WHERE cp.id = :id LIMIT 1");
+			$this->db->bind(":id", $id);
+			$this->db->execute();
+
+			if ($this->db->rowCount() > 0) {
+				$estoque = $this->db->resultSet();
+				return $estoque;
+			}else{
+				return false;
+			}
+		}
+
 		public function updatePedido($id, $valor) {
 			$this->db->query("UPDATE tb_comandas_produtos SET quantidade = :quantidade WHERE id = :id");
 			$this->db->bind(":quantidade", $valor);

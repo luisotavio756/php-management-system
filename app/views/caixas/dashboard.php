@@ -473,7 +473,7 @@
 				                    		<tr style="color: <?php echo $value->tipo == 1 ? '#1cc88a' : '#e74a3b'; ?> !important; font-weight: 600">
 												<td class="text-center"><?php echo $cont ?></td>
 												<td><?php echo $value->descricao ?></td>
-												<td class="text-center"><?php echo ($value->modo_pagamento == 1 ? "Cartão" : "Dinheiro") ?></td>
+												<td class="text-center"><?php echo ($value->modo_pagamento == 1 ? "Dinheiro" : "Cartão") ?></td>
 												<td class="text-center"><?php echo ($value->tipo == 1 ? "Receita" : "Despesa") ?></td>
 												<td class="text-center"><?php echo $value->tipo == 1 ? '+' : '-'; ?> R$ <?php echo str_replace('.', ',', $value->valor) ?></td>
 											</tr>
