@@ -68,22 +68,24 @@
 													</a>
 													<div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink" x-placement="bottom-end">
 														<?php if ($value->status == 1): ?>
-															<a class="dropdown-item" href="#modal_pedidos" data-toggle="modal" id="<?php echo $data['comandasMesa'][$value->id]->id ?>" mesa="<?php echo $value->id ?>">Adicionar Pedidos</a>
+															<a class="dropdown-item" href="#modal_pedidos" data-toggle="modal" id="<?php echo $data['comandasMesa'][$value->id]->id ?>" mesa="<?php echo $value->id ?>"><i class="fas fa-plus mr-1"></i>  Adicionar Pedidos</a>
 															<div class="dropdown-divider"></div>
 
-															<a class="dropdown-item" href="#modal_ver_pedidos" data-toggle="modal" id="<?php echo $data['comandasMesa'][$value->id]->id ?>" mesa="<?php echo $value->id ?>" nome="<?php echo $data['comandasMesa'][$value->id]->nome_cliente ?>" data-registro="<?php echo $data['comandasMesa'][$value->id]->data_registro ?>">Ver Pedido</a>
-
-															<div class="dropdown-divider"></div>
-
-															<a class="dropdown-item" href="#modal_fechar_comanda" data-toggle="modal" id="<?php echo $data['comandasMesa'][$value->id]->id ?>" nome="<?php echo $data['comandasMesa'][$value->id]->nome_cliente ?>" total="<?php echo $data['comandas'][$data['comandasMesa'][$value->id]->id] ?>" mesa="<?php echo $value->id ?>" data-registro="<?php echo toBrDateTime($data['comandasMesa'][$value->id]->data_registro) ?>">Fechar Comanda</a>
+															<a class="dropdown-item" href="#modal_ver_pedidos" data-toggle="modal" id="<?php echo $data['comandasMesa'][$value->id]->id ?>" mesa="<?php echo $value->id ?>" nome="<?php echo $data['comandasMesa'][$value->id]->nome_cliente ?>" data-registro="<?php echo $data['comandasMesa'][$value->id]->data_registro ?>"><i class="fas fa-file mr-1"></i>  Ver Pedido</a>
 
 															<div class="dropdown-divider"></div>
 
-															<a class="dropdown-item" href="#modal_cancelar_comanda" data-toggle="modal" id="<?php echo $data['comandasMesa'][$value->id]->id ?>" nome="<?php echo $data['comandasMesa'][$value->id]->nome_cliente ?>" total="<?php echo $data['comandas'][$data['comandasMesa'][$value->id]->id] ?>" mesa="<?php echo $value->id ?>" data-registro="<?php echo toBrDateTime($data['comandasMesa'][$value->id]->data_registro) ?>">Cancelar Comanda</a>
+															<a class="dropdown-item" href="#modal_fechar_comanda" data-toggle="modal" id="<?php echo $data['comandasMesa'][$value->id]->id ?>" nome="<?php echo $data['comandasMesa'][$value->id]->nome_cliente ?>" total="<?php echo $data['comandas'][$data['comandasMesa'][$value->id]->id] ?>" mesa="<?php echo $value->id ?>" data-registro="<?php echo toBrDateTime($data['comandasMesa'][$value->id]->data_registro) ?>"><i class="fas fa-check-circle mr-1"></i> Fechar Comanda</a>
+
+															<div class="dropdown-divider"></div>
+
+															<a class="dropdown-item" href="#modal_cancelar_comanda" data-toggle="modal" id="<?php echo $data['comandasMesa'][$value->id]->id ?>" nome="<?php echo $data['comandasMesa'][$value->id]->nome_cliente ?>" total="<?php echo $data['comandas'][$data['comandasMesa'][$value->id]->id] ?>" mesa="<?php echo $value->id ?>" data-registro="<?php echo toBrDateTime($data['comandasMesa'][$value->id]->data_registro) ?>"><i class="fas fa-ban mr-1"></i> Cancelar Comanda</a>
 														<?php else: ?>
-															<a class="dropdown-item" href="#modal_add_comanda" id="<?php echo $value->id ?>" data-toggle="modal">Adicionar Comanda</a>
+															<a class="dropdown-item" href="#modal_add_comanda" id="<?php echo $value->id ?>" data-toggle="modal"><i class="fas fa-plus mr-1"></i> Adicionar Comanda</a>
+
 															<div class="dropdown-divider"></div>
-															<a class="dropdown-item" href="#">Ultimas Comandas</a>
+
+															<a class="dropdown-item" href="#"><i class="fas fa-undo-alt mr-1"></i> Ultimas Comandas</a>
 														<?php endif; ?>
 													</div>
 												</div>
