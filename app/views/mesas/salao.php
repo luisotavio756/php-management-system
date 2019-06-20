@@ -31,6 +31,13 @@
 		        opacity: 0.5;
 		    }
 		}
+
+		.select-mesa {
+		    -webkit-appearance: none;
+		    -moz-appearance: none;
+		    text-indent: 1px;
+		    text-overflow: '';
+		}
 	</style>
 	<div class="row">
 		<div class="col-lg-12">
@@ -65,9 +72,14 @@
 															<div class="dropdown-divider"></div>
 
 															<a class="dropdown-item" href="#modal_ver_pedidos" data-toggle="modal" id="<?php echo $data['comandasMesa'][$value->id]->id ?>" mesa="<?php echo $value->id ?>" nome="<?php echo $data['comandasMesa'][$value->id]->nome_cliente ?>" data-registro="<?php echo $data['comandasMesa'][$value->id]->data_registro ?>">Ver Pedido</a>
+
 															<div class="dropdown-divider"></div>
 
-															<a class="dropdown-item" href="#modal_fechar_comanda" data-toggle="modal" id="<?php echo $data['comandasMesa'][$value->id]->id ?>" nome="<?php echo $data['comandasMesa'][$value->id]->nome_cliente ?>" total="<?php echo $data['comandas'][$data['comandasMesa'][$value->id]->id] ?>" mesa="<?php echo $value->id ?>">Fechar Comanda</a>
+															<a class="dropdown-item" href="#modal_fechar_comanda" data-toggle="modal" id="<?php echo $data['comandasMesa'][$value->id]->id ?>" nome="<?php echo $data['comandasMesa'][$value->id]->nome_cliente ?>" total="<?php echo $data['comandas'][$data['comandasMesa'][$value->id]->id] ?>" mesa="<?php echo $value->id ?>" data-registro="<?php echo toBrDateTime($data['comandasMesa'][$value->id]->data_registro) ?>">Fechar Comanda</a>
+
+															<div class="dropdown-divider"></div>
+
+															<a class="dropdown-item" href="#modal_cancelar_comanda" data-toggle="modal" id="<?php echo $data['comandasMesa'][$value->id]->id ?>" nome="<?php echo $data['comandasMesa'][$value->id]->nome_cliente ?>" total="<?php echo $data['comandas'][$data['comandasMesa'][$value->id]->id] ?>" mesa="<?php echo $value->id ?>" data-registro="<?php echo toBrDateTime($data['comandasMesa'][$value->id]->data_registro) ?>">Cancelar Comanda</a>
 														<?php else: ?>
 															<a class="dropdown-item" href="#modal_add_comanda" id="<?php echo $value->id ?>" data-toggle="modal">Adicionar Comanda</a>
 															<div class="dropdown-divider"></div>
@@ -172,7 +184,7 @@
 							</div>
 							<div class="col-lg-5">
 								<label>Mesa:</label>
-								<select class="form-control form-control-user" disabled="" name="mesa" required="">
+								<select class="form-control form-control-user select-mesa" disabled="" name="mesa" required="">
 									<?php if ($data['mesas']): ?>
 										<!-- <option value="" disabled selected>Selecione uma mesa disponível</option> -->
 										<?php foreach ($data['mesas'] as $key => $value): ?>
@@ -274,11 +286,11 @@
                         	<div class="col-12 text-center">
                         		<h6>Mesa: <b class="id_mesa"></b></h6>
                         		<h6>Cliente: <b class="nome"></b></h6>
-                        		<h6>Comanda Aberta em: <b>12/09/9000 12:12:12</b></h6>
+                        		<h6>Comanda Aberta em: <b class="data"></b></h6>
                         	</div>
                         	<div class="col-lg-12 text-right">
                         		<hr>
-                        		<h6 class="float-left mb-0">Total da Comanda: <b class="total-comanda"></b></h6>
+                        		<h6 class="float-left mb-0">Total da Comanda: <b class="total-comanda">0.00</b></h6>
                         		Pagar com 
 								<div class="custom-control custom-radio custom-control-inline">
 									<input type="radio" checked="" id="customRadioInline2" name="modo_pagamento" class="custom-control-input" value="1">
@@ -295,6 +307,34 @@
 	                <div class="modal-footer">
 	                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
 	                    <button type="submit" class="btn btn-success">Confirmar e Fechar <i class="fas fa-check"></i></button>
+	                </div>
+	            </form>
+	        </div>
+	    </div>
+	</div>
+	<div class="modal fade" id="modal_cancelar_comanda" tabindex="-1" role="dialog" aria-labelledby="tituloModalBase" aria-hidden="true">
+	    <div class="modal-dialog modal-lg" role="document" style="">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <h5 class="modal-title" id="exampleModalLabel">Cancelar Comanda</h5>
+	                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	                    <span aria-hidden="true">&times;</span>
+	                </button>
+	            </div>
+	            <form class="user" action="<?php echo URLROOT ?>/mesas/cancelarComanda" method="POST" enctype="multpart/form-data">
+	            	<input type="hidden" name="id_comanda" value="">
+	            	<input type="hidden" name="id_mesa" value="">
+	                <div class="modal-body">
+	                	<div class="row">
+                            <div class="col-12 my-3 text-center">
+                                <h5 class="mb-0"><b>Tem certeza que deseja CANCELAR a comanda <b class="id_comanda"></b> ?</b></h5>
+                                <p class="mt-1 text-danger" style="font-size: 15px; font-weight: 700">OBS: Ao cancelar a comanda, todos os pedidos ligados a ela tambme serão cancelados</p>
+                            </div>
+                        </div>
+	                </div>
+	                <div class="modal-footer">
+	                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar e Desistir</button>
+	                    <button type="submit" class="btn btn-danger">Confirmar Ação <i class="fas fa-check"></i></button>
 	                </div>
 	            </form>
 	        </div>
@@ -332,6 +372,7 @@
 		var nome = link.attr('nome');
 		var total = link.attr('total');
 		var mesa = link.attr('mesa');
+		var data = link.attr('data-registro');
 
         $(this).find('[name="id_comanda"]').val(id);
         $(this).find('[name="id_mesa"]').val(mesa);
@@ -339,7 +380,8 @@
         $(this).find('.id_comanda').html(id);
         $(this).find('.id_mesa').html(mesa);
         $(this).find('.nome').html(nome);
-        $(this).find(".total-comanda").html('R$ ' + total);
+        $(this).find('.data').html(data);
+        $(this).find(".total-comanda").html('R$ ' + (total != '' ? total : 0.00));
 
 
 	});
@@ -360,6 +402,22 @@
         
 	});
 
+
+	// ENCERRAR COMANDA
+
+	$("#modal_cancelar_comanda").on("show.bs.modal", function(e) {
+		var link = $(e.relatedTarget);
+		var id = link.attr('id');
+		var nome = link.attr('nome');
+		var total = link.attr('total');
+		var mesa = link.attr('mesa');
+		var data = link.attr('data-registro');
+
+		$(this).find('.id_comanda').html(id);
+        $(this).find('[name="id_comanda"]').val(id);
+        $(this).find('[name="id_mesa"]').val(mesa);
+
+	});
 
 	// PEDIDOS
 
@@ -521,13 +579,23 @@
 	                				});
 
 									if (aux == 0) {
-										tbody.append('\
-														<tr>\
-															<td style="width: 70%">' + valor.descricao + '</td>\
-															<td style="width: 25%" class="text-center">R$ ' + valor.valor + '</td>\
-															<td>' + '<a href="#" class="btn btn-success btn-xs" onclick="addItem(' + chave + ',' + valor.id + ',' + "'" + valor.descricao + "'" + ',' + "'" + valor.valor + "'" + ')" style="border-radius: 25px;"><i class="fa fa-plus"></i></a>' + '</td>\
-														</tr>\
-													')
+										if (valor.estoque > 0) {
+											tbody.append('\
+															<tr>\
+																<td style="width: 70%">' + valor.descricao + '</td>\
+																<td style="width: 25%" class="text-center">R$ ' + valor.valor + '</td>\
+																<td>' + '<a href="#" class="btn btn-success btn-xs" onclick="addItem(' + chave + ',' + valor.id + ',' + "'" + valor.descricao + "'" + ',' + "'" + valor.valor +  "'" + ',' + valor.estoque  + ')" style="border-radius: 25px;"><i class="fa fa-plus"></i></a>' + '</td>\
+															</tr>\
+														')
+
+										}else{
+											tbody.append('\
+															<tr class="bg-danger">\
+																<td style="width: 70%">' + valor.descricao + '</td>\
+																<td style="width: 30%">Sem estoque !</td>\
+															</tr>\
+														')
+										}
 
 									}
 			                    });
@@ -535,13 +603,23 @@
 	                			
 	                		}else{
 								data.forEach(function(valor, chave){
-									tbody.append('\
+									if (valor.estoque > 0) {
+										tbody.append('\
 													<tr>\
 														<td style="width: 70%">' + valor.descricao + '</td>\
 														<td style="width: 25%" class="text-center">R$ ' + valor.valor + '</td>\
-														<td>' + '<a href="#" class="btn btn-success btn-xs" onclick="addItem(' + chave + ',' + valor.id + ',' + "'" + valor.descricao + "'" + ',' + "'" + valor.valor + "'" + ')" style="border-radius: 25px;"><i class="fa fa-plus"></i></a>' + '</td>\
+														<td>' + '<a href="#" class="btn btn-success btn-xs" onclick="addItem(' + chave + ',' + valor.id + ',' + "'" + valor.descricao + "'" + ',' + "'" + valor.valor + "'" + ',' + valor.estoque + ')" style="border-radius: 25px;"><i class="fa fa-plus"></i></a>' + '</td>\
 													</tr>\
-												');	
+												');
+									}else{
+										tbody.append('\
+													<tr>\
+														<td style="width: 50%">' + valor.descricao + '</td>\
+														<td class="text-danger">Sem estoque !</td>\
+													</tr>\
+												');
+									}
+										
 			                    });
 	                		}	    
 
@@ -563,7 +641,7 @@
 			tbody_p.append('<tr>\
 								<td>' + (chave+1) + '</td>\
 								<td style="width: 60%">' + valor.descricao + '</td>\
-								<td style="width: 15%"><input type="number" min="1" class="form-control form-control-sm" onchange="altQtd(this.value , ' + valor.id + ',' + valor.valor + ',' + chave +  ')" value="' + valor.qtd + '" required=""></td>\
+								<td style="width: 15%"><input type="number" min="1" max="' + valor.estoque + '" class="form-control form-control-sm input-p" onkeyup="altQtd(this.value , ' + valor.id + ',' + valor.valor + ',' + chave + ',' + valor.estoque +  ')" onchange="altQtd(this.value , ' + valor.id + ',' + valor.valor + ',' + chave + ',' + valor.estoque +  ')" value="' + valor.qtd + '" required=""></td>\
 								<td style="width: 25%" class="text-center">R$ ' + valor.valor + '</td>\
 								<td style="width: 15%"><a href="#" class="text-danger" id="' + chave + '" onclick="removeItem(' + chave + ',' + valor.id + ',' + valor.valor + ')" style="border-radius: 25px;"><i class="fa fa-minus"></i></a></td>\
 							</tr>');
@@ -571,21 +649,31 @@
 	
 	}
 
-	function altQtd(val, id_produto, valor, chave) {
-		pedido[chave].qtd = val;
-		var t = $('#modal_pedidos .inputs-hidden [name="pedidos[' + id_produto + ']"]').val();
-		setTotal(-(valor * (parseInt(t))))
-		$('#modal_pedidos .inputs-hidden [name="pedidos[' + id_produto + ']"]').val(val)
-		setTotal(valor * (parseInt(val)))
+	function altQtd(val, id_produto, valor, chave, max) {
+		if (val >= 1 && val <= max) {
+			pedido[chave].qtd = val;
+			var t = $('#modal_pedidos .inputs-hidden [name="pedidos[' + id_produto + ']"]').val();
+			setTotal(-(valor * (parseInt(t))))
+			$('#modal_pedidos .inputs-hidden [name="pedidos[' + id_produto + ']"]').val(val)
+			setTotal(valor * (parseInt(val)))
+		}else{
+			$("#modal_pedidos .input-p").val(max);
+			val = max;
+			pedido[chave].qtd = val;
+			var t = $('#modal_pedidos .inputs-hidden [name="pedidos[' + id_produto + ']"]').val();
+			setTotal(-(valor * (parseInt(t))))
+			$('#modal_pedidos .inputs-hidden [name="pedidos[' + id_produto + ']"]').val(val)
+			setTotal(valor * (parseInt(val)))
+		}
 		
 		// alert(t);
 	
 	}
 
-	function addItem(id, id_produto, descricao, valor){
+	function addItem(id, id_produto, descricao, valor, estoque){
 		
 		notPedidos.push(id_produto);
-		pedido.push({'id' : id_produto, 'descricao' : descricao, 'valor': valor, 'qtd' : 1});
+		pedido.push({'id' : id_produto, 'descricao' : descricao, 'valor': valor, 'qtd' : 1, 'estoque' : estoque});
 		tbody_p.html('');
 		forPedidos();
 		setTotal(valor);

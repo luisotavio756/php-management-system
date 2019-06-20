@@ -118,7 +118,7 @@
 		// PEDIDOS
 
 		public function getProdutos($query) {
-			$this->db->query("SELECT id, descricao, valor FROM tb_produtos WHERE descricao LIKE :query");
+			$this->db->query("SELECT id, descricao, valor, estoque FROM tb_produtos WHERE descricao LIKE :query ORDER BY estoque DESC");
 			$this->db->bind(":query", '%'.$query.'%');
 
 			$this->db->execute();
@@ -208,6 +208,36 @@
 			return $this->db->resultSet();
 		}
 
+		public function verifyComActive() {
+			$this->db->query("SELECT * FROM tb_comandas WHERE status = 0");
+			$this->db->execute();
+
+			if ($this->db->rowCount() > 0) {
+				return true;
+			}else{
+				return false;
+			}
+		}
+
+		public function cancelarCom($id) {
+			if ($this->deletePedidoAll($id)) {
+				$this->db->query("DELETE FROM tb_comandas WHERE id = :id");
+				$this->db->bind(":id", $id);
+
+				if ($this->db->execute()) {
+					return true;
+				}else{
+					return false;
+				}
+			}else{
+				return false;
+			}
+			
+
+		}
+
+		// PEDIDOS
+
 		public function addPedido($id_comanda, $id_produto, $qtd) {
 			$this->db->query("INSERT INTO tb_comandas_produtos(quantidade, id_comanda, id_produto) VALUES (:quantidade, :id_comanda, :id_produto)");
 			$this->db->bind(":quantidade", $qtd);
@@ -246,6 +276,17 @@
 			}
 		}
 
+		public function deletePedidoAll($id) {
+			$this->db->query("DELETE FROM tb_comandas_produtos WHERE id_comanda = :id");
+			$this->db->bind(":id", $id);
+
+			if ($this->db->execute()) {
+				return true;
+			}else{
+				return false;
+			}
+		}
+
 		public function getPedido($id) {
 			$this->db->query("SELECT cp.id AS id_pedido, p.id AS id_produto, m.id AS id_comanda, m.total, m.nome_cliente, m.data_registro, p.descricao, p.valor, cp.quantidade FROM tb_comandas_produtos AS cp JOIN tb_comandas AS m ON m.id = cp.id_comanda JOIN tb_produtos AS p ON cp.id_produto = p.id WHERE cp.id_comanda = :id ORDER BY cp.id ASC");
 			$this->db->bind(":id", $id);
@@ -268,16 +309,6 @@
 			}
 		}
 
-		public function verifyComActive() {
-			$this->db->query("SELECT * FROM tb_comandas WHERE status = 0");
-			$this->db->execute();
-
-			if ($this->db->rowCount() > 0) {
-				return true;
-			}else{
-				return false;
-			}
-		}
 
 	}
 

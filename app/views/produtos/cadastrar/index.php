@@ -25,7 +25,6 @@
 						<thead>
 							<tr>
 								<th class="text-center">#</th>
-								<th class="text-center">Cod</th>
 								<th>Descrição</th>
 								<th class="text-center">Estoque</th>
 								<th class="text-center">Ações</th>
@@ -35,7 +34,6 @@
 							<?php foreach ($data['produtos'] as $key => $value): ?>
 								<tr>
 									<td class="text-center"><?php echo $value->id_produto ?></td>
-									<td class="text-center"><?php echo $value->cod ?></td>
 									<td><?php echo $value->descricao ?></td>
 									<td class="text-center"><?php echo $value->estoque ?></td>
 									<td class="text-center">
@@ -70,11 +68,7 @@
 			<form class="user" action="<?php echo URLROOT; ?>/produtos/addProduto" method="POST">
 				<div class="modal-body">
 					<div class="form-group row">
-						<div class="col-lg-2 mb-3 mb-lg-0">
-							<label>Código:</label>
-							<input type="number"  min="0" name="cod" class="form-control form-control-user" placeholder="Código" required="">
-						</div>
-						<div class="col-lg-10">
+						<div class="col-lg-12">
 							<label>Descrição:</label>
 							<input type="text" name="descricao" class="form-control form-control-user" placeholder="Descrição do produto.." required="">
 						</div>
@@ -83,7 +77,7 @@
 						<div class="col-lg-4 mb-3 mb-lg-0">
 							<label>Categoria:</label>
 							<select name="categoria" class="form-control form-control-user" required="">
-								<option value="" disabled selected>Selecione uma Categoria</option>
+								<option value="0" disabled selected>Selecione uma Categoria</option>
 								<?php foreach ($data['categorias'] as $key => $value): ?>
 									<option value="<?php echo $value->id ?>"><?php echo $value->descricao ?></option>
 								<?php endforeach ?>
@@ -95,13 +89,13 @@
 						</div>
 						<div class="col-lg-3 mb-3 mb-lg-0">
 							<label>Estoque:</label>
-							<input type="number"  min="0" name="estoque" class="form-control form-control-user" placeholder="Qtd em estoque.." required="">
+							<input type="number" min="1" name="estoque" class="form-control form-control-user" placeholder="Qtd em estoque.." required="">
 						</div>
 					</div>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-					<button type="submit" class="btn btn-success">Adicionar</button>
+					<button type="button" class="btn btn-success button-submit-form" class="btn btn-success">Adicionar</button>
 				</div>
 			</form>
 		</div>
@@ -119,11 +113,7 @@
             <form class="user" action="" method="post" enctype="multpart/form-data">
                 <div class="modal-body">
                 	<div class="form-group row">
-						<div class="col-lg-2 mb-3 mb-lg-0">
-							<label>Código:</label>
-							<input type="number"  min="0" name="cod" class="form-control form-control-user" placeholder="Código" required="">
-						</div>
-						<div class="col-lg-10">
+						<div class="col-lg-12">
 							<label>Descrição:</label>
 							<input type="text" name="descricao" class="form-control form-control-user" placeholder="Descrição do produto.." required="">
 						</div>
@@ -140,17 +130,17 @@
 						</div>
 						<div class="col-lg-3 mb-3 mb-lg-0">
 							<label>Valor:</label>
-							<input type="tel"  min="0" name="valor" class="form-control form-control-user money" placeholder="R$ Valor" required="">
+							<input type="tel" min="0" name="valor" class="form-control form-control-user money" placeholder="R$ Valor" required="">
 						</div>
 						<div class="col-lg-3 mb-3 mb-lg-0">
 							<label>Estoque:</label>
-							<input type="number"  min="0" name="estoque" class="form-control form-control-user" placeholder="Qtd em estoque.." required="">
+							<input type="number"  min="1" name="estoque" class="form-control form-control-user" placeholder="Qtd em estoque.." required="">
 						</div>
 					</div>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-warning">Salvar Alterações <i class="fas fa-edit"></i></button>
+                    <button type="button" class="btn btn-warning button-submit-form">Salvar Alterações <i class="fas fa-edit"></i></button>
                 </div>
             </form>
         </div>
@@ -167,11 +157,7 @@
             </div>
             <div class="modal-body">
                 <div class="form-group row">
-					<div class="col-lg-2">
-						<label class="m-0 font-weight-bold text-info">Cod:</label>
-						<p class="cod"></p>
-					</div>
-					<div class="col-lg-5">
+					<div class="col-lg-7">
 						<label class="m-0 font-weight-bold text-info">Descrição:</label>
 						<p class="descricao"></p>
 					</div>
@@ -216,7 +202,6 @@
 	$data_json = array();
 	foreach ($data['produtos'] as $key => $value) {
 		$data_json[$value->id_produto]['id'] = $value->id_produto;
-		$data_json[$value->id_produto]['cod'] = $value->cod;
 		$data_json[$value->id_produto]['descricao'] = $value->descricao;
 		$data_json[$value->id_produto]['id_categoria'] = $value->id_categoria;
 		$data_json[$value->id_produto]['descricao_categoria'] = $value->descricao_categoria;
@@ -250,7 +235,6 @@
 
 		// $(this).find("form").attr("action", link.attr("href"));
 		$(this).find(".modal-title").html(link.attr("title"));
-		$(this).find(".cod").html(data[id].cod)
 		$(this).find(".descricao").html(data[id].descricao)
 		$(this).find(".categoria").html(data[id].descricao_categoria)
 		$(this).find(".valor").html("R$ " + data[id].valor)
@@ -274,7 +258,6 @@
 
 		$(this).find("form").attr("action", link.attr("href"));
 		$(this).find(".modal-title").html(link.attr("title"));
-        $(this).find("[name='cod']").val(data[id].cod)
         $(this).find("[name='descricao']").val(data[id].descricao)
         $(this).find("[name='categoria']").val(data[id].id_categoria)
         $(this).find("[name='valor']").val(data[id].valor)
@@ -282,4 +265,59 @@
 
 
 	});
+
+	$("#adicionar_produto .button-submit-form").click(function(){
+		if (verificarInputs('adicionar_produto')) {
+			$(this).attr('type', 'submit');
+		}
+	})
+
+	$("#modal_editar .button-submit-form").click(function(){
+		if (verificarInputs('modal_editar')) {
+			$(this).attr('type', 'submit');
+		}
+	})
+
+	$("#adicionar_produto .modal-body input, #adicionar_produto .modal-body select, #modal_editar .modal-body input, #modal_editar .modal-body select").on("change keyup", function (){
+        $(this).removeClass('is-invalid')
+        $(this).parent().find('.invalid-feedback').html('')
+    })
+
+
+    function verificarInputs(inputs) {
+    	
+        var $inputs = $("#"+inputs+" .modal-body input, #"+inputs+" .modal-body select"),
+            $button = $("#button-submit-form")
+            ;
+
+        var limpos = 0;
+
+        // verificação inicial
+        var array = [];
+        $inputs.each(function () {
+            var $this = $(this);
+            var val = $this.val();
+            if ($this.val() == '') {
+                array.push($this.attr('name'))
+            }
+            val || limpos++;
+            $this.data("val-antigo", val);
+        
+        });
+      
+        if (limpos == 0) {
+            return true;
+        }
+        else{
+            // alert(JSON.stringify(array))
+
+            array.forEach(function(valor, chave){   
+                $('[name="'+ valor +'"]').addClass('is-invalid')
+                $('[name="'+ valor +'"]').parent().find('.invalid-feedback').html('Campo Obrigatório')
+            });     
+
+            return false;
+        }
+    
+    }
 </script>

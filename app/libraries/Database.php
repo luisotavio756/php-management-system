@@ -21,8 +21,7 @@
 			// Set DSN
 			$dsn = 'mysql:host=' . $this->host . ';dbname=' . $this->dbname;
 			$options = array(
-				PDO::ATTR_PERSISTENT => true,
-				PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION 
+				
 			);
 
 			// Create PDO instance

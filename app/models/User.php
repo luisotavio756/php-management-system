@@ -108,6 +108,20 @@
 			}
 		}
 
+		public function verifyUser($id) {
+			$this->db->query("SELECT * FROM tb_usuarios WHERE id = :id AND status = :status");
+			$this->db->bind(":id", $id);
+			$this->db->bind(":status", 1);
+
+			$this->db->execute();
+
+			if ($this->db->rowCount() > 0) {
+				return true;
+			}else{
+				return false;
+			}
+		}
+
 	}
 
 

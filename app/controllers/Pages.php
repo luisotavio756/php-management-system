@@ -2,8 +2,14 @@
 	class Pages extends Controller {
 
 		public function __construct(){
+			$this->userModel = $this->model('User');
+			
 			if (!isset($_SESSION['id_usuario'])) {
-				redirect('/users/login');
+				redirect("/users/login");
+			}else{
+				if ($this->userModel->verifyUser($_SESSION['id_usuario']) == false) {
+					redirect("/users/login");
+				}
 			}
 		}
 

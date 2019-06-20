@@ -2,12 +2,17 @@
 	class Caixas extends Controller {
 
 		public function __construct(){
-			if (!isset($_SESSION['id_usuario'])) {
-				redirect('/users/login');
-			}
-
+			$this->userModel = $this->model('User');
 			$this->caixaModel = $this->model('Caixa');
 			$this->mesaModel = $this->model('Mesa');
+
+			if (!isset($_SESSION['id_usuario'])) {
+				redirect("/users/login");
+			}else{
+				if ($this->userModel->verifyUser($_SESSION['id_usuario']) == false) {
+					redirect("/users/login");
+				}
+			}
 		}
 
 		public function index(){

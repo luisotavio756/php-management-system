@@ -73,7 +73,7 @@
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-					<button type="submit" class="btn btn-success">Adicionar</button>
+					<button type="button" class="btn btn-success button-submit-form">Adicionar</button>
 				</div>
 			</form>
 		</div>
@@ -97,7 +97,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                    <button type="submit" class="btn btn-warning">Salvar Alterações <i class="fas fa-edit"></i></button>
+                    <button type="button" class="btn btn-warning button-submit-form">Salvar Alterações <i class="fas fa-edit"></i></button>
                 </div>
             </form>
         </div>
@@ -136,4 +136,59 @@
         $(this).find("[name='descricao']").val(data[id].descricao)
 
 	});
+
+	$("#adicionar_Categoria .button-submit-form").click(function(){
+		if (verificarInputs('adicionar_Categoria')) {
+			$(this).attr('type', 'submit');
+		}
+	})
+
+	$("#modal_editar .button-submit-form").click(function(){
+		if (verificarInputs('modal_editar')) {
+			$(this).attr('type', 'submit');
+		}
+	})
+
+	$("#adicionar_Categoria .modal-body input, #adicionar_Categoria .modal-body select, #modal_editar .modal-body input, #modal_editar .modal-body select").on("change keyup", function (){
+        $(this).removeClass('is-invalid')
+        $(this).parent().find('.invalid-feedback').html('')
+    })
+
+
+    function verificarInputs(inputs) {
+    	
+        var $inputs = $("#"+inputs+" .modal-body input, #"+inputs+" .modal-body select"),
+            $button = $("#button-submit-form")
+            ;
+
+        var limpos = 0;
+
+        // verificação inicial
+        var array = [];
+        $inputs.each(function () {
+            var $this = $(this);
+            var val = $this.val();
+            if ($this.val() == '') {
+                array.push($this.attr('name'))
+            }
+            val || limpos++;
+            $this.data("val-antigo", val);
+        
+        });
+      
+        if (limpos == 0) {
+            return true;
+        }
+        else{
+            // alert(JSON.stringify(array))
+
+            array.forEach(function(valor, chave){   
+                $('[name="'+ valor +'"]').addClass('is-invalid')
+                $('[name="'+ valor +'"]').parent().find('.invalid-feedback').html('Campo Obrigatório')
+            });     
+
+            return false;
+        }
+    
+    }
 </script>

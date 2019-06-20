@@ -12,6 +12,10 @@
 
 			if (!isset($_SESSION['id_usuario'])) {
 				redirect("/users/login");
+			}else{
+				if ($this->userModel->verifyUser($_SESSION['id_usuario']) == false) {
+					redirect("/users/login");
+				}
 			}
 
 			$users = $this->userModel->getUsers();
@@ -149,7 +153,7 @@
 					# code...
 				}else{
 					// User not found
-					flash("not_found", 'Usuário não encontrado !', 'alert alert-danger');
+					flash("login", 'Usuário não encontrado !', 'alert alert-danger');
 					$data['email_err'] = ' ';
 				}
 
@@ -158,14 +162,21 @@
 					// Check and set logged
 					$loggedUser = $this->userModel->login($data['email'], $data['password']);
 
-					if ($loggedUser) {
-						// Create sessions
-						$this->createUserSession($loggedUser);
+					if ($this->userModel->verifyUser($loggedUser->id)) {
+						if ($loggedUser) {
+							// Create sessions
+							$this->createUserSession($loggedUser);
+						}else{
+							$data['email_err'] = ' ';
+							$data['password_err'] = ' ';
+							// Load view errors
+							flash("login", 'Usuário ou senha Inválidos !', 'alert alert-danger');
+							redirect('/users/login');
+						}
 					}else{
-						$data['email_err'] = ' ';
-						$data['password_err'] = ' ';
-						flash("not_found", 'Usuário ou senha Inválidos !', 'alert alert-danger');
-						$this->view('/users/login', $data);
+						// Load view errors
+						flash("login", 'Usuário ou senha Inválidos !', 'alert alert-danger');
+						redirect('/users/login');
 					}
 				}else{
 					// Load view errors
@@ -192,6 +203,7 @@
 			$_SESSION['sobrenome'] = $user->sobrenome;
 			$_SESSION['email'] = $user->email;
 			$_SESSION['senha'] = $user->senha;
+			$_SESSION['nivel'] = $user->nivel;
 			if ($this->caixaModel->verifyOpen()) {
 				$_SESSION['id_caixa'] = $this->caixaModel->idCaixa();
 			}
@@ -206,6 +218,7 @@
 			unset($_SESSION['sobrenome']);
 			unset($_SESSION['email']);
 			unset($_SESSION['senha']);
+			unset($_SESSION['nivel']);
 
 			session_destroy();
 			redirect("/users/login");

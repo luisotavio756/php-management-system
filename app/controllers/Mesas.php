@@ -2,12 +2,17 @@
 	class Mesas extends Controller {
 
 		public function __construct(){
-			if (!isset($_SESSION['id_usuario'])) {
-				redirect('/users/login');
-			}
-
+			$this->userModel = $this->model('User');
 			$this->mesaModel = $this->model('Mesa');
 			$this->caixaModel = $this->model('Caixa');
+
+			if (!isset($_SESSION['id_usuario'])) {
+				redirect("/users/login");
+			}else{
+				if ($this->userModel->verifyUser($_SESSION['id_usuario']) == false) {
+					redirect("/users/login");
+				}
+			}
 
 		}
 
@@ -252,6 +257,7 @@
 			}
 
 			return $array;
+		
 		}
 
 		public function adicionarPedido() {
@@ -381,6 +387,46 @@
 					
 				}else{
 					flash("salao", "Não foi possível fechar a comandasss !", "alert-danger");
+					redirect("/mesas/salao");
+				}
+
+			}else{
+				flash("salao", "Ação Bloqueada !", "alert-danger");
+				redirect("/mesas/salao");
+			}
+		
+		}
+
+		public function cancelarComanda() {
+			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+				// Sanitize POST data
+				$_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
+				// Init data
+				$data = [
+					'id_comanda' => ($_POST['id_comanda']),
+					'id_mesa' => ($_POST['id_mesa']),
+				];
+
+				
+
+				if (isset($data['id_comanda']) && isset($data['id_mesa'])) {
+					if ($this->mesaModel->cancelarCom($data['id_comanda'])) {
+						if ($this->mesaModel->setMesa($data['id_mesa'], 0)) {
+							flash("salao", "Comanda Cancelada com Sucesso !");
+							redirect("/mesas/salao");
+						}else{
+							flash("salao", "Não foi possível cancelar a comanda !", "alert-danger");
+							redirect("/mesas/salao");
+						}
+					}else{
+						flash("salao", "Não foi possível cancelar a comanda !", "alert-danger");
+						redirect("/mesas/salao");
+					}
+					
+				}else{
+					flash("salao", "Não foi possível cancelar a comanda !", "alert-danger");
 					redirect("/mesas/salao");
 				}
 

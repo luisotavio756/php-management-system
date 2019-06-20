@@ -54,7 +54,7 @@
 		}
 
 		public function getProdutos(){
-			$this->db->query("SELECT p.id AS id_produto, p.cod, p.descricao, p.valor, p.estoque, p.data_registro, u.nome, c.id AS id_categoria, c.descricao AS descricao_categoria FROM tb_produtos AS p JOIN tb_categorias AS c ON p.id_categoria = c.id JOIN tb_usuarios AS u ON u.id = p.id_usuario");
+			$this->db->query("SELECT p.id AS id_produto, p.descricao, p.valor, p.estoque, p.data_registro, u.nome, c.id AS id_categoria, c.descricao AS descricao_categoria FROM tb_produtos AS p JOIN tb_categorias AS c ON p.id_categoria = c.id JOIN tb_usuarios AS u ON u.id = p.id_usuario");
 
 			if ($this->db->execute()) {
 				return $this->db->resultSet();
@@ -63,8 +63,7 @@
 		}
 
 		public function addProduto($data){
-			$this->db->query("INSERT INTO tb_produtos(cod, descricao, valor, estoque, data_registro, id_categoria, id_usuario) VALUES (:cod, :descricao, :valor, :estoque, :data_registro, :id_categoria, :id_usuario)");
-			$this->db->bind(":cod", $data['cod']);
+			$this->db->query("INSERT INTO tb_produtos(descricao, valor, estoque, data_registro, id_categoria, id_usuario) VALUES (:descricao, :valor, :estoque, :data_registro, :id_categoria, :id_usuario)");
 			$this->db->bind(":descricao", $data['descricao']);
 			$this->db->bind(":valor", $data['valor']);
 			$this->db->bind(":estoque", $data['estoque']);
@@ -93,9 +92,8 @@
 		}
 
 		public function updateProduto($data) {
-			$this->db->query("UPDATE tb_produtos SET cod = :cod, descricao = :descricao, valor = :valor, estoque = :estoque, id_categoria = :id_categoria WHERE id = :id");
+			$this->db->query("UPDATE tb_produtos SET descricao = :descricao, valor = :valor, estoque = :estoque, id_categoria = :id_categoria WHERE id = :id");
 			$this->db->bind(":id", $data['id']);
-			$this->db->bind(":cod", $data['cod']);
 			$this->db->bind(":descricao", $data['descricao']);
 			$this->db->bind(":valor", $data['valor']);
 			$this->db->bind(":estoque", $data['estoque']);
@@ -107,6 +105,18 @@
 				return false;
 			}
 
+		}
+
+		public function verifEstoque($id) {
+			$this->db->query("SELECT estoque FROM tb_produtos WHERE id = :id");
+			$this->db->bind(":id", $id);
+			$this->db->execute();
+
+			if ($this->db->rowCount() > 0) {
+				return $this->db->resultSet()->estoque;
+			}else{
+				return false;
+			}
 		}
 
 	}

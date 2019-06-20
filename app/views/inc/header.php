@@ -106,16 +106,18 @@
                 <div class="sidebar-heading">
                     Configs
                 </div>
-                <li class="nav-item">
-                    <a class="nav-link" href="<?php echo URLROOT; ?>/users/">
-                    <i class="fas fa-users"></i>
-                    <span>Usuários</span></a>
-                </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="<?php echo URLROOT; ?>/configuracoes">
-                    	<i class="fas fa-cogs"></i>
-                    <span>Configurações</span></a>
-                </li>
+                <?php if ($_SESSION['nivel'] == 1): ?>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?php echo URLROOT; ?>/users/">
+                        <i class="fas fa-users"></i>
+                        <span>Usuários</span></a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="<?php echo URLROOT; ?>/configuracoes">
+                        	<i class="fas fa-cogs"></i>
+                        <span>Configurações</span></a>
+                    </li>
+                <?php endif ?>
                 <li class="nav-item">
                     <?php if (isset($_SESSION['id_caixa'])): ?>
                         <a class="nav-link" href="#logoutModal">
@@ -270,8 +272,9 @@
                             <!-- Nav Item - User Information -->
                             <li class="nav-item dropdown no-arrow">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small">Administrador</span>
-                                <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60">
+                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo $_SESSION['nome'] . ' ' . $_SESSION['sobrenome'] ?></span>
+                               <!--  <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60"> -->
+                                <i class="fas fa-2x fa-user-circle"></i>
                                 </a>
                                 <!-- Dropdown - User Information -->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">

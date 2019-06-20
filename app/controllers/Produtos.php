@@ -2,13 +2,16 @@
 	class Produtos extends Controller {
 
 		public function __construct(){
-			if (!isset($_SESSION['id_usuario'])) {
-				
-				redirect('/users/login');
-			}
-
+			$this->userModel = $this->model('User');
 			$this->produtoModel = $this->model('Produto');
 			
+			if (!isset($_SESSION['id_usuario'])) {
+				redirect("/users/login");
+			}else{
+				if ($this->userModel->verifyUser($_SESSION['id_usuario']) == false) {
+					redirect("/users/login");
+				}
+			}
 		}
 
 		public function index(){
@@ -31,7 +34,6 @@
 
 				// Init data
 				$data = [
-					'cod' => trim($_POST['cod']),
 					'descricao' => trim($_POST['descricao']),
 					'categoria' => trim($_POST['categoria']),
 					'valor' => numberHelper(str_replace(",", '.', $_POST['valor'])),
@@ -40,7 +42,7 @@
 				];
 
 				// Validade all 
-				if (!empty($data['cod']) && !empty($data['descricao']) && !empty($data['categoria']) && !empty($data['valor']) && !empty($data['estoque']) && !empty($data['id_usuario'])) {
+				if (!empty($data['descricao']) && !empty($data['categoria']) && !empty($data['valor']) && !empty($data['estoque']) && !empty($data['id_usuario'])) {
 					//Validated
 
 					// Load function register
@@ -73,7 +75,6 @@
 				// Init data
 				$data = [
 					'id' => $id,
-					'cod' => trim($_POST['cod']),
 					'descricao' => trim($_POST['descricao']),
 					'valor' => numberHelper(str_replace(",", '.', $_POST['valor'])),
 					'estoque' => trim($_POST['estoque']),
@@ -81,7 +82,7 @@
 				];
 
 				// Validade all 
-				if (!empty($data['cod']) && !empty($data['descricao']) && !empty($data['categoria']) && !empty($data['valor']) && !empty($data['estoque'])) {
+				if (!empty($data['descricao']) && !empty($data['categoria']) && !empty($data['valor']) && !empty($data['estoque'])) {
 					//Validated
 
 					// Load function register
@@ -89,7 +90,7 @@
 						flash("produtos", "Produto atualizado com Sucesso !");
 						redirect("/produtos/");	
 					}else{
-						flash("produtos", "Não foi possível atualizar o produto!", "alert-danger");
+						flash("produtos", "Não foi possível atualizar o produto 1!", "alert-danger");
 						redirect("/produtos/");
 					}
 					
@@ -107,10 +108,10 @@
 		public function deleteProduto($id){
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				if ($this->produtoModel->deleteProduto($id)) {
-					flash("produtos", "Usuário Excluido com Sucesso !");
+					flash("produtos", "Produto Excluido com Sucesso !");
 					redirect("/produtos/cadastrar/");
 				}else{
-					flash("produtos", "Não foi possível excluir o Usuário !", "alert-danger");
+					flash("produtos", "Não foi possível excluir o Produto, ele pode está sendo usado em algum pedido !", "alert-danger");
 					redirect("/produtos/cadastrar/");
 				}
 
@@ -171,7 +172,7 @@
 					flash("categoria", "Categoria Excluida com Sucesso !");
 					redirect("/produtos/categorias/");
 				}else{
-					flash("categoria", "Não foi possível excluir a Categoria !", "alert-danger");
+					flash("categoria", "Não foi possível excluir a Categoria, ela pode esta sendo usada em algum produto !", "alert-danger");
 					redirect("/produtos/categorias/");
 				}
 
@@ -197,20 +198,22 @@
 
 					// Load function register
 					if ($this->produtoModel->alterCategoria($data)) {	
-						flash("produtos", "Categoria atualizada com Sucesso !");
+						flash("categoria", "Categoria atualizada com Sucesso !");
 						redirect("/produtos/categorias/");
 					}else{
-						flash("produtos", "Não foi possível atualizar a Categoria!", "alert-danger");
+						flash("categoria", "Não foi possível atualizar a Categoria!", "alert-danger");
 						redirect("/produtos/categorias/");
 					}
 					
 				}else{
+					flash("categoria", "Não foi possível atualizar a Categoria 2 !", "alert-danger");
 					// Load view errors
 					$this->view('/produtos/categoria/index');
 				}
 
 			}else{
 				// Load view
+				flash("categoria", "Ação Bloqueada!", "alert-danger");
 				$this->view('/produtos/categoria/index');
 			}
 		
