@@ -265,7 +265,7 @@
 								redirect("/users/");
 							}
 						}else{
-							flash("users", "Não foi possível adicionar o Usuário, as senha não coincidem !", "alert-danger");
+							flash("users", "Não foi possível adicionar o Usuário, as senhas não coincidem !", "alert-danger");
 							redirect("/users/");
 						}
 					}else{

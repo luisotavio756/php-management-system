@@ -234,13 +234,13 @@
 	                    </button>
 	                </div>	
 	                    <div class="modal-body" style="max-height: 400px; overflow-x:auto;">
-	                    	<nav class="nav-caixa" style="margin-top: -10px">
+	                    	<!-- <nav class="nav-caixa" style="margin-top: -10px">
 								<div id="myTab" class="nav nav-tabs" role="tablist">
 									<a class="nav-item nav-link active" id="receita_normal" data-toggle="tab" href="#nav-receita-simples" role="tab" aria-controls="nav-receita-simples" aria-selected="true">Receita Normal</a>
 									<a class="nav-item nav-link" id="comandas" data-toggle="tab" href="#nav-comandas" role="tab" aria-controls="nav-comandas" aria-selected="false">Comandas</a>
 								</div>
-							</nav>
-							<div class="tab-content" id="nav-tabContent">
+							</nav> -->
+							<div class="tab-content mt-0" id="nav-tabContent">
 								<div class="tab-pane fade show active col-12 pt-3" id="nav-receita-simples" role="tabpanel" aria-labelledby="receita_normal">
 									<form class="user receita_normal" action="<?php echo URLROOT; ?>/caixas/insertReceita/" method="POST" enctype="multpart/form-data" >
 										<input type="hidden" name="action" value="1">
@@ -268,7 +268,7 @@
 										</div>
 									</form>
 								</div>
-								<div class="tab-pane fade col-12 pt-3" id="nav-comandas" role="tabpanel" aria-labelledby="comandas">
+								<!-- <div class="tab-pane fade col-12 pt-3" id="nav-comandas" role="tabpanel" aria-labelledby="comandas">
 									<form class="user comandas" action="<?php echo URLROOT; ?>/caixas/insertReceita/" method="POST" enctype="multpart/form-data" >
 										<input type="hidden" name="action" value="1">
 										<div class="form-group row">
@@ -351,7 +351,7 @@
 											</div>	
 										</div>
 									</form>
-								</div>
+								</div> -->
 							</div>	  	             
 	                    </div>
 	                    <div class="modal-footer">
@@ -421,7 +421,7 @@
 	                    </div>
 	                    <div class="modal-footer">
 	                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-	                        <button type="submit" class="btn btn-info">Confirmar e Imprimir Relatório <i class="fas fa-check-circle"></i></button>
+	                        <button type="submit" class="btn btn-info">Confirmar <i class="fas fa-check-circle"></i></button>
 	                    </div>
 	                </form>
 	            </div>

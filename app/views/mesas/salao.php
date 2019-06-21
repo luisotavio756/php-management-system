@@ -446,7 +446,7 @@
             					<tr id_p="' + valor.id_pedido + '">\
 									<td>#</td>\
 									<td style="width: 60%">' + valor.descricao + '</td>\
-									<td style="width: 15%"><input type="number" min="1" class="form-control form-control-sm" onchange="pedidoAlt(this.value , ' + valor.id_pedido + ',' + valor.valor +')" value="' + valor.quantidade + '" required=""></td>\
+									<td style="width: 15%"><input type="number" min="1" max="'+(parseInt(valor.quantidade) + parseInt(valor.estoque))+'" class="form-control form-control-sm" onchange="pedidoAlt(this.value , ' + valor.id_pedido + ',' + valor.valor +')" value="' + valor.quantidade + '" required=""></td>\
 									<td style="width: 25%" class="text-center">R$ ' + valor.valor + '</td>\
 									<td style="width: 15%"><a href="#" class="text-danger" id="' + chave + '" onclick="removePedido(' + valor.id_pedido + ',' + valor.valor + ')" style="border-radius: 25px;" title="Remover Produto"><i class="fa fa-minus"></i></a></td>\
 								</tr>');

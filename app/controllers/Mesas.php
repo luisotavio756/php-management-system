@@ -162,7 +162,7 @@
 						redirect("/mesas/");
 					}
 				}else{
-					flash("mesas", "Não foi possível excluir uma mesa que está em Uso !", "alert-danger");
+					flash("mesas", "Não é possível excluir uma mesa que está em Uso !", "alert-danger");
 					redirect("/mesas/");
 				}
 
@@ -323,16 +323,26 @@
 				if (isset($data['pedidosAlter']) && isset($data['pedidosDel'])) {
 
 					foreach ($data['pedidosAlter'] as $key => $value) {
+						$id_produto = $this->mesaModel->getEstoquePedido($key)[0]->id;
+						$estoque = $this->mesaModel->getEstoquePedido($key)[0]->estoque;
+						$quantidade = $this->mesaModel->getEstoquePedido($key)[0]->quantidade;
+						$total = $value - $quantidade;
+						$this->produtoModel->updateEstoque($id_produto, $total);
 						$this->mesaModel->updatePedido($key, $value);
-						$id = $this->mesaModel->getEstoquePedido($key)[0]->id;
-						$this->produtoModel->updateEstoque($id, $value);
+						// echo "<pre>";
+						// echo "Id Produto: $id_produto<br>";
+						// echo "Estoque Produto: $estoque<br>";
+						// echo "Quantidade no Pedido: $quantidade<br>";
+						// echo("Id do pedido: ".$key)."<br>";
+						// echo("Nova Quantidade: ".($value - $quantidade))."<br>";
+						// echo "Total: ". $total;
 					}
 
 					foreach ($data['pedidosDel'] as $key => $value) {
-						$this->mesaModel->deletePedido($value);
 						$id = $this->mesaModel->getEstoquePedido($value)[0]->id;
-						$estoque = $this->mesaModel->getEstoquePedido($value)[0]->estoque;
-						$this->produtoModel->updateEstoque($id, (-$estoque));
+						$quantidade = $this->mesaModel->getEstoquePedido($value)[0]->quantidade;
+						$this->produtoModel->updateEstoque($id, (-$quantidade));
+						$this->mesaModel->deletePedido($value);
 					}
 
 					flash("salao", "Pedido alterado com Sucesso !");
@@ -424,18 +434,22 @@
 				
 
 				if (isset($data['id_comanda']) && isset($data['id_mesa'])) {
-					if ($this->mesaModel->cancelarCom($data['id_comanda'])) {
-						if ($this->mesaModel->setMesa($data['id_mesa'], 0)) {
-							flash("salao", "Comanda Cancelada com Sucesso !");
-							redirect("/mesas/salao");
-						}else{
-							flash("salao", "Não foi possível cancelar a comanda !", "alert-danger");
-							redirect("/mesas/salao");
-						}
-					}else{
-						flash("salao", "Não foi possível cancelar a comanda !", "alert-danger");
-						redirect("/mesas/salao");
-					}
+					$pedido = $this->mesaModel->getPedido($data['id_comanda']);
+					echo "<pre>";
+					print_r($pedido);
+					
+					// if ($this->mesaModel->cancelarCom($data['id_comanda'])) {
+					// 	if ($this->mesaModel->setMesa($data['id_mesa'], 0)) {
+					// 		flash("salao", "Comanda Cancelada com Sucesso !");
+					// 		redirect("/mesas/salao");
+					// 	}else{
+					// 		flash("salao", "Não foi possível cancelar a comanda !", "alert-danger");
+					// 		redirect("/mesas/salao");
+					// 	}
+					// }else{
+					// 	flash("salao", "Não foi possível cancelar a comanda !", "alert-danger");
+					// 	redirect("/mesas/salao");
+					// }
 					
 				}else{
 					flash("salao", "Não foi possível cancelar a comanda !", "alert-danger");

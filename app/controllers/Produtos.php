@@ -111,7 +111,7 @@
 					flash("produtos", "Produto Excluido com Sucesso !");
 					redirect("/produtos/cadastrar/");
 				}else{
-					flash("produtos", "Não foi possível excluir o Produto, ele pode está sendo usado em algum pedido !", "alert-danger");
+					flash("produtos", "Não foi possível excluir o Produto, ele pode está sendo usado em algum pedido ativo ou um pedido passado !", "alert-danger");
 					redirect("/produtos/cadastrar/");
 				}
 

@@ -64,7 +64,7 @@
         <!-- Custom scripts for all pages-->
         <script src="<?php echo URLROOT; ?>/js/sb-admin-2.min.js"></script>
         <!-- Page level plugins -->
-        <script src="<?php echo URLROOT; ?>/vendor/datatables/jquery.dataTables.min.js"></script>
+        <script src="<?php echo URLROOT; ?>/vendor/datatables/jquery.dataTables.js"></script>
         <script src="<?php echo URLROOT; ?>/vendor/datatables/dataTables.bootstrap4.min.js"></script>
         <script src="<?php echo URLROOT; ?>/vendor/mask/jquery.mask.js"></script>
         <script src="<?php echo URLROOT; ?>/vendor/bootstrap-ajax-typeahead/js/typeahead.js"></script>

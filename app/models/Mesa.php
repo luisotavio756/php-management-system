@@ -253,7 +253,7 @@
 		}
 
 		public function getEstoquePedido($id) {
-			$this->db->query("SELECT p.estoque, p.id FROM tb_produtos AS p JOIN tb_comandas_produtos AS cp ON cp.id_produto = p.id WHERE cp.id = :id LIMIT 1");
+			$this->db->query("SELECT p.estoque, p.id, cp.quantidade FROM tb_produtos AS p JOIN tb_comandas_produtos AS cp ON cp.id_produto = p.id WHERE cp.id = :id LIMIT 1");
 			$this->db->bind(":id", $id);
 			$this->db->execute();
 
@@ -301,7 +301,7 @@
 		}
 
 		public function getPedido($id) {
-			$this->db->query("SELECT cp.id AS id_pedido, p.id AS id_produto, m.id AS id_comanda, m.total, m.nome_cliente, m.data_registro, p.descricao, p.valor, cp.quantidade FROM tb_comandas_produtos AS cp JOIN tb_comandas AS m ON m.id = cp.id_comanda JOIN tb_produtos AS p ON cp.id_produto = p.id WHERE cp.id_comanda = :id ORDER BY cp.id ASC");
+			$this->db->query("SELECT cp.id AS id_pedido, p.id AS id_produto, p.estoque, m.id AS id_comanda, m.total, m.nome_cliente, m.data_registro, p.descricao, p.valor, cp.quantidade FROM tb_comandas_produtos AS cp JOIN tb_comandas AS m ON m.id = cp.id_comanda JOIN tb_produtos AS p ON cp.id_produto = p.id WHERE cp.id_comanda = :id ORDER BY cp.id ASC");
 			$this->db->bind(":id", $id);
 
 			if ($this->db->execute() && $this->db->rowCount() > 0) {

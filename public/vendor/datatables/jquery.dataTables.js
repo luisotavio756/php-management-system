@@ -11342,7 +11342,7 @@
 				 *      } );
 				 *    } );
 				 */
-				"sFirst": "First",
+				"sFirst": "Primeiro",
 	
 	
 				/**
@@ -11365,7 +11365,7 @@
 				 *      } );
 				 *    } );
 				 */
-				"sLast": "Last",
+				"sLast": "Ultimo",
 	
 	
 				/**
@@ -11388,7 +11388,7 @@
 				 *      } );
 				 *    } );
 				 */
-				"sNext": "Next",
+				"sNext": "Próximo",
 	
 	
 				/**
@@ -11411,7 +11411,7 @@
 				 *      } );
 				 *    } );
 				 */
-				"sPrevious": "Previous"
+				"sPrevious": "Anterior"
 			},
 	
 			/**
@@ -11434,7 +11434,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sEmptyTable": "No data available in table",
+			"sEmptyTable": "Nenhum dado na tabela",
 	
 	
 			/**
@@ -11466,7 +11466,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sInfo": "Showing _START_ to _END_ of _TOTAL_ entries",
+			"sInfo": "Mostrando _START_ de _END_ de _TOTAL_ resultados",
 	
 	
 			/**
@@ -11487,7 +11487,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sInfoEmpty": "Showing 0 to 0 of 0 entries",
+			"sInfoEmpty": "Mostrando 0 de 0 de 0 resultados",
 	
 	
 			/**
@@ -11509,7 +11509,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sInfoFiltered": "(filtered from _MAX_ total entries)",
+			"sInfoFiltered": "(Filtrado para _MAX_ resultados)",
 	
 	
 			/**
@@ -11627,7 +11627,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sLengthMenu": "Show _MENU_ entries",
+			"sLengthMenu": "Mostrar _MENU_ resultados",
 	
 	
 			/**
@@ -11651,7 +11651,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sLoadingRecords": "Loading...",
+			"sLoadingRecords": "Carregando...",
 	
 	
 			/**
@@ -11672,7 +11672,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sProcessing": "Processing...",
+			"sProcessing": "Processando...",
 	
 	
 			/**
@@ -11707,7 +11707,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sSearch": "Search:",
+			"sSearch": "Pesquisar:",
 	
 	
 			/**
@@ -11765,7 +11765,7 @@
 			 *      } );
 			 *    } );
 			 */
-			"sZeroRecords": "No matching records found"
+			"sZeroRecords": "Nenhum resultado encontrado"
 		},
 	
 	

@@ -78,7 +78,7 @@
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item" href="<?php echo URLROOT; ?>/mesas/salao">Mostrar Salão</a>   
                             <a class="collapse-item" href="<?php echo URLROOT; ?>/mesas/gerenciar">Gerenciar</a>   
-                            <a class="collapse-item" href="<?php echo URLROOT; ?>/mesas/comandas">Comandas</a>          
+                            <!-- <a class="collapse-item" href="<?php echo URLROOT; ?>/mesas/comandas">Comandas</a>  -->         
                         </div>
                     </div>
                 </li>
@@ -112,11 +112,11 @@
                         <i class="fas fa-users"></i>
                         <span>Usuários</span></a>
                     </li>
-                    <li class="nav-item">
+                    <!-- <li class="nav-item">
                         <a class="nav-link" href="<?php echo URLROOT; ?>/configuracoes">
                         	<i class="fas fa-cogs"></i>
                         <span>Configurações</span></a>
-                    </li>
+                    </li> -->
                 <?php endif ?>
                 <li class="nav-item">
                     <?php if (isset($_SESSION['id_caixa'])): ?>
