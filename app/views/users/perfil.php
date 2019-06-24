@@ -108,17 +108,15 @@
 						<input type="hidden" name="nivel" value="<?php echo $data['user']->nivel ?>">
 						<input type="hidden" name="status" value="<?php echo $data['user']->status ?>">
 						<div class="form-group row">
-							<div class="col-lg-6">
+							<div class="col-lg-6 mb-3">
 								<label>Nome:</label>
 								<input type="tel" name="nome" class="form-control form-control-user" placeholder="Seu Nome.." value="<?php echo $data['user']->nome ?>" required="">
 							</div>
-							<div class="col-lg-6">
+							<div class="col-lg-6 mb-3">
 								<label>Sobrenome:</label>
 								<input type="text" name="sobrenome" class="form-control form-control-user" placeholder="Seu Sobrenome.." value="<?php echo $data['user']->sobrenome ?>" required="">
 							</div>
-						</div>
-						<div class="form-group row">
-							<div class="col-lg-12">
+							<div class="col-lg-12 mb-3">
 								<label>Email:</label>
 								<input type="email" name="email" class="form-control form-control-user" placeholder="Seu Email.." value="<?php echo $data['user']->email ?>" required="">
 							</div>
