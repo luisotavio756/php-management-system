@@ -48,20 +48,22 @@
 					// Load function register
 					if ($this->produtoModel->addProduto($data)) {
 						flash("produtos", "Produto adicionado com Sucesso !");
-						redirect("/produtos/");	
+						redirect("/produtos/gerenciar/");	
 					}else{
 						flash("produtos", "Não foi possível cadastrar o produto!", "alert-danger");
-						redirect("/produtos/");
+						redirect("/produtos/gerenciar/");
 					}
 					
 				}else{
 					// Load view errors
-					$this->view('/produtos/');
+					flash("produtos", "Não foi possível cadastrar o produto!", "alert-danger");
+					redirect("/produtos/gerenciar/");
 				}
 
 			}else{
 				// Load view
-				$this->view('/produtos/');
+				flash("produtos", "Ação Bloqueada !", "alert-danger");
+				redirect("/produtos/gerenciar/");
 			}
 		
 		}
@@ -88,20 +90,20 @@
 					// Load function register
 					if ($this->produtoModel->updateProduto($data)) {
 						flash("produtos", "Produto atualizado com Sucesso !");
-						redirect("/produtos/");	
+						redirect("/produtos/gerenciar");	
 					}else{
 						flash("produtos", "Não foi possível atualizar o produto 1!", "alert-danger");
-						redirect("/produtos/");
+						redirect("/produtos/gerenciar");
 					}
 					
 				}else{
 					flash("produtos", "Não foi possível atualizar o produto!", "alert-danger");
-					redirect("/produtos/");
+					redirect("/produtos/gerenciar");
 				}
 
 			}else{
 				flash("produtos", "Ação Bloqueada !", "alert-danger");
-				redirect("/produtos/");
+				redirect("/produtos/gerenciar");
 			}
 		}
 
@@ -109,10 +111,10 @@
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				if ($this->produtoModel->deleteProduto($id)) {
 					flash("produtos", "Produto Excluido com Sucesso !");
-					redirect("/produtos/cadastrar/");
+					redirect("/produtos/gerenciar");
 				}else{
 					flash("produtos", "Não foi possível excluir o Produto, ele pode está sendo usado em algum pedido ativo ou um pedido passado !", "alert-danger");
-					redirect("/produtos/cadastrar/");
+					redirect("/produtos/gerenciar");
 				}
 
 			}
@@ -148,20 +150,20 @@
 					// Load function register
 					if ($this->produtoModel->addCategoria($data)) {
 						flash("categoria", "Categoria adicionada com Sucesso !");
-						redirect("/produtos/categorias/index");
+						redirect("/produtos/categorias/");
 					}else{
 						flash("categoria", "Não foi possível cadastrar a Categoria !", "alert-danger");
-						redirect("/produtos/categorias/index");
+						redirect("/produtos/categorias/");
 					}
 					
 				}else{
 					// Load view errors
-					$this->view('/produtos/categorias/index');
+					$this->view('/produtos/categorias/');
 				}
 
 			}else{
 				// Load view
-				$this->view('/produtos/categorias/index');
+				$this->view('/produtos/categorias/');
 			}
 		
 		}
@@ -208,13 +210,13 @@
 				}else{
 					flash("categoria", "Não foi possível atualizar a Categoria 2 !", "alert-danger");
 					// Load view errors
-					$this->view('/produtos/categoria/index');
+					$this->view('/produtos/categoria/');
 				}
 
 			}else{
 				// Load view
 				flash("categoria", "Ação Bloqueada!", "alert-danger");
-				$this->view('/produtos/categoria/index');
+				$this->view('/produtos/categoria/');
 			}
 		
 		}

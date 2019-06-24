@@ -3,7 +3,7 @@
 
 		public function __construct(){
 			$this->userModel = $this->model('User');
-			
+			$this->mesaModel = $this->model('Mesa');
 			if (!isset($_SESSION['id_usuario'])) {
 				redirect("/users/login");
 			}else{
@@ -14,26 +14,32 @@
 		}
 
 		public function index(){
-			// if (isLogged()) {
-			// 	redirect('posts');
-			// }
+			$comandas = $this->mesaModel->getComAll();
+			$comandasCloses = $this->mesaModel->getComCloses();
 
 			$data = [
-					'title' => 'Aplicação Padrão MVC',
-					'descricao' => 'Descrição do Site'
+					'comandas' => $comandas,
+					'comandasClose' => $comandasCloses,
+					'pedidosPendentes' => $this->getPedidosAll(),
+					'clientes' => $this->mesaModel->getCurrentesCom()
 			];
 
 			$this->view('pages/index', $data);
 		}
-		
-		public function about(){
-			$data = [
-					'title' => 'Sobre',
-					'descricao' => 'Descrição do Site'
-			];
 
-			$this->view('pages/about', $data);
+		public function getPedidosAll(){
+			$comandas = $this->mesaModel->getComAll();
+			$cont = 0;
+			foreach ($comandas as $key => $value) {
+				$pedidos = $this->mesaModel->getPedido($value->id);
+				if ($pedidos) {
+					$cont += count($pedidos);
+				}
+			}
+
+			return $cont;
 		}
+		
 
 		
 	}

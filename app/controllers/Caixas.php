@@ -382,7 +382,7 @@
 
 			$mpdf->WriteHTML($body);
 
-			$mpdf->Output("$nome.pdf", \Mpdf\Output\Destination::DOWNLOAD);
+			$mpdf->Output("$nome.pdf", \Mpdf\Output\Destination::INLINE);
 
 		}
 

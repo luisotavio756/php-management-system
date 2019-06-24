@@ -9,12 +9,13 @@
 
 		// Register user
 		public function registerUser($data) {
-			$this->db->query("INSERT INTO tb_usuarios(nome, sobrenome, email, senha, nivel, status) VALUES (:nome, :sobrenome, :email, :senha, :nivel, :status)");
+			$this->db->query("INSERT INTO tb_usuarios(nome, sobrenome, email, img, senha, nivel, status) VALUES (:nome, :sobrenome, :email, :img, :senha, :nivel, :status)");
 
 			//Bind values
 			$this->db->bind(":nome", $data['nome']);
 			$this->db->bind(":sobrenome", $data['sobrenome']);
 			$this->db->bind(":email", $data['email']);
+			$this->db->bind(":img", $data['img']);
 			$this->db->bind(":senha", $data['password']);
 			$this->db->bind(":nivel", (isset($data['nivel'] )? $data['nivel'] : 1 ));
 			$this->db->bind(":status", (isset($data['status']) ? $data['status'] : 1 ));
@@ -106,6 +107,32 @@
 			}else{
 				return false;
 			}
+		
+		}
+
+		public function updateSenha($id, $senha){
+			$this->db->query("UPDATE tb_usuarios SET senha = :senha WHERE id = :id");
+			$this->db->bind(":id", $id);
+			$this->db->bind(":senha", $senha);
+
+			if ($this->db->execute()) {
+				return true;
+			}else{
+				return false;
+			}
+		
+		}
+
+		public function updateImg($id, $img) {
+			$this->db->query("UPDATE tb_usuarios SET img = :img WHERE id = :id");
+			$this->db->bind(":id", $id);
+			$this->db->bind(":img", $img);
+
+			if ($this->db->execute()) {
+				return true;
+			}else{
+				return false;
+			}
 		}
 
 		public function verifyUser($id) {
@@ -120,6 +147,7 @@
 			}else{
 				return false;
 			}
+		
 		}
 
 	}

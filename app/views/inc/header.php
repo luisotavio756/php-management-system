@@ -1,3 +1,9 @@
+ <?php 
+    $init = new Core();
+    // echo '<pre>';
+    $controller = isset($init->getUrl()[0]) ? $init->getUrl()[0] : 'home';
+    $method = isset($init->getUrl()[1]) ? $init->getUrl()[1] : '';
+?>
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -14,6 +20,9 @@
         <link href="<?php echo URLROOT; ?>/css/sb-admin-2.css" rel="stylesheet">
         <!-- Custom styles for this page -->
         <link href="<?php echo URLROOT; ?>/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
+        <!-- Custom styles -->
+        <link href="<?php echo URLROOT; ?>/vendor/upload/css/jquery.dm-uploader.min.css" rel="stylesheet">
+        <link href="<?php echo URLROOT; ?>/vendor/upload/css/styles.css" rel="stylesheet">
         <style type="text/css">
             .nav-caixa .nav-tabs .nav-link{
                 color: #6e707e !important;
@@ -40,6 +49,24 @@
                 padding: .5rem !important;
                 font-size: 0.9rem !important;
             }
+
+            .pulsate {
+                -webkit-animation: pulsate 1.5s ease-out;
+                -webkit-animation-iteration-count: infinite; 
+                opacity: 0.5;
+            }
+
+            @-webkit-keyframes pulsate {
+                0% { 
+                    opacity: 0.5;
+                }
+                50% { 
+                    opacity: 1.0;
+                }
+                100% { 
+                    opacity: 0.5;
+                }
+            }
         </style>
     </head>
     <body id="page-top">
@@ -57,10 +84,10 @@
                 <!-- Divider -->
                 <hr class="sidebar-divider my-0">
                 <!-- Nav Item - Dashboard -->
-                <li class="nav-item active">
+                <li class="nav-item <?php echo $controller == 'home' ? 'active' : '' ?>">
                     <a class="nav-link" href="<?php echo URLROOT; ?>/">
-                    <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span></a>
+                    <i class="fas fa-fw fa-home"></i>
+                    <span>Início</span></a>
                 </li>
                 <!-- Divider -->
                 <hr class="sidebar-divider">
@@ -69,32 +96,32 @@
                     Principal
                 </div>
                 <!-- Nav Item - Pages Collapse Menu -->
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#mesas" aria-expanded="true" aria-controls="mesas">
+                <li class="nav-item <?php echo $controller == 'mesas' ? 'active' : '' ?>">
+                    <a class="nav-link <?php echo $controller == 'mesas' ? '' : 'collapsed' ?>" href="#" data-toggle="collapse" data-target="#mesas" aria-expanded="true" aria-controls="mesas">
 	                    <i class="fas fa-object-group"></i>
 	                    <span>Mesas</span>
                     </a>
-                    <div id="mesas" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div id="mesas" class="collapse <?php echo $controller == 'mesas' ? 'show' : '' ?>" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" href="<?php echo URLROOT; ?>/mesas/salao">Mostrar Salão</a>   
-                            <a class="collapse-item" href="<?php echo URLROOT; ?>/mesas/gerenciar">Gerenciar</a>   
+                            <a class="collapse-item <?php echo $controller == 'mesas' && $method == 'salao' ? 'active' : '' ?>" href="<?php echo URLROOT; ?>/mesas/salao">Mostrar Salão</a>   
+                            <a class="collapse-item <?php echo $controller == 'mesas' && $method == 'gerenciar' ? 'active' : '' ?>" href="<?php echo URLROOT; ?>/mesas/gerenciar">Gerenciar</a>   
                             <!-- <a class="collapse-item" href="<?php echo URLROOT; ?>/mesas/comandas">Comandas</a>  -->         
                         </div>
                     </div>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#produtos" aria-expanded="true" aria-controls="produtos">
+                <li class="nav-item <?php echo $controller == 'produtos' ? 'active' : '' ?> d-none d-sm-block">
+                    <a class="nav-link <?php echo $controller == 'produtos' ? '' : 'collapsed' ?>" href="#" data-toggle="collapse" data-target="#produtos" aria-expanded="true" aria-controls="produtos">
 	                    <i class="fas fa-cubes"></i>
 	                    <span>Produtos</span>
                     </a>
-                    <div id="produtos" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                    <div id="produtos" class="collapse <?php echo $controller == 'produtos' ? 'show' : '' ?>" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
-                            <a class="collapse-item" href="<?php echo URLROOT; ?>/produtos/">Gerenciar</a>
-                            <a class="collapse-item" href="<?php echo URLROOT; ?>/produtos/categorias/">Categorias</a>
+                            <a class="collapse-item <?php echo $controller == 'produtos' && $method == 'gerenciar' ? 'active' : '' ?>" href="<?php echo URLROOT; ?>/produtos/gerenciar/">Gerenciar</a>
+                            <a class="collapse-item <?php echo $controller == 'produtos' && $method == 'categorias' ? 'active' : '' ?>" href="<?php echo URLROOT; ?>/produtos/categorias/">Categorias</a>
                         </div>
                     </div>
                 </li>
-                <li class="nav-item">
+                <li class="nav-item <?php echo $controller == 'caixas' ? 'active' : '' ?>">
                     <a class="nav-link" href="<?php echo URLROOT; ?>/caixas/">
                     	<i class="fab fa-buffer"></i>
                     	<span>Caixa</span>
@@ -107,7 +134,7 @@
                     Configs
                 </div>
                 <?php if ($_SESSION['nivel'] == 1): ?>
-                    <li class="nav-item">
+                    <li class="nav-item <?php echo $controller == 'users' ? 'active' : '' ?> d-none d-sm-block">
                         <a class="nav-link" href="<?php echo URLROOT; ?>/users/">
                         <i class="fas fa-users"></i>
                         <span>Usuários</span></a>
@@ -120,7 +147,7 @@
                 <?php endif ?>
                 <li class="nav-item">
                     <?php if (isset($_SESSION['id_caixa'])): ?>
-                        <a class="nav-link" href="#logoutModal">
+                        <a class="nav-link" href="#logoutModal" data-toggle="modal">
                             <i class="fas fa-sign-out-alt"></i>
                         <span>Sair</span></a>
                     <?php else: ?>
@@ -272,9 +299,9 @@
                             <!-- Nav Item - User Information -->
                             <li class="nav-item dropdown no-arrow">
                                 <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo $_SESSION['nome'] . ' ' . $_SESSION['sobrenome'] ?></span>
-                               <!--  <img class="img-profile rounded-circle" src="https://source.unsplash.com/QAB-WJcbgJk/60x60"> -->
-                                <i class="fas fa-2x fa-user-circle"></i>
+                                    <span class="mr-2 d-none d-lg-inline text-gray-600 small"><?php echo $_SESSION['nome'] ?></span>
+                                    <img class="img-profile rounded-circle" src="<?php echo URLROOT."/img/users/".$_SESSION['img'] ?>">
+
                                 </a>
                                 <!-- Dropdown - User Information -->
                                 <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -291,10 +318,23 @@
                                     Activity Log
                                     </a>
                                     <div class="dropdown-divider"></div> -->
-                                    <a class="dropdown-item" href="<?php echo URLROOT; ?>/users/logout">
-                                    <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                    Sair
+                                    <a class="dropdown-item" href="<?php echo URLROOT; ?>/users/perfil/">
+                                        <i class="fas fa-user fa-sm fa-fw mr-2 text-gray-400"></i>
+                                        Editar Perfil
                                     </a>
+                                    <div class="dropdown-divider"></div>
+                                    <?php if (isset($_SESSION['id_caixa'])): ?>
+                                        <a class="dropdown-item" href="#logoutModal" data-toggle="modal">
+                                            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            Sair
+                                        </a>
+                                    <?php else: ?>
+                                        <a class="dropdown-item" href="<?php echo URLROOT; ?>/users/logout">
+                                            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                            Sair
+                                        </a>
+                                    <?php endif; ?>
+                                    
                                     <!-- data-target="#logoutModal" -->
                                 </div>
                             </li>

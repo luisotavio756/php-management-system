@@ -214,7 +214,7 @@
 	                    <div class="modal-footer">
 	                    	<button type="button" class="btn btn-info mr-auto" id="btn-voltar" style="display: none"><i class="fas fa-chevron-circle-left"></i> Voltar</button>
 	                        <!-- <button type="button" class="btn btn-danger btn-trash" style="display: none"><i class="fas fa-trash"></i> Apagar Caixa</button> -->
-	                    	<a href="#" class="btn btn-success btn-download" style="display: none"><i class="fas fa-file-excel"></i> Download</a>
+	                    	<a href="#" target="_blank" class="btn btn-success btn-download" style="display: none"><i class="fas fa-file-excel"></i> Download</a>
 	                        <button type="button" class="btn btn-secondary btn-back" data-dismiss="modal">Fechar</button>	       
 	                        <a href="#" id="btn-trash-caixa" ste="0" class="btn btn-danger" style="display: none"><i class="fas fa-trash"></i></a>
 	                        <!-- Confirmar e Apagar Caixa -->

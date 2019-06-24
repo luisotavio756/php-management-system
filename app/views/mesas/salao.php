@@ -12,24 +12,7 @@
 		    align-items: center !important;
 		    font-size: 15px !important;
 		    font-weight: 600 !important;
-		}
 
-		.pulsate {
-		    -webkit-animation: pulsate 1.5s ease-out;
-		    -webkit-animation-iteration-count: infinite; 
-		    opacity: 0.5;
-		}
-
-		@-webkit-keyframes pulsate {
-		    0% { 
-		        opacity: 0.5;
-		    }
-		    50% { 
-		        opacity: 1.0;
-		    }
-		    100% { 
-		        opacity: 0.5;
-		    }
 		}
 
 		.select-mesa {
@@ -68,18 +51,22 @@
 													</a>
 													<div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink" x-placement="bottom-end">
 														<?php if ($value->status == 1): ?>
-															<a class="dropdown-item" href="#modal_pedidos" data-toggle="modal" id="<?php echo $data['comandasMesa'][$value->id]->id ?>" mesa="<?php echo $value->id ?>"><i class="fas fa-plus mr-1"></i>  Adicionar Pedidos</a>
+															<a class="dropdown-item text-info" href="#modal_pedidos" data-toggle="modal" id="<?php echo $data['comandasMesa'][$value->id]->id ?>" mesa="<?php echo $value->id ?>"><i class="fas fa-plus mr-1"></i>  Adicionar Pedidos</a>
 															<div class="dropdown-divider"></div>
 
-															<a class="dropdown-item" href="#modal_ver_pedidos" data-toggle="modal" id="<?php echo $data['comandasMesa'][$value->id]->id ?>" mesa="<?php echo $value->id ?>" nome="<?php echo $data['comandasMesa'][$value->id]->nome_cliente ?>" data-registro="<?php echo $data['comandasMesa'][$value->id]->data_registro ?>"><i class="fas fa-file mr-1"></i>  Ver Pedido</a>
-
-															<div class="dropdown-divider"></div>
-
-															<a class="dropdown-item" href="#modal_fechar_comanda" data-toggle="modal" id="<?php echo $data['comandasMesa'][$value->id]->id ?>" nome="<?php echo $data['comandasMesa'][$value->id]->nome_cliente ?>" total="<?php echo $data['comandas'][$data['comandasMesa'][$value->id]->id] ?>" mesa="<?php echo $value->id ?>" data-registro="<?php echo toBrDateTime($data['comandasMesa'][$value->id]->data_registro) ?>"><i class="fas fa-check-circle mr-1"></i> Fechar Comanda</a>
+															<a class="dropdown-item text-warning" href="#modal_ver_pedidos" data-toggle="modal" id="<?php echo $data['comandasMesa'][$value->id]->id ?>" mesa="<?php echo $value->id ?>" nome="<?php echo $data['comandasMesa'][$value->id]->nome_cliente ?>" data-registro="<?php echo $data['comandasMesa'][$value->id]->data_registro ?>"><i class="fas fa-file mr-1"></i>  Ver Pedido</a>
 
 															<div class="dropdown-divider"></div>
 
-															<a class="dropdown-item" href="#modal_cancelar_comanda" data-toggle="modal" id="<?php echo $data['comandasMesa'][$value->id]->id ?>" nome="<?php echo $data['comandasMesa'][$value->id]->nome_cliente ?>" total="<?php echo $data['comandas'][$data['comandasMesa'][$value->id]->id] ?>" mesa="<?php echo $value->id ?>" data-registro="<?php echo toBrDateTime($data['comandasMesa'][$value->id]->data_registro) ?>"><i class="fas fa-ban mr-1"></i> Cancelar Comanda</a>
+															<a class="dropdown-item text-success" href="#modal_enviar_pedido" data-toggle="modal" id="<?php echo $data['comandasMesa'][$value->id]->id ?>" whats="<?php echo $data['comandasMesa'][$value->id]->whatsapp ?>" mesa="<?php echo $value->id ?>"><i class="fas fa-paper-plane mr-1"></i> Enviar Pedido</a>
+
+															<div class="dropdown-divider"></div>
+
+															<a class="dropdown-item text-success" href="#modal_fechar_comanda" data-toggle="modal" id="<?php echo $data['comandasMesa'][$value->id]->id ?>" nome="<?php echo $data['comandasMesa'][$value->id]->nome_cliente ?>" total="<?php echo $data['comandas'][$data['comandasMesa'][$value->id]->id] ?>" mesa="<?php echo $value->id ?>" data-registro="<?php echo toBrDateTime($data['comandasMesa'][$value->id]->data_registro) ?>"><i class="fas fa-check-circle mr-1"></i> Fechar Comanda</a>
+
+															<div class="dropdown-divider"></div>
+
+															<a class="dropdown-item text-danger" href="#modal_cancelar_comanda" data-toggle="modal" id="<?php echo $data['comandasMesa'][$value->id]->id ?>" nome="<?php echo $data['comandasMesa'][$value->id]->nome_cliente ?>" total="<?php echo $data['comandas'][$data['comandasMesa'][$value->id]->id] ?>" mesa="<?php echo $value->id ?>" data-registro="<?php echo toBrDateTime($data['comandasMesa'][$value->id]->data_registro) ?>"><i class="fas fa-ban mr-1"></i> Cancelar Comanda</a>
 														<?php else: ?>
 															<a class="dropdown-item" href="#modal_add_comanda" id="<?php echo $value->id ?>" data-toggle="modal"><i class="fas fa-plus mr-1"></i> Adicionar Comanda</a>
 
@@ -176,15 +163,12 @@
 	            <form class="user" action="<?php echo URLROOT ?>/mesas/addComanda" method="POST" enctype="multpart/form-data">
 	                <div class="modal-body">
 						<div class="form-group row">
-							<!-- <div class="col-lg-3 mb-3 mb-lg-0">
-								<label>Num:</label>
-								<input type="number" min="0" name="num" class="form-control form-control-user" placeholder="Código" required="">
-							</div> -->
-							<div class="col-lg-7">
+							
+							<div class="col-lg-7 mb-3">
 								<label>Cliente(Opcional):</label>
 								<input type="text" name="cliente" class="form-control form-control-user" placeholder="Nome do Cliente.." >
 							</div>
-							<div class="col-lg-5">
+							<div class="col-lg-5 mb-3">
 								<label>Mesa:</label>
 								<select class="form-control form-control-user select-mesa" disabled="" name="mesa" required="">
 									<?php if ($data['mesas']): ?>
@@ -198,11 +182,37 @@
 									<?php endif ?>
 								</select>
 							</div>
+							<div class="col-lg-12 mb-3 mb-lg-0">
+								<label>Whatsapp:</label>
+								<input type="tel" name="whatsapp" class="form-control form-control-user phone" placeholder="Digite o número do Whatsapp do Cliente.." required="">
+							</div>
 						</div>
 	                </div>
 	                <div class="modal-footer">
 	                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
 	                    <button type="submit" class="btn btn-success">Adicionar <i class="fas fa-check"></i></button>
+	                </div>
+	            </form>
+	        </div>
+	    </div>
+	</div>
+	<div class="modal fade" id="modal_enviar_pedido" tabindex="-1" role="dialog" aria-labelledby="tituloModalBase" aria-hidden="true">
+	    <div class="modal-dialog" role="document" style="">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <h5 class="modal-title" id="exampleModalLabel">Enviar Pedido</h5>
+	                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	                    <span aria-hidden="true">&times;</span>
+	                </button>
+	            </div>
+	            <form class="user" action="<?php echo URLROOT ?>/mesas/addComanda" method="POST" enctype="multpart/form-data">
+	                <div class="modal-body">
+						<h4 class="text-center my-4">Escolha abaixo como deseja enviar o pedido para o cliente <i class="fas fa-paper-plane"></i></h4>
+	                </div>
+	                <div class="modal-footer">
+	                    <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button> -->
+	                    <button type="button" class="btn btn-info"><i class="fas fa-file"></i> Imprimir</button> OU 
+	                    <button type="button" class="btn btn-success btn-whats"><i class="fab fa-whatsapp"></i> Enviar Por Whatsapp</button>
 	                </div>
 	            </form>
 	        </div>
@@ -343,11 +353,31 @@
 	    </div>
 	</div>
 
-
 <?php require_once APPROOT . '/views/inc/footer.php'; ?>
 <script type="text/javascript">
-	// ADD COMANDA
+	function enviarMensagem(numero, id){
+		var celular = numero;
 
+		var texto = "*Olá ! Acesse este link para ver os seus pedidos*\n\n<?php echo URLROOT ?>/clientes/" + id;
+		texto = window.encodeURIComponent(texto);
+
+		window.open("https://api.whatsapp.com/send?phone=" + celular + "&text=" + texto, "_blank");
+		//Obs.. use "_system", no lugar de blank, caso você esteja usando Phonegap / Cordova / Ionic ou qualquer um baseado em webview;
+	}
+
+	// ADD COMANDA
+	$("#modal_enviar_pedido").on("show.bs.modal", function(e) {
+		var link = $(e.relatedTarget);
+		var id = link.attr('id');
+		var whatsapp = link.attr('whats');
+
+        $(this).find("[name='mesa']").val(id);
+        $(this).find(".btn-whats").attr('onclick', 'enviarMensagem(55'+whatsapp+', '+id+')');
+
+	
+	});
+
+	// ADD COMANDA
 	$("#modal_add_comanda").on("show.bs.modal", function(e) {
 		var link = $(e.relatedTarget);
 		var id = link.attr('id');

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: 20-Jun-2019 às 20:27
+-- Generation Time: 24-Jun-2019 às 17:43
 -- Versão do servidor: 10.1.40-MariaDB
 -- versão do PHP: 7.3.5
 
@@ -43,12 +43,9 @@ CREATE TABLE `tb_caixa` (
 --
 
 INSERT INTO `tb_caixa` (`id`, `saldo_inicial`, `saldo_final`, `data_aberto`, `data_fechado`, `id_usuario`, `status`) VALUES
-(49, '200.00', '200.00', '2019-06-14 12:57:29', '2019-06-14 12:57:32', 7, 0),
-(50, '200.00', '200.00', '2019-06-18 08:03:18', '2019-06-18 09:54:16', 7, 0),
-(51, '200.00', '630.00', '2019-06-18 09:55:09', '2019-06-18 12:06:22', 7, 0),
-(52, '200.00', '280.00', '2019-06-18 12:07:43', '2019-06-18 12:08:25', 7, 0),
-(54, '123213.21', '123213.21', '2019-06-18 15:03:23', '2019-06-18 15:08:46', 7, 0),
-(55, '200.00', NULL, '2019-06-20 09:37:32', NULL, 7, 1);
+(56, '200.00', '140.00', '2019-06-21 11:01:26', '2019-06-21 11:02:33', 12, 0),
+(57, '20.00', '33.50', '2019-06-21 11:07:00', '2019-06-21 11:08:23', 12, 0),
+(58, '200.00', '264.50', '2019-06-22 20:56:40', '2019-06-24 11:36:08', 12, 0);
 
 -- --------------------------------------------------------
 
@@ -67,13 +64,11 @@ CREATE TABLE `tb_categorias` (
 --
 
 INSERT INTO `tb_categorias` (`id`, `descricao`, `data_registro`) VALUES
-(1, '234234', '0000-00-00 00:00:00'),
-(4, 'teste', '0000-00-00 00:00:00'),
-(8, '134', '0000-00-00 00:00:00'),
-(9, 'ert', '0000-00-00 00:00:00'),
-(10, '23', '2019-06-08 14:06:43'),
-(11, 'Cachaxa', '2019-06-18 14:06:28'),
-(12, '2342345345', '2019-06-20 15:06:59');
+(1, 'Comida', '0000-00-00 00:00:00'),
+(4, 'Churrasco', '0000-00-00 00:00:00'),
+(8, 'Bebida', '0000-00-00 00:00:00'),
+(9, 'Sobremesa', '0000-00-00 00:00:00'),
+(10, 'Comidas', '2019-06-22 10:06:14');
 
 -- --------------------------------------------------------
 
@@ -84,6 +79,7 @@ INSERT INTO `tb_categorias` (`id`, `descricao`, `data_registro`) VALUES
 CREATE TABLE `tb_comandas` (
   `id` int(11) NOT NULL,
   `nome_cliente` varchar(60) DEFAULT NULL,
+  `whatsapp` varchar(20) NOT NULL,
   `data_registro` datetime NOT NULL,
   `data_fechado` datetime DEFAULT NULL,
   `total` decimal(11,2) NOT NULL,
@@ -96,14 +92,12 @@ CREATE TABLE `tb_comandas` (
 -- Extraindo dados da tabela `tb_comandas`
 --
 
-INSERT INTO `tb_comandas` (`id`, `nome_cliente`, `data_registro`, `data_fechado`, `total`, `id_usuario`, `id_mesa`, `status`) VALUES
-(9, 'Luis', '2019-06-18 11:51:23', '2019-06-18 11:53:02', '200.00', 7, 1, 1),
-(10, 'Flaviano', '2019-06-18 11:52:06', '2019-06-18 11:53:33', '100.00', 7, 2, 1),
-(11, 'Rafael', '2019-06-18 11:52:35', '2019-06-18 12:03:51', '130.00', 7, 3, 1),
-(12, '', '2019-06-18 12:04:12', '2019-06-18 12:07:52', '80.00', 7, 1, 1),
-(13, 'JoÃ£o', '2019-06-18 12:44:24', '2019-06-18 14:59:46', '40.00', 7, 1, 1),
-(14, 'JoÃ£o', '2019-06-20 09:36:12', '2019-06-20 09:37:42', '0.00', 7, 1, 1),
-(18, 'JoÃ£o', '2019-06-20 10:19:58', NULL, '0.00', 7, 1, 0);
+INSERT INTO `tb_comandas` (`id`, `nome_cliente`, `whatsapp`, `data_registro`, `data_fechado`, `total`, `id_usuario`, `id_mesa`, `status`) VALUES
+(31, 'JoÃ£o', '', '2019-06-21 11:06:06', '2019-06-21 11:07:12', '13.50', 12, 1, 1),
+(32, 'Flaviano', '', '2019-06-21 11:07:35', '2019-06-21 11:08:16', '0.00', 12, 1, 1),
+(33, 'JoÃ£o', '88994821434', '2019-06-21 11:58:04', '2019-06-23 08:41:21', '37.50', 12, 1, 1),
+(36, 'Luis', '88994821434', '2019-06-23 09:06:16', '2019-06-23 09:06:33', '0.00', 12, 1, 1),
+(37, 'Luis', '88997283474', '2019-06-24 10:02:25', '2019-06-24 11:36:03', '27.00', 12, 1, 1);
 
 -- --------------------------------------------------------
 
@@ -123,13 +117,15 @@ CREATE TABLE `tb_comandas_produtos` (
 --
 
 INSERT INTO `tb_comandas_produtos` (`id`, `quantidade`, `id_comanda`, `id_produto`) VALUES
-(21, 2, 9, 1),
-(22, 2, 9, 2),
-(23, 2, 10, 2),
-(25, 2, 11, 23),
-(26, 1, 11, 2),
-(27, 2, 12, 3),
-(30, 1, 13, 3);
+(43, 3, 31, 27),
+(45, 1, 33, 31),
+(46, 1, 33, 33),
+(47, 1, 33, 35),
+(48, 1, 33, 30),
+(49, 1, 37, 32),
+(50, 1, 37, 27),
+(51, 1, 37, 33),
+(52, 1, 37, 30);
 
 -- --------------------------------------------------------
 
@@ -150,14 +146,8 @@ CREATE TABLE `tb_mesas` (
 --
 
 INSERT INTO `tb_mesas` (`id`, `descricao`, `data_registro`, `id_usuario`, `status`) VALUES
-(1, 'Mesa 1', '2019-06-12 10:06:37', 7, 1),
-(2, 'Mesa 2', '2019-06-12 10:06:41', 7, 0),
-(3, 'Mesa 3', '2019-06-12 10:06:46', 7, 0),
-(4, 'Mesa 4', '2019-06-18 13:06:06', 7, 0),
-(5, 'Mesa 5', '2019-06-18 13:06:19', 7, 0),
-(6, 'Mesa 6', '2019-06-18 13:06:35', 7, 0),
-(7, 'Mesa 7', '2019-06-18 13:06:46', 7, 0),
-(8, 'Mesa 8', '2019-06-18 13:06:51', 7, 0);
+(1, 'Mesa 1', '2019-06-21 11:06:40', 12, 0),
+(2, 'Mesa 2', '2019-06-21 11:06:46', 12, 0);
 
 -- --------------------------------------------------------
 
@@ -180,11 +170,13 @@ CREATE TABLE `tb_movimento_caixa` (
 --
 
 INSERT INTO `tb_movimento_caixa` (`id`, `descricao`, `tipo`, `modo_pagamento`, `valor`, `data_registro`, `id_caixa`) VALUES
-(4, 'Pagamento Comanda 9', 1, 2, '200.00', '2019-06-18 11:53:02', 51),
-(5, 'Pagamento Comanda 10', 1, 1, '100.00', '2019-06-18 11:53:33', 51),
-(6, 'Pagamento Comanda 11', 1, 1, '130.00', '2019-06-18 12:03:51', 51),
-(7, 'Pagamento Comanda 12', 1, 2, '80.00', '2019-06-18 12:07:52', 52),
-(8, 'Pagamento Comanda 14', 1, 1, '0.00', '2019-06-20 09:37:42', 55);
+(13, 'Teste', 1, 2, '40.00', '2019-06-21 11:01:47', 56),
+(14, 'Agua', 2, 1, '100.00', '2019-06-21 11:02:02', 56),
+(15, 'Pagamento Comanda 31', 1, 2, '13.50', '2019-06-21 11:07:12', 57),
+(16, 'Pagamento Comanda 32', 1, 1, '0.00', '2019-06-21 11:08:16', 57),
+(17, 'Pagamento Comanda 33', 1, 2, '37.50', '2019-06-23 08:41:21', 58),
+(18, 'Pagamento Comanda 36', 1, 1, '0.00', '2019-06-23 09:06:33', 58),
+(19, 'Pagamento Comanda 37', 1, 1, '27.00', '2019-06-24 11:36:03', 58);
 
 -- --------------------------------------------------------
 
@@ -207,12 +199,13 @@ CREATE TABLE `tb_produtos` (
 --
 
 INSERT INTO `tb_produtos` (`id`, `descricao`, `valor`, `estoque`, `data_registro`, `id_categoria`, `id_usuario`) VALUES
-(1, 'Pizza', '50.00', 1, '0000-00-00 00:00:00', 10, 7),
-(2, 'Refrigerante', '50.00', 0, '0000-00-00 00:00:00', 1, 7),
-(3, 'Comidas', '40.00', 123, '2019-06-12 09:39:17', 1, 7),
-(23, 'Resto', '40.00', 3, '0000-00-00 00:00:00', 1, 7),
-(24, '3453', '4.45', 50, '2019-06-20 14:31:35', 1, 7),
-(25, '234', '23.00', 234, '2019-06-20 14:52:10', 1, 7);
+(27, 'Refrigerante GuaranÃ¡ Antartica 1L', '4.50', 341, '2019-06-21 11:00:52', 8, 12),
+(30, 'Suco de Laranja', '4.50', 7, '2019-06-22 20:18:40', 8, 12),
+(31, 'Meia Carne Boi', '12.00', 97, '2019-06-22 20:19:08', 4, 12),
+(32, 'Meia Carne Porco', '13.00', 97, '2019-06-22 20:19:32', 4, 12),
+(33, 'Refrigerante Pepsi 1L ', '5.00', 48, '2019-06-22 20:19:57', 8, 12),
+(34, 'Refrigerante Coca-Cola 1L', '5.50', 50, '2019-06-22 20:20:24', 8, 12),
+(35, 'Frango Assado', '16.00', 98, '2019-06-22 20:21:04', 4, 12);
 
 -- --------------------------------------------------------
 
@@ -224,8 +217,9 @@ CREATE TABLE `tb_usuarios` (
   `id` int(11) NOT NULL,
   `nome` varchar(60) NOT NULL,
   `sobrenome` varchar(60) NOT NULL,
+  `img` varchar(255) NOT NULL,
   `email` varchar(100) NOT NULL,
-  `senha` varchar(100) NOT NULL,
+  `senha` varchar(300) NOT NULL,
   `nivel` int(1) NOT NULL,
   `status` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
@@ -234,9 +228,9 @@ CREATE TABLE `tb_usuarios` (
 -- Extraindo dados da tabela `tb_usuarios`
 --
 
-INSERT INTO `tb_usuarios` (`id`, `nome`, `sobrenome`, `email`, `senha`, `nivel`, `status`) VALUES
-(7, 'Luis', 'Otavio', 'admin@admin.com', '$2y$10$Tlwz9rkGCoUDvdcHyqUCcePzbYnU4MBSpoOCgYOYtUVMa1pdCCPYi', 1, 1),
-(11, 'JoÃ£o', 'Freitas', 'joao@joao.com', '$2y$10$IpEZhcMHLZYDzHrMYjnFyuyakeayXDmKwUJczLyct8qH/4vDqzZGS', 2, 1);
+INSERT INTO `tb_usuarios` (`id`, `nome`, `sobrenome`, `img`, `email`, `senha`, `nivel`, `status`) VALUES
+(12, 'Assakabrasa', 'Otavio', 'perfil12.jpg', 'admin@admin.com', '$2y$10$OOc.aNL3ixxwq8mnlNgZnuIkdciHFY5yyUxaNLtrNMc4eF5b.6NPe', 1, 1),
+(13, 'Luis', 'Otavio', 'masculino.png', 'joao@joao.com', '$2y$10$NSF3sLxyIryCUTYoK85LyuM7l9iuWW95FRjZP7eoJIaF0/11gXRPG', 1, 1);
 
 --
 -- Indexes for dumped tables
@@ -308,43 +302,43 @@ ALTER TABLE `tb_usuarios`
 -- AUTO_INCREMENT for table `tb_caixa`
 --
 ALTER TABLE `tb_caixa`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=56;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=59;
 
 --
 -- AUTO_INCREMENT for table `tb_categorias`
 --
 ALTER TABLE `tb_categorias`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
 
 --
 -- AUTO_INCREMENT for table `tb_comandas`
 --
 ALTER TABLE `tb_comandas`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=19;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=39;
 
 --
 -- AUTO_INCREMENT for table `tb_comandas_produtos`
 --
 ALTER TABLE `tb_comandas_produtos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=35;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=57;
 
 --
 -- AUTO_INCREMENT for table `tb_movimento_caixa`
 --
 ALTER TABLE `tb_movimento_caixa`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- AUTO_INCREMENT for table `tb_produtos`
 --
 ALTER TABLE `tb_produtos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=36;
 
 --
 -- AUTO_INCREMENT for table `tb_usuarios`
 --
 ALTER TABLE `tb_usuarios`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
 
 --
 -- Constraints for dumped tables

@@ -191,6 +191,7 @@
 				// Init data
 				$data = [
 					'cliente' => (isset($_POST['cliente']) ? trim($_POST['cliente']) : ''),
+					'whatsapp' => str_replace(' ', '', str_replace('-', '', str_replace(')', '', str_replace('(', '', trim($_POST['whatsapp']))))),
 					'data_registro' => date('Y-m-d H:i:s'),
 					'mesa' => $_POST['mesa'],
 					'id_usuario' => $_SESSION['id_usuario'],
@@ -198,7 +199,7 @@
 				];
 
 				// Validate all 
-				if (isset($data['mesa']) && isset($data['id_usuario'])) {
+				if (isset($data['mesa']) && isset($data['id_usuario']) && isset($data['whatsapp'])) {
 					//Validated
 					if ($this->mesaModel->verifyDis($data['mesa']) == false) {
 						// Load function register
@@ -306,6 +307,16 @@
 
 			echo json_encode($row);
 		
+		}
+
+		public function verPedido($id) {
+			$pedido = $this->mesaModel->getPedido($id);
+
+			$data = [
+				'pedido' => $pedido
+			];
+
+			$this->view('mesas/pedido', $data);
 		}
 
 		public function alterPedido() {
@@ -431,25 +442,24 @@
 					'id_mesa' => ($_POST['id_mesa']),
 				];
 
-				
 
 				if (isset($data['id_comanda']) && isset($data['id_mesa'])) {
 					$pedido = $this->mesaModel->getPedido($data['id_comanda']);
-					echo "<pre>";
-					print_r($pedido);
-					
-					// if ($this->mesaModel->cancelarCom($data['id_comanda'])) {
-					// 	if ($this->mesaModel->setMesa($data['id_mesa'], 0)) {
-					// 		flash("salao", "Comanda Cancelada com Sucesso !");
-					// 		redirect("/mesas/salao");
-					// 	}else{
-					// 		flash("salao", "Não foi possível cancelar a comanda !", "alert-danger");
-					// 		redirect("/mesas/salao");
-					// 	}
-					// }else{
-					// 	flash("salao", "Não foi possível cancelar a comanda !", "alert-danger");
-					// 	redirect("/mesas/salao");
-					// }
+					// echo "<pre>";
+					// print_r($pedido);
+
+					if ($this->mesaModel->cancelarCom($data['id_comanda'])) {
+						if ($this->mesaModel->setMesa($data['id_mesa'], 0)) {
+							flash("salao", "Comanda Cancelada com Sucesso !");
+							redirect("/mesas/salao");
+						}else{
+							flash("salao", "Não foi possível cancelar a comanda !", "alert-danger");
+							redirect("/mesas/salao");
+						}
+					}else{
+						flash("salao", "Não foi possível cancelar a comanda !", "alert-danger");
+						redirect("/mesas/salao");
+					}
 					
 				}else{
 					flash("salao", "Não foi possível cancelar a comanda !", "alert-danger");
@@ -460,6 +470,25 @@
 				flash("salao", "Ação Bloqueada !", "alert-danger");
 				redirect("/mesas/salao");
 			}
+		
+		}
+
+		public function QRCode($id = 5) {
+			// Para gerar um codigo qr para o usuario
+			require_once '../app/libraries/Authenticator.php';
+			$Authenticator = new Authenticator();
+		    $secret = $Authenticator->generateRandomSecret();
+		    $_SESSION['auth_secret'] = $secret;
+			
+
+			$qrCodeUrl = $Authenticator->getQR(URLROOT.'/mesas/comandas/', $id);
+
+			echo '<img style="height: 100px;width: 100px;" class="img-fluid" src="'.$qrCodeUrl.'" alt="Verify this Google Authenticator">';
+		
+		}
+
+		public function comandas($id) {
+			echo "kkkkkkk";
 		}
 
 	

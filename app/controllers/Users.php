@@ -202,6 +202,7 @@
 			$_SESSION['nome'] = $user->nome;
 			$_SESSION['sobrenome'] = $user->sobrenome;
 			$_SESSION['email'] = $user->email;
+			$_SESSION['img'] = $user->img;
 			$_SESSION['senha'] = $user->senha;
 			$_SESSION['nivel'] = $user->nivel;
 			if ($this->caixaModel->verifyOpen()) {
@@ -236,6 +237,7 @@
 					'nome' => trim($_POST['nome']),
 					'sobrenome' => trim($_POST['sobrenome']),
 					'email' => trim($_POST['email']),
+					'img' => 'masculino.png',
 					'password' => trim($_POST['senha']),
 					'confirm_password' => trim($_POST['confirm_senha']),
 					'nivel' => trim($_POST['nivel']),
@@ -322,22 +324,169 @@
 				];
 
 				if (isset($data['nome']) && isset($data['sobrenome']) && isset($data['email']) && isset($data['nivel']) && isset($data['status'])) {
-					if ($this->userModel->findUserByEmail($data['email']) == false) {
+					if ($this->userModel->findUserByEmail($data['email']) == false OR $data['email'] == $this->userModel->getUser($id)->email) {
 						if ($this->userModel->updateUser($id, $data)) {
-							flash("users", "Usuário editado com Sucesso !");
-							redirect("/users/");
+							if ($_POST['acao'] == 'perfil') {
+								$_SESSION['nome'] = $data['nome'];
+								flash("perfil", "Dados Pessoais editados com Sucesso !");
+								redirect("/users/perfil");
+							}else{
+								flash("users", "Usuário editado com Sucesso !");
+								redirect("/users/");
+							}
 						}else{
-							flash("users", "Não foi possível editar o Usuário !", "alert-danger");
-							redirect("/users/");
+							if ($_POST['acao'] == 'perfil') {
+								flash("perfil", "Não foi possível editar os Dados Pessoais !", "alert-danger");
+								redirect("/users/perfil");
+							}else{
+								flash("users", "Não foi possível editar o Usuário !", "alert-danger");
+								redirect("/users/");
+							}
 						}
 					}else{
-						flash("users", "Não foi possível editar o Usuário, este email já está sendo usado !", "alert-danger");
+						if ($_POST['acao'] == 'perfil') {
+							flash("perfil", "Não foi possível editar os dados do Usuário, este email já está sendo usado !", "alert-danger");
+							redirect("/users/perfil");
+						}else{
+							flash("users", "Não foi possível editar o Usuário, este email já está sendo usado !", "alert-danger");
 							redirect("/users/");
+						}
+						
+					}
+				}else{
+					if ($_POST['acao'] == 'perfil') {
+						flash("perfil", "Não foi possível editar os dados do Usuário2232323, este email já está sendo usado !", "alert-danger");
+						redirect("/users/perfil");
+					}else{
+						flash("users", "Não foi possível editar o Usuário, verifique todos os campos !", "alert-danger");
+						redirect("/users/");
 					}
 				}
+				// echo "<pre>";
+				// print_r($data);
 
 			}
 		
+		}
+
+		public function updateSenha($id){
+			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+				// Sanitize POST data
+				$_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
+				
+				// Init data
+				$data = [
+					'senha' => trim($_POST['senha']),
+					'new_senha' => trim($_POST['new_senha']),
+					'confirm_new_senha' => trim($_POST['confirm_new_senha']),
+				];
+
+				if (isset($data['senha']) && isset($data['new_senha']) && isset($data['confirm_new_senha'])){
+					$senha_atual = $this->userModel->getUser($id)->senha;
+					if (password_verify($data['senha'], $senha_atual)) {
+						if (strlen($data['new_senha']) >= 6 && strlen($data['confirm_new_senha']) >= 6) {
+							if ($data['new_senha'] === $data['confirm_new_senha']) {
+								$senha = password_hash($data['new_senha'], PASSWORD_DEFAULT);
+								if ($this->userModel->updateSenha($id, $senha)) {
+									flash("perfil", "Senha atualizada com sucesso !");
+									redirect("/users/perfil");
+								}else{
+									flash("perfil", "Não foi possível alterar a senha !", "alert-danger");
+									redirect("/users/perfil");
+								}
+							}else{
+								flash("perfil", "Não foi possível alterar a senha, as novas senhas não coincidem !", "alert-danger");
+								redirect("/users/perfil");
+							}
+						}else{
+							flash("perfil", "Não foi possível alterar a senha, as senhas devem ter no mínimo 6 caracteres!", "alert-danger");
+							redirect("/users/perfil");
+						}
+					}else{
+						flash("perfil", "Não foi possível alterar a senha, a senha que você digitou não coincide com a senha atual !", "alert-danger");
+						redirect("/users/perfil");
+					}
+
+				}else{
+					flash("perfil", "Não foi possível alterar a senha, verfifique todos os campos !", "alert-danger");
+					redirect("/users/perfil");
+				}
+				// echo "<pre>";
+				// print_r($data);
+
+			}
+		
+		}
+
+		public function updateImg($id) {
+			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+				// Sanitize POST data
+				$_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
+
+				
+				// Init data
+				$data = [
+					'imagem' => trim($_POST['imagem']),
+				];
+
+				if (isset($data['imagem'])){
+					
+					if (isset($_FILES['imagem']['name']) && $_FILES['imagem']['error'] == 0) {
+						$nometemporario = $_FILES['imagem']['tmp_name'];
+	
+						$nome = $_FILES['imagem']['name'];
+						$extensao = pathinfo($nome, PATHINFO_EXTENSION);
+						$extensao = strtolower($extensao);
+	
+						if (strstr('.jpg;.jpeg', $extensao)) {
+							$uploaddir = 'img/users/';
+							$uploadfile = $uploaddir . 'perfil'.$_SESSION['id_usuario'].'.jpg';
+
+							if (move_uploaded_file($nometemporario, $uploadfile)) {
+								$this->userModel->updateImg($id, 'perfil'.$_SESSION['id_usuario'].'.jpg');
+								$_SESSION['img'] = 'perfil'.$_SESSION['id_usuario'].'.jpg';
+							    flash("perfil", "Foto atualizada com Sucesso !");
+								redirect("/users/perfil");
+							} else {
+							    flash("perfil", "Não foi possível alterar a foto 1 !", "alert-danger");
+								redirect("/users/perfil");
+							
+							}
+						}
+						else{
+							flash("perfil", "Não foi possível alterar a foto 2 !", "alert-danger");
+							redirect("/users/perfil");
+						}
+					}
+					else{
+						flash("perfil", "Não foi possível alterar a foto 3 !", "alert-danger");
+						redirect("/users/perfil");
+						
+					}
+					
+
+					// echo 'Aqui está mais informações de debug:';
+					// print_r($_FILES);
+
+				}else{
+					flash("perfil", "Não foi possível alterar a senha, verfifique todos os campos !", "alert-danger");
+					redirect("/users/perfil");
+				}
+
+
+			}
+		}
+
+		public function perfil() {
+			$id_usuario = $_SESSION['id_usuario'];
+			$user = $this->userModel->getUser($id_usuario);
+
+			$data = [
+				'user' => $user
+			];
+
+			$this->view('users/perfil', $data);
 		}
 		
 	}

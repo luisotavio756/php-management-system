@@ -17,15 +17,16 @@
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                        <h5 class="modal-title" id="exampleModalLabel">Não é possível Sair</h5>
                         <button class="close" type="button" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">×</span>
                         </button>
                     </div>
-                    <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                    <div class="modal-body py-5">
+                        <h5>Não é possível sair, ainda existe um caixa ativo e você precisa encerrá-lo <i class="fas fa-ban"></i></h5>
+                    </div>
                     <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                        <a class="btn btn-primary" href="login.html">Logout</a>
+                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Fechar</button>
                     </div>
                 </div>
             </div>
@@ -67,7 +68,29 @@
         <script src="<?php echo URLROOT; ?>/vendor/datatables/jquery.dataTables.js"></script>
         <script src="<?php echo URLROOT; ?>/vendor/datatables/dataTables.bootstrap4.min.js"></script>
         <script src="<?php echo URLROOT; ?>/vendor/mask/jquery.mask.js"></script>
-        <script src="<?php echo URLROOT; ?>/vendor/bootstrap-ajax-typeahead/js/typeahead.js"></script>
+
+        <script src="<?php echo URLROOT; ?>/vendor/upload/js/jquery.dm-uploader.min.js"></script>
+        <script src="<?php echo URLROOT; ?>/vendor/upload/js/demo-ui.js"></script>
+        <script src="<?php echo URLROOT; ?>/vendor/upload/js/demo-config.js"></script>
+
+        <!-- File item template -->
+        <script type="text/html" id="files-template">
+            <li class="media">
+                <div class="media-body mb-1">
+                    <p class="mb-2">
+                        <strong>%%filename%%</strong> - Status: <span class="text-muted">Waiting</span>
+                    </p>
+                    <div class="progress mb-2">
+                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                    </div>
+                    <hr class="mt-1 mb-1" />
+                </div>
+            </li>
+        </script>
+        <!-- Debug item template -->
+        <script type="text/html" id="debug-template">
+          <li class="list-group-item text-%%color%%"><strong>%%date%%</strong>: %%message%%</li>
+        </script>
 
         <!-- Page level custom scripts -->
         <script src="<?php echo URLROOT; ?>/js/demo/datatables-demo.js"></script>
@@ -91,6 +114,15 @@
             });
 
             $('.money').mask("#.##0,00", {reverse: true});
+            $('.phone').mask("(00) 00000-0000");
+
+            var width = $(document).width();
+
+            if (width <= 700) {
+                $(".navbar-nav ").addClass('toggled');
+            }else{
+                $(".navbar-nav ").removeClass('toggled');
+            }
         </script>
     </body>
 </html>
