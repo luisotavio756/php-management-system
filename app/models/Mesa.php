@@ -186,6 +186,18 @@
 		
 		}
 
+		public function setVotoCom($id) {
+			$this->db->query("UPDATE tb_comandas SET statusVoto = :statusVoto WHERE id = :id");
+			$this->db->bind(":id", $id);
+			$this->db->bind(":statusVoto", 1);
+
+			if ($this->db->execute()) {
+				return true;
+			}else{
+				return false;
+			}
+		}
+
 		public function closeComanda($id, $total) {
 			$this->db->query("UPDATE tb_comandas SET data_fechado = :data_fechado, total = :total, status = :status WHERE id = :id");
 			$this->db->bind(":data_fechado", date("Y-m-d H:i:s"));

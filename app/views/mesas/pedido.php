@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Pedido - 5</title>
+	<title>Pedido <?php echo isset($data['pedido'][0]->id_comanda) ? $data['pedido'][0]->id_comanda : 'Não encontrado !'; ?></title>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -11,8 +11,6 @@
 	<link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <!-- Custom styles for this template-->
     <link href="<?php echo URLROOT; ?>/css/sb-admin-2.css" rel="stylesheet">
-    <!-- Custom styles for this page -->
-    <link href="<?php echo URLROOT; ?>/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
     <style type="text/css">
     	.table th, .table td {
     		vertical-align: inherit !important;
@@ -24,30 +22,81 @@
     		font-weight: 700 !important; 
     	}
 
+    	.text-muted-footer, .instagram, .whatsapp, .linkedin{
+			color: white;
+			transition: all 0.4s;
+		}
+
+		.text-muted-footer:hover{
+			color: white;
+		}
+
+		.instagram:hover{
+			color: #d03481;
+		}
+
+		.whatsapp:hover{
+			color: #00e676;
+		}
+
+		.linkedin:hover{
+			color: #4997ce;
+		}
+
+		.data{
+			font-size: 14px;
+		}
+
+		.menus{
+			font-weight: 600;
+		}
+
+		.red{
+			color: #d12323 !important;
+		}
+
+		.footer{
+			/*background: rgb(180,58,114);
+			background: linear-gradient(90deg, rgba(180,58,114,1) 0%, rgba(211,39,81,1) 21%, rgba(253,29,29,1) 73%, rgba(255,58,5,1) 94%);*/
+			/*background: rgb(0,0,0);
+background: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(253,29,29,1) 60%);*/
+/*background: rgb(0,0,0);
+background: linear-gradient(90deg, rgba(0,0,0,1) 0%, rgba(190,22,22,0.9051995798319328) 27%, rgba(253,29,29,1) 73%);*/
+/*background: rgb(60,54,54);
+background: linear-gradient(90deg, rgba(60,54,54,1) 0%, rgba(253,29,29,1) 41%);*/
+/*background: rgb(60,54,54);
+background: linear-gradient(90deg, rgba(60,54,54,1) 0%, rgba(117,47,47,1) 1%, rgba(192,37,37,1) 37%, rgba(211,35,35,1) 66%, rgba(253,29,29,1) 84%);*/
+/*background: rgb(60,54,54);
+background: linear-gradient(90deg, rgba(60,54,54,1) 0%, rgba(117,47,47,1) 1%, rgba(192,37,37,1) 37%, rgba(202,36,36,1) 54%, rgba(211,35,35,1) 76%, rgba(253,29,29,1) 100%);*/
+/*background: rgb(60,54,54);
+background: linear-gradient(90deg, rgba(60,54,54,1) 0%, rgba(117,47,47,1) 1%, rgba(192,37,37,1) 37%, rgba(202,36,36,1) 54%, rgba(206,36,36,1) 69%, rgba(211,35,35,1) 94%, rgba(253,29,29,1) 100%);*/
+background: rgb(60,54,54);
+background: linear-gradient(90deg, rgba(60,54,54,1) 0%, rgba(117,47,47,1) 1%, rgba(192,37,37,1) 37%, rgba(202,36,36,1) 54%, rgba(206,36,36,1) 69%, rgba(211,35,35,1) 100%, rgba(253,29,29,1) 100%);
+		}
 
     </style>
 </head>
 <body>
-	<div class="container-fluid" style="padding-right: 
-	-1.5rem !important; padding-left: -1.5rem !important">
+	<div class="container-fluid fadeIn">
 		<div class="row">
 			<div class="col-lg-8 mx-auto mt-5" style="min-height: 100vh;">
 				<div class="row">
 					<div class="col-12">
-						<h2 class="text-center text-info"><i class="fas fa-drumstick-bite"></i> <b>Assakabrasa</b> <i class="fas fa-utensils"></i></h3>
+						<h2 class="text-center red"><i class="fas fa-drumstick-bite"></i> <b>Assakabrasa</b> <i class="fas fa-utensils"></i></h3>
 					</div>
 				</div>
 				<?php if ($data['status'] != 1): ?>
 					<div class="row">
 						<div class="col-12">
-							<h3 class="text-center text-info"><b>Olá,</b></h3>
-							<h4 class="text-center text-info"><b>bem vindo ao seu pedido !</h4>
+							<h3 class="text-center"><b>Olá,</b></h3>
+							<h4 class="text-center"><b>bem vindo ao seu pedido !</h4>
 						</div>
 					</div>
 					<?php if ($data['pedido']): ?>
 						<div class="row mt-3">
 							<div class="col-12">
-								<h5 class="text-center">Resumo do <b>Pedido 33</b></h4>
+								<h5 class="text-center">Resumo do <b>Pedido <?php echo $data['pedido'][0]->id_comanda ?></b></h4>
+								<p style="font-size: 14px">Clique sobre o pedido para detalhes</p>
 							</div>
 						</div>
 						<div class="row">
@@ -55,10 +104,10 @@
 								<table class="table table-striped">
 									<thead>
 										<tr>
-											<th class="text-center">#</th>
-											<th>Produto</th>
-											<th class="text-center">Qtd.</th>
-											<th class="text-center">Valor</th>
+											<th class="text-center ">#</th>
+											<th class="">Produto</th>
+											<th class="text-center ">Qtd.</th>
+											<th class="text-center ">Valor</th>
 										</tr>
 									</thead>
 									<tbody>
@@ -67,11 +116,11 @@
 											$total = 0;
 											foreach ($data['pedido'] as $key => $value):
 										?>
-											<tr>
+											<tr onclick="openModal(<?php echo $value->id_pedido ?>)" style="cursor: pointer;">
 												<td class="text-center"><?php echo $cont ?></td>
 												<td><?php echo $value->descricao ?></td>
 												<td class="text-center"><?php echo $value->quantidade ?></td>
-												<td class="text-center">R$ <?php echo str_replace('.', ',', $value->valor) ?></td>
+												<td style="font-style: " class="text-center">R$ <?php echo str_replace('.', ',', $value->valor) ?></td>
 											</tr>
 										<?php 	
 											$total += $value->valor;
@@ -81,15 +130,35 @@
 									</tbody>
 									<tfoot>
 										<tr class="total">
-											<th colspan="3" class="text-center text-success">TOTAL:</th>
+											<th colspan="2" class="text-center text-success">TOTAL:</th>
 									
-											<th class="text-center text-success">R$ <?php echo str_replace('.', ',', number_format($total, 2)) ?></th>
+											<th colspan="2" class="text-center text-success">R$ <?php echo str_replace('.', ',', number_format($total, 2)) ?></th>
 										</tr>
 									</tfoot>
 								</table>
 							</div>
 						</div>
-						
+						<div class="row">
+							<div class="col-12 my-2 text-right">
+								<a href="<?php echo URLROOT ?>/clientes/imprimirPedido/<?php echo $data['pedido'][0]->id_comanda ?>/DOWNLOAD"><i class="fas fa-file-download"></i> Clique para Imprimir o Pedido</a>
+								<hr>
+							</div>
+						</div>
+						<?php if ($data['statusVoto'] == 0): ?>
+							<div class="row mb-5 feedback">
+								<div class="col-12 px-0">
+									<h4 class="text-center">Gostou do nosso atendimento ?</h4>
+								</div>
+								<div class="col-12 text-center">
+									<div class="btn-group">
+										<button type="button" onclick="sendO(1, <?php echo $data['pedido'][0]->id_comanda ?>)" class="btn btn-danger"><i class="far fa-thumbs-down"></i> Não</button>
+										<button type="button" onclick="sendO(2, <?php echo $data['pedido'][0]->id_comanda ?>)" class="btn btn-success"><i class="fas fa-thumbs-up"></i> Sim</button>
+									</div>
+									
+								</div>
+							</div>
+							
+						<?php endif ?>
 					<?php else: ?>
 						<div class="row mt-3">
 							<div class="col-12">
@@ -109,10 +178,146 @@
 
 				<?php endif; ?>
 			</div>	
-			<div class="col-lg-12 bg-danger" style="height: 300px">
+		</div>
+		<div class="row">
+			<div class="col-lg-12 footer" style="min-height: 350px; box-shadow: 2px 0px 5px #e9ecef; color: white">
+				<div class="row" style="min-height: 300px">
+					<div class="col-lg-4 px-3">
+						<div class="logo text-center mt-5">
+							<img  src="../public/img/logo.svg" width="200" height="130" class="img-fluid">
+						</div>
+						
+						<p class="text-justify text-muted-footer mt-3" style="font-weight: 500">Desenvolvido por <a href="https://www.instagram.com/includejr/" target="_blank">@includejr</a> com o pensamento ambiental de "Menos é Mais". Menos papel, menos poluição, mais anos de vida para nosso planeta. Colabore com essa idéia !</p>
+
+					</div>
+					<div class="col-lg-4 py-5 text-center">
+						<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5621.580815561395!2d-37.95654399617288!3d-4.929968940982865!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x667d48fa538468ec!2sMetal%C3%BArgica+S%C3%A3o+Jos%C3%A9+De+Anchieta!5e0!3m2!1spt-BR!2sbr!4v1559328265308!5m2!1spt-BR!2sbr" width="100%" height="250" frameborder="0" style="border:0" allowfullscreen></iframe>
+					</div>
+					<div class="col-lg-3 py-1 py-lg-5 px-4 mb-4 mg-lg-0 text-center">
+						<h4>Contato</h4>
+						<div class="mt-4 pl-1 text-left">
+							<p class="text-muted-footer data"><i class="fas fa-map-marker-alt"></i> Av. Coronel Araújo Lima, 1348, Centro - Russas/CE</p>
+							<p class="text-muted-footer data"><i class="fas fa-phone-volume"></i> (88) 93943-3438</p>
+							<p class="text-muted-footer data"><i class="fas fa-inbox"></i> suaempresa@gmail.com</p>
+							<div class="">
+								<a href="https://www.instagram.com/luisotaviioc/" target="_blank" class="mr-3 instagram"><i style="font-size: 25px" class="fab fa-instagram"></i></a> 
+								<a href="https://api.whatsapp.com/send?phone=5588997283474" target="_blank" class="mr-3 whatsapp"><i style="font-size: 25px" class="fab fa-whatsapp"></i></a> 
+								<a href="#" target="_blank" class="linkedin"><i style="font-size: 25px"class="fab fa-linkedin"></i></a>
+							</div>
+
+						</div>
+					</div>
+					<!-- #12a5bb -->
+					<!-- #bf0101e6 -->
+					<!-- #ff3a05e6 -->
+				</div>	
+				<div class="row" style="height: 50px;">
+					<div class="col-lg-12" style="display: flex;background-color: #09090963;align-items: center; justify-content: center;">
+						<p class="text-center mb-0" style="align-items: center;color: white">Copyright © Todos os direitos reservados.</p>
+					</div>
+				</div>
 				
 			</div>
 		</div>
 	</div>
+	<div class="modal fade" id="modal" id_pedido="" tabindex="-1" role="dialog" aria-labelledby="tituloModalBase" aria-hidden="true">
+	    <div class="modal-dialog" role="document" style="">
+	        <div class="modal-content">
+	            <div class="modal-header">
+	                <h5 class="modal-title" id="exampleModalLabel">Pedido Detalhado</h5>
+	                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	                    <span aria-hidden="true">&times;</span>
+	                </button>
+	            </div>
+                <div class="modal-body">
+					<div class="row">
+						<div class="col-12 Produto">
+							<h5></h5>
+							<hr>
+						</div>
+						<div class="col-12 quantidade">
+							<h5></h5>
+							<hr>
+						</div>
+						<div class="col-12 ValorU">
+							<h5></h5>
+							<hr>
+						</div>
+						<div class="col-12 ValorT">
+							<h5></h5>
+						</div>
+					</div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+                </div>
+	           
+	        </div>
+	    </div>
+	</div>
+	<!-- Bootstrap core JavaScript-->
+    <script src="<?php echo URLROOT; ?>/vendor/jquery/jquery.min.js"></script>
+    <script src="<?php echo URLROOT; ?>/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <!-- Core plugin JavaScript-->
+    <script src="<?php echo URLROOT; ?>/vendor/jquery-easing/jquery.easing.min.js"></script>
+    <?php  
+    	$data_json = array();
+		foreach ($data['pedido'] as $key => $value) {
+			$data_json[$value->id_pedido]['descricao'] = $value->descricao;
+			$data_json[$value->id_pedido]['valor'] = $value->valor;
+			$data_json[$value->id_pedido]['quantidade'] = $value->quantidade;
+		}
+
+		// echo "<pre>";
+		// print_r($data_json);
+
+		$data_json = json_encode($data_json);
+
+    ?>
+    <script type="text/javascript">
+    	var data = JSON.parse('<?php echo $data_json ?>');
+    	var id;
+    	function openModal(idDefault) {
+    		id = idDefault;
+    		$("#modal").modal('show');
+
+    	}
+
+    	$("#modal").on("show.bs.modal", function(e) {
+			var link = $(e.relatedTarget);
+			$(this).find('.Produto h5').append("<b>Produto: </b> " + data[id].descricao);
+			$(this).find('.quantidade h5').append("<b>Quantidade: </b> " + data[id].quantidade);
+			$(this).find('.ValorU h5').append("<b>Valor Unitário: </b>  R$ " + data[id].valor);
+			$(this).find('.ValorT h5').append("<b>Valor Total: </b>  R$ " + (parseFloat(data[id].valor) * parseInt(data[id].quantidade)).toFixed(2));
+
+			
+		});
+
+		$("#modal").on("hidden.bs.modal", function(e) {
+			id = '';	
+			$(this).find('.Produto h5').html("");
+			$(this).find('.quantidade h5').html("");
+			$(this).find('.ValorU h5').html("");
+			$(this).find('.ValorT h5').html("");
+		});
+
+		function sendO(tipo, id) {
+			alert(tipo)
+			$.ajax({
+	            type: "GET",
+	            url: "sendOpinion/" + tipo + "/" + id,  
+	            data: {},        
+	            success: function (data) {
+	            	$(".feedback").html('<div class="col-12 px-0">\
+								<h4 class="text-center">Obrigado !</h4>\
+							</div>');
+	            },
+	            error: function(e) {
+	            	
+	            }
+	        });
+		}
+    </script>
 </body>
+
 </html>

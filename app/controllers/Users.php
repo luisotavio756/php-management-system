@@ -449,18 +449,18 @@
 							    flash("perfil", "Foto atualizada com Sucesso !");
 								redirect("/users/perfil");
 							} else {
-							    flash("perfil", "Não foi possível alterar a foto 1 !", "alert-danger");
+							    flash("perfil", "Não foi possível alterar a foto !", "alert-danger");
 								redirect("/users/perfil");
 							
 							}
 						}
 						else{
-							flash("perfil", "Não foi possível alterar a foto 2 !", "alert-danger");
+							flash("perfil", "Não foi possível alterar a foto !", "alert-danger");
 							redirect("/users/perfil");
 						}
 					}
 					else{
-						flash("perfil", "Não foi possível alterar a foto 3 !", "alert-danger");
+						flash("perfil", "Não foi possível alterar a foto !", "alert-danger");
 						redirect("/users/perfil");
 						
 					}

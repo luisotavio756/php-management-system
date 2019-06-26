@@ -85,7 +85,7 @@
 					<div class="col-lg-12">
 						<form action="<?php echo URLROOT; ?>/users/updateImg/<?php echo $data['user']->id ?>" method="POST" enctype="multipart/form-data">
 						    <div class="avatar-upload mx-auto">
-						        <div class="avatar-edit">
+						        <div class="avatar-edit" title="Clique para alterar a foto !">
 						            <input type='file' id="imageUpload" name="imagem" accept=".png, .jpg, .jpeg" />
 						            <label for="imageUpload" class="text-center mx-auto"><i class="fas fa-edit mx-auto"></i></label>
 						        </div>
@@ -96,7 +96,7 @@
 						    </div>
 						    <div class="form-group row mt-2">
 						    	<div class="col-lg-6 mx-auto">
-									<button type="submit" style="border-radius: 20px" class="btn btn-block btn-success">Salvar Foto</button>
+									<button type="submit" id="btn-upload" disabled="" style="border-radius: 20px" class="btn btn-block btn-success">Salvar Foto</button>
 								</div>
 						    </div>							
 						</form>
@@ -169,6 +169,7 @@
 	    }
 	}
 	$("#imageUpload").change(function() {
+		$("#btn-upload").removeAttr('disabled');
 	    readURL(this);
 	});
 </script>

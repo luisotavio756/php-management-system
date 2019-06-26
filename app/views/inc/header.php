@@ -20,9 +20,6 @@
         <link href="<?php echo URLROOT; ?>/css/sb-admin-2.css" rel="stylesheet">
         <!-- Custom styles for this page -->
         <link href="<?php echo URLROOT; ?>/vendor/datatables/dataTables.bootstrap4.min.css" rel="stylesheet">
-        <!-- Custom styles -->
-        <link href="<?php echo URLROOT; ?>/vendor/upload/css/jquery.dm-uploader.min.css" rel="stylesheet">
-        <link href="<?php echo URLROOT; ?>/vendor/upload/css/styles.css" rel="stylesheet">
         <style type="text/css">
             .nav-caixa .nav-tabs .nav-link{
                 color: #6e707e !important;
@@ -67,13 +64,18 @@
                     opacity: 0.5;
                 }
             }
+
+           /* .kkk{
+                background: rgb(60,54,54) !important;
+background: linear-gradient(90deg, rgba(60,54,54,1) 0%, rgba(117,47,47,1) 1%, rgba(192,37,37,1) 37%, rgba(202,36,36,1) 54%, rgba(206,36,36,1) 69%, rgba(211,35,35,1) 100%, rgba(253,29,29,1) 100%) !important;
+            }*/
         </style>
     </head>
     <body id="page-top">
         <!-- Page Wrapper -->
         <div id="wrapper">
             <!-- Sidebar -->
-            <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion" id="accordionSidebar">
+            <ul class="navbar-nav bg-gradient-primary sidebar sidebar-dark accordion kkk" id="accordionSidebar">
                 <!-- Sidebar - Brand -->
                 <a class="sidebar-brand d-flex align-items-center justify-content-center" href="<?php echo URLROOT; ?>">
                     <div class="sidebar-brand-icon rotate-n-15">
@@ -177,12 +179,10 @@
                         
                         <!-- Topbar Navbar -->
                         <ul class="navbar-nav ml-auto">
-                            <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-                            <li class="nav-item dropdown no-arrow d-sm-none">
+                            <!-- <li class="nav-item dropdown no-arrow d-sm-none">
                                 <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <i class="fas fa-search fa-fw"></i>
                                 </a>
-                                <!-- Dropdown - Messages -->
                                 <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
                                     <form class="form-inline mr-auto w-100 navbar-search">
                                         <div class="input-group">
@@ -195,7 +195,7 @@
                                         </div>
                                     </form>
                                 </div>
-                            </li>
+                            </li> -->
 
                            <!--  <li class="nav-item dropdown no-arrow mx-1">
                                 <a class="nav-link dropdown-toggle" href="#" id="alertsDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -340,5 +340,5 @@
                             </li>
                         </ul>
                     </nav>
-                    <div class="container-fluid">
+                    <div class="container-fluid px-4 fadeIn">
   

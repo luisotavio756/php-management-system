@@ -41,6 +41,37 @@
   --font-family-monospace: SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
+/*  FADE EFFECT */
+
+@-webkit-keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; } 
+}
+
+@-moz-keyframes fadeIn {
+  0% { opacity: 0;}
+  100% { opacity: 1; }
+}
+
+@-o-keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+@keyframes fadeIn {
+  0% { opacity: 0; }
+  100% { opacity: 1; }
+}
+
+.fadeIn {
+  -webkit-animation: fadeIn 1s ease-in-out;
+  -moz-animation: fadeIn 1s ease-in-out;
+  -o-animation: fadeIn 1s ease-in-out;
+  animation: fadeIn 1s ease-in-out;
+}
+
+
+
 *,
 *::before,
 *::after {
@@ -10593,8 +10624,8 @@ a:focus {
 
 .container,
 .container-fluid {
-  padding-left: 1.5rem;
-  padding-right: 1.5rem;
+  /*padding-left: 1.5rem;
+  padding-right: 1.5rem;*/
 }
 
 .scroll-to-top {

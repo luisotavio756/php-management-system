@@ -68,11 +68,6 @@
         <script src="<?php echo URLROOT; ?>/vendor/datatables/jquery.dataTables.js"></script>
         <script src="<?php echo URLROOT; ?>/vendor/datatables/dataTables.bootstrap4.min.js"></script>
         <script src="<?php echo URLROOT; ?>/vendor/mask/jquery.mask.js"></script>
-
-        <script src="<?php echo URLROOT; ?>/vendor/upload/js/jquery.dm-uploader.min.js"></script>
-        <script src="<?php echo URLROOT; ?>/vendor/upload/js/demo-ui.js"></script>
-        <script src="<?php echo URLROOT; ?>/vendor/upload/js/demo-config.js"></script>
-
         <!-- File item template -->
         <script type="text/html" id="files-template">
             <li class="media">
