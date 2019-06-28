@@ -288,7 +288,7 @@
 				<div width="100%">
 				    <p style="text-transform: uppercase; text-align: center; font-family: Open Sans, sans-serif; font-size: 22px">Relatório Caixa</p>
 				    <p style="text-align: center; font-size: 12px;">Aberto por <b>'.$caixa[0]->nome.'</b></p>
-				    <p style="text-align: center; font-size: 12px;">Aberto em <b>'.toBrDateTime($caixa[0]->data_aberto).'</b> e fechado às <b>'.toBrDateTime($caixa[0]->data_fechado).'</b></p>
+				    <p style="text-align: center; font-size: 12px;">Aberto em <b>'.toBrDateTime($caixa[0]->data_aberto).'</b> e fechado em <b>'.toBrDateTime($caixa[0]->data_fechado).'</b></p>
 				</div>
 				<table style="width: 100%; margin-top: 15px">
 					<thead>

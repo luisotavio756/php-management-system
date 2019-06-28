@@ -211,17 +211,17 @@ background: linear-gradient(90deg, rgba(60,54,54,1) 0%, rgba(117,47,47,1) 1%, rg
 							<p class="text-muted-footer data"><i class="fas fa-phone-volume"></i> <?php echo $data['configs']->telefone ?></p>
 							<p class="text-muted-footer data"><i class="fas fa-inbox"></i> <?php echo $data['configs']->email ?></p>
 							<div class="">
-								<?php if (isset($data['configs']->instagram)): ?>
+								<?php if (isset($data['configs']->instagram) && !empty($data['configs']->instagram)): ?>
 									<a href="<?php echo isset($data['configs']->instagram) ? $data['configs']->instagram : '#' ?>" target="_blank" class="mr-3 instagram"><i style="font-size: 25px" class="fab fa-instagram"></i></a> 
 									
 								<?php endif ?>
 
-								<?php if (isset($data['configs']->whatsapp)): ?>
+								<?php if (isset($data['configs']->whatsapp) && !empty($data['configs']->whatsapp)): ?>
 									<a href="<?php echo isset($data['configs']->whatsapp) ? 'https://api.whatsapp.com/send?phone=55'.$data['configs']->whatsapp : '#' ?>" target="_blank" class="mr-3 whatsapp"><i style="font-size: 25px" class="fab fa-whatsapp"></i></a> 
 									
 								<?php endif ?>
 
-								<?php if (isset($data['configs']->facebook)): ?>
+								<?php if (isset($data['configs']->facebook) && !empty($data['configs']->facebook)): ?>
 									<a href="<?php echo $$data['configs']->facebook ?>" target="_blank" class="linkedin"><i style="font-size: 25px"class="fab fa-facebook"></i></a>
 								<?php endif ?>
 

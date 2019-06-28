@@ -670,6 +670,9 @@
         setLength(0);
         notPedidos = [];
         pedido = [];
+        total = 0.00;
+        $(".order-produtos #total").html('R$ ' + 0.00);
+		setLength();
         
 	});
 
@@ -677,78 +680,151 @@
 		if ($(this).val().length == 0) {
 			tbody.html('');
 			$.ajax({
-            type: "GET",
-            url: "getProdutos/",  
-            data: {},        
-            dataType: "json",
-            success: function (data) {
-            	
-            	if (data != false) {
-                	tbody.html('');
+	            type: "GET",
+	            url: "getProdutos/",  
+	            data: {},        
+	            dataType: "json",
+	            success: function (data) {
+	            	
+	            	if (data != false) {
+	                	tbody.html('');
 
-                		if (notPedidos.length > 0) {
-                			data.forEach(function(valor, chave){
-                				var aux = 0;
-                				notPedidos.forEach(function(v, c){
-                					if (valor.id == v) {
-                						aux++; 
-                					}
-                				});
+	                		if (notPedidos.length > 0) {
+	                			data.forEach(function(valor, chave){
+	                				var aux = 0;
+	                				notPedidos.forEach(function(v, c){
+	                					if (valor.id == v) {
+	                						aux++; 
+	                					}
+	                				});
 
-								if (aux == 0) {
+									if (aux == 0) {
+										if (valor.estoque > 0) {
+											tbody.append('\
+															<tr>\
+																<td style="width: 70%">' + valor.descricao + '</td>\
+																<td style="width: 25%" class="text-center">R$ ' + valor.valor + '</td>\
+																<td>' + '<a href="#" class="btn btn-success btn-xs" onclick="addItem(' + chave + ',' + valor.id + ',' + "'" + valor.descricao + "'" + ',' + "'" + valor.valor +  "'" + ',' + valor.estoque  + ')" style="border-radius: 25px;"><i class="fa fa-plus"></i></a>' + '</td>\
+															</tr>\
+														')
+
+										}else{
+											tbody.append('\
+															<tr class="bg-danger">\
+																<td style="width: 70%">' + valor.descricao + '</td>\
+																<td style="width: 30%">Sem estoque !</td>\
+															</tr>\
+														')
+										}
+
+									}
+			                    });
+
+	                			
+	                		}else{
+								data.forEach(function(valor, chave){
 									if (valor.estoque > 0) {
 										tbody.append('\
-														<tr>\
-															<td style="width: 70%">' + valor.descricao + '</td>\
-															<td style="width: 25%" class="text-center">R$ ' + valor.valor + '</td>\
-															<td>' + '<a href="#" class="btn btn-success btn-xs" onclick="addItem(' + chave + ',' + valor.id + ',' + "'" + valor.descricao + "'" + ',' + "'" + valor.valor +  "'" + ',' + valor.estoque  + ')" style="border-radius: 25px;"><i class="fa fa-plus"></i></a>' + '</td>\
-														</tr>\
-													')
-
+													<tr>\
+														<td style="width: 70%">' + valor.descricao + '</td>\
+														<td style="width: 25%" class="text-center">R$ ' + valor.valor + '</td>\
+														<td>' + '<a href="#" class="btn btn-success btn-xs" onclick="addItem(' + chave + ',' + valor.id + ',' + "'" + valor.descricao + "'" + ',' + "'" + valor.valor + "'" + ',' + valor.estoque + ')" style="border-radius: 25px;"><i class="fa fa-plus"></i></a>' + '</td>\
+													</tr>\
+												');
 									}else{
 										tbody.append('\
-														<tr class="bg-danger">\
-															<td style="width: 70%">' + valor.descricao + '</td>\
-															<td style="width: 30%">Sem estoque !</td>\
-														</tr>\
-													')
+													<tr>\
+														<td style="width: 50%">' + valor.descricao + '</td>\
+														<td class="text-danger">Sem estoque !</td>\
+													</tr>\
+												');
 									}
-
-								}
-		                    });
-
-                			
-                		}else{
-							data.forEach(function(valor, chave){
-								if (valor.estoque > 0) {
-									tbody.append('\
-												<tr>\
-													<td style="width: 70%">' + valor.descricao + '</td>\
-													<td style="width: 25%" class="text-center">R$ ' + valor.valor + '</td>\
-													<td>' + '<a href="#" class="btn btn-success btn-xs" onclick="addItem(' + chave + ',' + valor.id + ',' + "'" + valor.descricao + "'" + ',' + "'" + valor.valor + "'" + ',' + valor.estoque + ')" style="border-radius: 25px;"><i class="fa fa-plus"></i></a>' + '</td>\
-												</tr>\
-											');
-								}else{
-									tbody.append('\
-												<tr>\
-													<td style="width: 50%">' + valor.descricao + '</td>\
-													<td class="text-danger">Sem estoque !</td>\
-												</tr>\
-											');
-								}
-									
-		                    });
-                		}	    
+										
+			                    });
+	                		}	    
 
 
-				}else{
-					//alert('sme nad')
-				}
-            },
-            error: function(e) {
-            	
-            }
-        });
+					}else{
+						//alert('sme nad')
+					}
+	            },
+	            error: function(e) {
+	            	
+	            }
+	        });
+		}else{
+			tbody.html('');
+			$.ajax({
+	            type: "GET",
+	            url: "getProdutos/" + $(this).val(),  
+	            data: {},        
+	            dataType: "json",
+	            success: function (data) {
+	            	if (data != false) {
+	                	tbody.html('');
+	                		if (notPedidos.length > 0) {
+	                			data.forEach(function(valor, chave){
+	                				var aux = 0;
+	                				notPedidos.forEach(function(v, c){
+	                					if (valor.id == v) {
+	                						aux++; 
+	                					}
+	                				});
+
+									if (aux == 0) {
+										if (valor.estoque > 0) {
+											tbody.append('\
+															<tr>\
+																<td style="width: 70%">' + valor.descricao + '</td>\
+																<td style="width: 25%" class="text-center">R$ ' + valor.valor + '</td>\
+																<td>' + '<a href="#" class="btn btn-success btn-xs" onclick="addItem(' + chave + ',' + valor.id + ',' + "'" + valor.descricao + "'" + ',' + "'" + valor.valor +  "'" + ',' + valor.estoque  + ')" style="border-radius: 25px;"><i class="fa fa-plus"></i></a>' + '</td>\
+															</tr>\
+														')
+
+										}else{
+											tbody.append('\
+															<tr class="bg-danger">\
+																<td style="width: 70%">' + valor.descricao + '</td>\
+																<td style="width: 30%">Sem estoque !</td>\
+															</tr>\
+														')
+										}
+
+									}
+			                    });
+
+	                			
+	                		}else{
+								data.forEach(function(valor, chave){
+									if (valor.estoque > 0) {
+										tbody.append('\
+													<tr>\
+														<td style="width: 70%">' + valor.descricao + '</td>\
+														<td style="width: 25%" class="text-center">R$ ' + valor.valor + '</td>\
+														<td>' + '<a href="#" class="btn btn-success btn-xs" onclick="addItem(' + chave + ',' + valor.id + ',' + "'" + valor.descricao + "'" + ',' + "'" + valor.valor + "'" + ',' + valor.estoque + ')" style="border-radius: 25px;"><i class="fa fa-plus"></i></a>' + '</td>\
+													</tr>\
+												');
+									}else{
+										tbody.append('\
+													<tr>\
+														<td style="width: 50%">' + valor.descricao + '</td>\
+														<td class="text-danger">Sem estoque !</td>\
+													</tr>\
+												');
+									}
+										
+			                    });
+	                		}	    
+
+
+					}else{
+						//alert('sme nad')
+					}
+	            },
+	            error: function(e) {
+	            	
+	            }
+	        });
 		}
 	});
 

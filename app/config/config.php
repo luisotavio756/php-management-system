@@ -10,7 +10,7 @@
 	define('APPROOT', dirname(dirname(__FILE__)));
 
 	// URL Root
-	define('URLROOT', 'http://192.168.0.103/Assakabrasa');
+	define('URLROOT', 'http://10.0.0.104/Assakabrasa');
 
 	// SIte Name
 	define('SITENAME', 'Assakabrasa');

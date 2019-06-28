@@ -132,9 +132,9 @@ background: linear-gradient(90deg, rgba(60,54,54,1) 0%, rgba(117,47,47,1) 1%, rg
                 <!-- Divider -->
                 <hr class="sidebar-divider">
                 <!-- Heading -->
-                <div class="sidebar-heading">
+                <!-- <div class="sidebar-heading">
                     Configs
-                </div>
+                </div> -->
                 <?php if ($_SESSION['nivel'] == 1): ?>
                     <li class="nav-item <?php echo $controller == 'users' ? 'active' : '' ?> d-none d-sm-block">
                         <a class="nav-link" href="<?php echo URLROOT; ?>/users/">
@@ -158,12 +158,7 @@ background: linear-gradient(90deg, rgba(60,54,54,1) 0%, rgba(117,47,47,1) 1%, rg
                         <span>Sair</span></a>
                     <?php endif; ?>
                 </li>
-                <!-- Divider -->
-                <hr class="sidebar-divider d-none d-md-block">
-                <!-- Sidebar Toggler (Sidebar) -->
-                <div class="text-center d-none d-md-inline">
-                    <button class="rounded-circle border-0" id="sidebarToggle"></button>
-                </div>
+                
             </ul>
             <!-- End of Sidebar -->
             <!-- Content Wrapper -->
