@@ -1,5 +1,6 @@
 <?php  
 	class Caixas extends Controller {
+		
 
 		public function __construct(){
 			$this->userModel = $this->model('User');
@@ -13,9 +14,20 @@
 					redirect("/users/login");
 				}
 			}
+
+			if ($this->caixaModel->verifyOpen()) {
+				$_SESSION['id_caixa'] = $this->caixaModel->idCaixa();
+				// echo "esta aberto.";
+			}else{
+				unset($_SESSION['id_caixa']);
+				// $this->deleteSessionCaixa();
+				// echo "esta fechado.";
+			}
+
 		}
 
 		public function index(){
+
 			$data = [
 				'receitas' => $this->getReceitas(),
 				'despesas' => $this->getDespesas(),
@@ -270,45 +282,13 @@
 			$body = '<!DOCTYPE html>
 			<html>
 			<head>
-				<title>Teste</title>
-				<link rel="stylesheet" type="text/css" href="../../public/css/fontes.css">
-				<style type="text/css">
-					body{
-						font-family: Open Sans, sans-serif;
-					}
-
-					.center{
-						text-align: center;
-					}
-
-					.left{
-						text-align: left;
-					}
-
-					table {
-					  border-collapse: collapse;
-					  border-right: 1px solid #dddddd;
-					  border-left:1px solid #dddddd;
-					  font-size: 12px;
-					  width: 100%;
-					}
-
-					td, th {
-					  border: 1px solid #dddddd;
-					  border-right: none;
-					  border-left:none;
-					  padding: 8px;
-					}
-
-					tr:nth-child(even) {
-					  background-color: #dddddd;
-					}
-				</style>
+				<title></title>
 			</head>
 			<body>
 				<div width="100%">
-				    <p style="text-transform: uppercase; text-align: center; font-family: Open Sans, sans-serif; font-size: 22px">Relatório Caixa - 10/06/2019</p>
-				    <p style="text-align: center; font-size: 12px;">Aberto por Luis Otavio</p>
+				    <p style="text-transform: uppercase; text-align: center; font-family: Open Sans, sans-serif; font-size: 22px">Relatório Caixa</p>
+				    <p style="text-align: center; font-size: 12px;">Aberto por <b>'.$caixa[0]->nome.'</b></p>
+				    <p style="text-align: center; font-size: 12px;">Aberto em <b>'.toBrDateTime($caixa[0]->data_aberto).'</b> e fechado às <b>'.toBrDateTime($caixa[0]->data_fechado).'</b></p>
 				</div>
 				<table style="width: 100%; margin-top: 15px">
 					<thead>
@@ -361,26 +341,42 @@
 			//Instaciamento da classe preenchimento de parametros
 			require_once '../app/vendor/autoload.php';
 
+			$defaultConfig = (new Mpdf\Config\ConfigVariables())->getDefaults();
+			$fontDirs = $defaultConfig['fontDir'];
+
+			$defaultFontConfig = (new Mpdf\Config\FontVariables())->getDefaults();
+			$fontData = $defaultFontConfig['fontdata'];
+
 			$mpdf = new \Mpdf\Mpdf([
-				'margin_left' => 20,
-				'margin_right' => 15,
-				'margin_top' => 20,
-				'margin_bottom' => 20,
-				'margin_header' => 10,
-				'margin_footer' => 10
+			    'fontDir' => array_merge($fontDirs, [
+			        __DIR__ . '/custom/font/directory',
+			    ]),
+			    'fontdata' => $fontData + [
+			        'frutiger' => [
+			            'O' => 'OpenSans-Bold.ttf',
+			            'R' => 'OpenSans-Regular.ttf',
+			            'T' => 'OpenSans-SemiBold.ttf',
+			        ]
+			    ],
+			    'default_font' => 'OpenSans'
 			]);
 
 			$mpdf->SetProtection(array('print'));
-			$mpdf->SetTitle("Carteiras - " . $curso . " - " . date("d/m/Y"));
+			$mpdf->SetTitle("Caixa ".$id." - " . date("d/m/Y"));
 			$mpdf->SetAuthor("Include Jr");
 			$mpdf->SetDisplayMode('fullpage');
 
-			$mpdf->SetHTMLFooter('
-			<div style="text-align: center;  font-family: Open Sans, sans-serif;">
-			    {DATE j/m/Y}
-			</div>');
 
-			$mpdf->WriteHTML($body);
+			$mpdf->SetHTMLFooter('<table width="100%" style="border: none">
+						    <tr style="border: none">				        
+						        <td width="40%" style="text-align: right;">Russas-CE, {DATE j/m/Y}</td>
+						        <td width="33%" style="text-align: right;">{PAGENO}/{nbpg}</td>
+						    </tr>
+						</table>');
+
+			$stylesheet = file_get_contents('css/style_pedido.css');
+			$mpdf->WriteHTML($stylesheet,\Mpdf\HTMLParserMode::HEADER_CSS);
+			$mpdf->WriteHTML($body,\Mpdf\HTMLParserMode::HTML_BODY);
 
 			$mpdf->Output("$nome.pdf", \Mpdf\Output\Destination::INLINE);
 

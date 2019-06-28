@@ -21,6 +21,7 @@
 			}
 
 			$data = [
+				'id' => $id,
 				'pedido' => $pedido,
 				'status' => $status,
 				'statusVoto' => isset($this->mesaModel->getCom($id)[0]->statusVoto) ? $this->mesaModel->getCom($id)[0]->statusVoto : null,
@@ -60,7 +61,7 @@
 			<body>
 				<div width="100%">
 					<h1 style="text-align: center; font-weight: 100 !important">Churrascaria Assakabrasa</h1>
-				    <p style="text-align: center; font-family: Arial, sans-serif; font-size: 14px">Pedido Emitido em '.date("d/m/Y").'</p>
+				    <p style="text-align: center; font-family: Arial, sans-serif; font-size: 14px">Pedido Emitido em <b>'.date("d/m/Y").'</b></p>
 				    
 				</div>
 				<table style="width: 100%; margin-top: 15px">
@@ -87,9 +88,9 @@
 										<td class="center">R$ '. str_replace(".", ',', number_format($value->valor * $value->quantidade, 2)) .'</td>
 									</tr>';
 								$cont++;
+								$total += $value->valor * $value->quantidade;
 							}
 
-							$total += $value->valor * $value->quantidade;
 
 					$body .='
 					</tbody>

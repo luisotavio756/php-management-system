@@ -1,8 +1,12 @@
+<?php  
+	// echo "<pre>";
+	// print_r(($data['id']));
 
+?>
 <!DOCTYPE html>
 <html>
 <head>
-	<title>Pedido <?php echo isset($data['pedido'][0]->id_comanda) ? $data['pedido'][0]->id_comanda : 'Não encontrado !'; ?></title>
+	<title>Pedido <?php echo isset($data['id']) ? $data['id'] : 'Não encontrado !'; ?></title>
 	<meta charset="utf-8">
 	<meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
@@ -123,7 +127,7 @@ background: linear-gradient(90deg, rgba(60,54,54,1) 0%, rgba(117,47,47,1) 1%, rg
 												<td style="font-style: " class="text-center">R$ <?php echo str_replace('.', ',', $value->valor) ?></td>
 											</tr>
 										<?php 	
-											$total += $value->valor;
+											$total += $value->valor * $value->quantidade;
 											$cont++;
 											endforeach; 
 										?>
@@ -278,49 +282,53 @@ background: linear-gradient(90deg, rgba(60,54,54,1) 0%, rgba(117,47,47,1) 1%, rg
     <script src="<?php echo URLROOT; ?>/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
     <!-- Core plugin JavaScript-->
     <script src="<?php echo URLROOT; ?>/vendor/jquery-easing/jquery.easing.min.js"></script>
-    <?php  
-    	$data_json = array();
-		foreach ($data['pedido'] as $key => $value) {
-			$data_json[$value->id_pedido]['descricao'] = $value->descricao;
-			$data_json[$value->id_pedido]['valor'] = $value->valor;
-			$data_json[$value->id_pedido]['quantidade'] = $value->quantidade;
-		}
+    <?php if ($data['pedido']): ?>
+	    <?php  
+	    	$data_json = array();
+			foreach ($data['pedido'] as $key => $value) {
+				$data_json[$value->id_pedido]['descricao'] = $value->descricao;
+				$data_json[$value->id_pedido]['valor'] = $value->valor;
+				$data_json[$value->id_pedido]['quantidade'] = $value->quantidade;
+			}
 
-		// echo "<pre>";
-		// print_r($data_json);
+			// echo "<pre>";
+			// print_r($data_json);
 
-		$data_json = json_encode($data_json);
+			$data_json = json_encode($data_json);
 
-    ?>
+	    ?>
+	    <script type="text/javascript">
+	    	var data = JSON.parse('<?php echo $data_json ?>');
+	    	var id;
+	    	function openModal(idDefault) {
+	    		id = idDefault;
+	    		$("#modal").modal('show');
+
+	    	}
+
+	    	$("#modal").on("show.bs.modal", function(e) {
+				var link = $(e.relatedTarget);
+				$(this).find('.Produto h5').append("<b>Produto: </b> " + data[id].descricao);
+				$(this).find('.quantidade h5').append("<b>Quantidade: </b> " + data[id].quantidade);
+				$(this).find('.ValorU h5').append("<b>Valor Unitário: </b>  R$ " + data[id].valor);
+				$(this).find('.ValorT h5').append("<b>Valor Total: </b>  R$ " + (parseFloat(data[id].valor) * parseInt(data[id].quantidade)).toFixed(2));
+
+				
+			});
+
+			$("#modal").on("hidden.bs.modal", function(e) {
+				id = '';	
+				$(this).find('.Produto h5').html("");
+				$(this).find('.quantidade h5').html("");
+				$(this).find('.ValorU h5').html("");
+				$(this).find('.ValorT h5').html("");
+			});
+
+	    </script>
+    	
+    <?php endif ?>
     <script type="text/javascript">
-    	var data = JSON.parse('<?php echo $data_json ?>');
-    	var id;
-    	function openModal(idDefault) {
-    		id = idDefault;
-    		$("#modal").modal('show');
-
-    	}
-
-    	$("#modal").on("show.bs.modal", function(e) {
-			var link = $(e.relatedTarget);
-			$(this).find('.Produto h5').append("<b>Produto: </b> " + data[id].descricao);
-			$(this).find('.quantidade h5').append("<b>Quantidade: </b> " + data[id].quantidade);
-			$(this).find('.ValorU h5').append("<b>Valor Unitário: </b>  R$ " + data[id].valor);
-			$(this).find('.ValorT h5').append("<b>Valor Total: </b>  R$ " + (parseFloat(data[id].valor) * parseInt(data[id].quantidade)).toFixed(2));
-
-			
-		});
-
-		$("#modal").on("hidden.bs.modal", function(e) {
-			id = '';	
-			$(this).find('.Produto h5').html("");
-			$(this).find('.quantidade h5').html("");
-			$(this).find('.ValorU h5').html("");
-			$(this).find('.ValorT h5').html("");
-		});
-
 		function sendO(tipo, id) {
-			alert(tipo)
 			$.ajax({
 	            type: "GET",
 	            url: "sendOpinion/" + tipo + "/" + id,  
@@ -334,6 +342,7 @@ background: linear-gradient(90deg, rgba(60,54,54,1) 0%, rgba(117,47,47,1) 1%, rg
 	            	
 	            }
 	        });
+		
 		}
 
 		$(document).ready(function(){

@@ -2,7 +2,7 @@
 <?php (isset($_SESSION['id_caixa']) ? $h = 200 : $h = 100); ?>
 <?php  
 	// echo "<pre>";
-	// print_r($data);
+	// print_r($_SESSION['id_caixa']);
 	
 ?>
 	<div class="row">

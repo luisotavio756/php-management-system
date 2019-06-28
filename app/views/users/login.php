@@ -101,13 +101,15 @@
 										<div class="text-center">
 											<h1 class="h4 google-sans mb-4">Entre na sua Conta</h1>
 										</div>
-										<form class="user" action="<?php echo URLROOT; ?>/users/login" method="POST">
+										<form class="user" action="<?php echo URLROOT; ?>/users/login" method="POST" autocomplete="off">
 											<div class="form-group my-3">
-												<input type="email" name="email"  class="form-control form-control-user <?php echo (!empty($data['email_err'])) ? 'is-invalid' : ''; ?>" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Digite seu Email..." value="<?php echo $data['email'] ?>">
+												<label class="mb-1" style="font-weight: 500; font-size: 1.05rem">Usuário:</label>
+												<input type="text" name="email"  class="form-control form-control-user <?php echo (!empty($data['email_err'])) ? 'is-invalid' : ''; ?>" id="exampleInputEmail" aria-describedby="emailHelp" placeholder="Digite seu Usuário..." value="<?php echo $data['email'] ?>">
 												<span class="invalid-feedback"><?php echo $data['email_err']; ?></span>
 
 											</div>
 											<div class="form-group my-3">
+												<label class="mb-1" style="font-weight: 500; font-size: 1.05rem">Senha:</label>
 												<input type="password" name="senha" class="form-control form-control-user <?php echo (!empty($data['password_err'])) ? 'is-invalid' : ''; ?>" id="exampleInputPassword" placeholder="Senha"  value="<?php echo $data['password'] ?>">
 												<span class="invalid-feedback"><?php echo $data['password_err']; ?></span>
 											</div>

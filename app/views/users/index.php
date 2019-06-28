@@ -26,7 +26,7 @@
 							<tr>
 								<th class="text-center">#</th>
 								<th>Nome</th>
-								<th>Email</th>
+								<th>Usuário</th>
 								<th class="text-center">Nível</th>
 								<th class="text-center">Status</th>
 								<th class="text-center">Ações</th>
@@ -71,7 +71,7 @@
 					<span aria-hidden="true">&times;</span>
 				</button>
 			</div>
-			<form class="user" action="<?php echo URLROOT; ?>/users/addUser" method="POST">
+			<form class="user" action="<?php echo URLROOT; ?>/users/addUser" method="POST" autocomplete="off">
 				<div class="modal-body">
 					<div class="form-group row">
 						<div class="col-lg-4 mb-3 mb-lg-0">
@@ -83,8 +83,8 @@
 							<input type="text" name="sobrenome" class="form-control form-control-user" placeholder="Seu Sobrenome.." required="">
 						</div>
 						<div class="col-lg-5">
-							<label>Email:</label>
-							<input type="email" name="email" class="form-control form-control-user" placeholder="Seu Email.." required="">
+							<label>Usuário:</label>
+							<input type="text" name="email" class="form-control form-control-user" placeholder="Seu Usuário.." required="" autocomplete="off"/>
 						</div>
 					</div>
 					<div class="form-group row">
@@ -143,8 +143,8 @@
 							<input type="text" name="sobrenome" class="form-control form-control-user" placeholder="Seu Sobrenome.." required="">
 						</div>
 						<div class="col-lg-5">
-							<label>Email:</label>
-							<input type="email" name="email" class="form-control form-control-user" placeholder="Seu Email.." required="">
+							<label>Usuário:</label>
+							<input type="text" name="email" class="form-control form-control-user" placeholder="Seu Usuário.." required="">
 						</div>
 					</div>
 					<div class="form-group row">
@@ -190,7 +190,7 @@
 						<p class="nome"></p>
 					</div>
 					<div class="col-lg-6">
-						<label class="m-0 font-weight-bold text-info">Email:</label>
+						<label class="m-0 font-weight-bold text-info">Usuário:</label>
 						<p class="email"></p>
 					</div>
 					<div class="col-lg-6">

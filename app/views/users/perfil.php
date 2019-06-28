@@ -117,8 +117,8 @@
 								<input type="text" name="sobrenome" class="form-control form-control-user" placeholder="Seu Sobrenome.." value="<?php echo $data['user']->sobrenome ?>" required="">
 							</div>
 							<div class="col-lg-12 mb-3">
-								<label>Email:</label>
-								<input type="email" name="email" class="form-control form-control-user" placeholder="Seu Email.." value="<?php echo $data['user']->email ?>" required="">
+								<label>Usuário:</label>
+								<input type="text" name="email" class="form-control form-control-user" placeholder="Seu Usuário.." value="<?php echo $data['user']->email ?>" required="">
 							</div>
 						</div>
 						<div class="form-group row mt-4">
