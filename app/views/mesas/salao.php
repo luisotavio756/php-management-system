@@ -44,10 +44,10 @@
 
 											</div>
 											<div class="col-auto">
-												<div class="dropdown no-arrow">
-													<a class="dropdown-toggle" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-														<!-- <i class="fas fa-ellipsis-v fa-sm fa-fw text-gray-400"></i> -->
-														<i class="fas fa-bars text-gray-400"></i>
+												<div class="dropdown no-arrow" title="Clique para Ações">
+													<a class="dropdown-toggle text-secondary" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none">
+														<!--  -->
+														Ações <i class="fas fa-angle-down fa-sm fa-fw text-gray-400"></i>
 													</a>
 													<div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink" x-placement="bottom-end">
 														<?php if ($value->status == 1): ?>
@@ -184,7 +184,7 @@
 							</div>
 							<div class="col-lg-12 mb-3 mb-lg-0">
 								<label>Whatsapp(Opcional):</label>
-								<input type="tel" name="whatsapp" class="form-control form-control-user phone" placeholder="Digite o número do Whatsapp do Cliente..">
+								<input type="tel" name="whatsapp" class="form-control form-control-user phone" placeholder="Digite o número do Whatsapp do Cliente.." autocomplete="off">
 							</div>
 						</div>
 	                </div>
@@ -210,8 +210,7 @@
 						<h4 class="text-center my-4">Escolha abaixo como deseja enviar o pedido para o cliente <i class="fas fa-paper-plane"></i></h4>
 	                </div>
 	                <div class="modal-footer">
-	                    <!-- <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button> -->
-	                    <a href="#" target="_blank" style="font-weight: " class="btn btn-info btn-imprimir-pedido"><i class="fas fa-file"></i> Imprimir</a>
+	                   
 	                </div>
 	            </form>
 	        </div>
@@ -364,18 +363,20 @@
 		//Obs.. use "_system", no lugar de blank, caso você esteja usando Phonegap / Cordova / Ionic ou qualquer um baseado em webview;
 	}
 
-	// ADD COMANDA
+	// ADD Enviar Pedido
 	$("#modal_enviar_pedido").on("show.bs.modal", function(e) {
 		var link = $(e.relatedTarget);
 		var id = link.attr('id');
 		var whatsapp = link.attr('whats');
 
         $(this).find("[name='mesa']").val(id);
-        $(this).find(".btn-imprimir-pedido").attr('href', "<?php echo URLROOT ?>/mesas/imprimirPedido/" + id);
+        // $(this).find(".btn-imprimir-pedido").attr('href', ");
         if (whatsapp != '') {
-        	$(this).find('.modal-footer').append(' OU \
-	                    <button type="button" class="btn btn-success btn-whats"><i class="fab fa-whatsapp"></i> Enviar Por Whatsapp</button>')
-        	$(this).find(".btn-whats").attr('onclick', 'enviarMensagem(55'+whatsapp+', '+id+')');
+        	$(this).find('.modal-footer').html('<a href="' + "<?php echo URLROOT ?>/mesas/imprimirPedido/" + id + '" target="_blank" style="font-weight: " class="btn btn-info btn-imprimir-pedido"><i class="fas fa-file"></i> Imprimir</a> OU \
+	                    <button type="button" onclick="enviarMensagem(+55'+ whatsapp +', ' + id + ')" class="btn btn-success btn-whats"><i class="fab fa-whatsapp"></i> Enviar Por Whatsapp</button>')
+        	// $(this).find(".btn-whats").attr('onclick', 'enviarMensagem(55'+whatsapp+', '+id+')');
+        }else{
+        	$(this).find('.modal-footer').html(' <a href="' + "<?php echo URLROOT ?>/mesas/imprimirPedido/" + id + '" target="_blank" style="font-weight: " class="btn btn-info btn-imprimir-pedido"><i class="fas fa-file"></i> Imprimir</a>')
         }
         
 
@@ -563,6 +564,83 @@
 	var total = 0.00;
 	var inputTotal = $("#modal_ver_pedidos [name='total']");
 
+	function forProdutos() {
+		$.ajax({
+			type: "GET",
+			url: "getProdutos/",
+			data: {},
+			dataType: "json",
+			success: function (data) {
+
+				if (data != false) {
+					tbody.html('');
+
+					if (notPedidos.length > 0) {
+						data.forEach(function (valor, chave) {
+							var aux = 0;
+							notPedidos.forEach(function (v, c) {
+								if (valor.id == v) {
+									aux++;
+								}
+							});
+
+							if (aux == 0) {
+								if (valor.estoque > 0) {
+									tbody.append('\
+															<tr>\
+																<td style="width: 70%">' + valor.descricao + '</td>\
+																<td style="width: 25%" class="text-center">R$ ' + valor.valor + '</td>\
+																<td>' + '<a href="#" class="btn btn-success btn-xs" onclick="addItem(' + chave + ',' + valor.id + ',' + "'" + valor.descricao + "'" + ',' + "'" + valor.valor + "'" + ',' + valor.estoque + ')" style="border-radius: 25px;"><i class="fa fa-plus"></i></a>' + '</td>\
+															</tr>\
+														')
+
+								} else {
+									tbody.append('\
+															<tr class="bg-danger">\
+																<td style="width: 70%">' + valor.descricao + '</td>\
+																<td style="width: 30%">Sem estoque !</td>\
+															</tr>\
+														')
+								}
+
+							}
+						});
+
+
+					} else {
+						data.forEach(function (valor, chave) {
+							if (valor.estoque > 0) {
+								tbody.append('\
+												<tr>\
+													<td style="width: 70%">' + valor.descricao + '</td>\
+													<td style="width: 25%" class="text-center">R$ ' + valor.valor + '</td>\
+													<td>' + '<a href="#" class="btn btn-success btn-xs" onclick="addItem(' + chave + ',' + valor.id + ',' + "'" + valor.descricao + "'" + ',' + "'" + valor.valor + "'" + ',' + valor.estoque + ')" style="border-radius: 25px;"><i class="fa fa-plus"></i></a>' + '</td>\
+												</tr>\
+											');
+							} else {
+								tbody.append('\
+												<tr>\
+													<td style="width: 50%">' + valor.descricao + '</td>\
+													<td class="text-danger">Sem estoque !</td>\
+												</tr>\
+											');
+							}
+
+						});
+					}
+
+
+				} else {
+					//alert('sme nad')
+				}
+			},
+			error: function (e) {
+
+			}
+		});
+	
+	}
+
 	$("#modal_pedidos").on("show.bs.modal", function(e) {
 		var link = $(e.relatedTarget);
 		var id = link.attr('id');
@@ -573,79 +651,7 @@
         id_comanda = id;
         id_mesa = mesa;
 
-        $.ajax({
-            type: "GET",
-            url: "getProdutos/",  
-            data: {},        
-            dataType: "json",
-            success: function (data) {
-            	
-            	if (data != false) {
-                	tbody.html('');
-
-                		if (notPedidos.length > 0) {
-                			data.forEach(function(valor, chave){
-                				var aux = 0;
-                				notPedidos.forEach(function(v, c){
-                					if (valor.id == v) {
-                						aux++; 
-                					}
-                				});
-
-								if (aux == 0) {
-									if (valor.estoque > 0) {
-										tbody.append('\
-														<tr>\
-															<td style="width: 70%">' + valor.descricao + '</td>\
-															<td style="width: 25%" class="text-center">R$ ' + valor.valor + '</td>\
-															<td>' + '<a href="#" class="btn btn-success btn-xs" onclick="addItem(' + chave + ',' + valor.id + ',' + "'" + valor.descricao + "'" + ',' + "'" + valor.valor +  "'" + ',' + valor.estoque  + ')" style="border-radius: 25px;"><i class="fa fa-plus"></i></a>' + '</td>\
-														</tr>\
-													')
-
-									}else{
-										tbody.append('\
-														<tr class="bg-danger">\
-															<td style="width: 70%">' + valor.descricao + '</td>\
-															<td style="width: 30%">Sem estoque !</td>\
-														</tr>\
-													')
-									}
-
-								}
-		                    });
-
-                			
-                		}else{
-							data.forEach(function(valor, chave){
-								if (valor.estoque > 0) {
-									tbody.append('\
-												<tr>\
-													<td style="width: 70%">' + valor.descricao + '</td>\
-													<td style="width: 25%" class="text-center">R$ ' + valor.valor + '</td>\
-													<td>' + '<a href="#" class="btn btn-success btn-xs" onclick="addItem(' + chave + ',' + valor.id + ',' + "'" + valor.descricao + "'" + ',' + "'" + valor.valor + "'" + ',' + valor.estoque + ')" style="border-radius: 25px;"><i class="fa fa-plus"></i></a>' + '</td>\
-												</tr>\
-											');
-								}else{
-									tbody.append('\
-												<tr>\
-													<td style="width: 50%">' + valor.descricao + '</td>\
-													<td class="text-danger">Sem estoque !</td>\
-												</tr>\
-											');
-								}
-									
-		                    });
-                		}	    
-
-
-				}else{
-					//alert('sme nad')
-				}
-            },
-            error: function(e) {
-            	
-            }
-        });
+        forProdutos();
         
 	});
 
@@ -663,6 +669,7 @@
         setTotal(0);
         setLength(0);
         notPedidos = [];
+        pedido = [];
         
 	});
 
@@ -742,81 +749,6 @@
             	
             }
         });
-		}else{
-	        $.ajax({
-	            type: "GET",
-	            url: "getProdutos/" + $(this).val(),  
-	            data: {},        
-	            dataType: "json",
-	            success: function (data) {
-	            	
-	            	if (data != false) {
-	                	tbody.html('');
-
-	                		if (notPedidos.length > 0) {
-	                			data.forEach(function(valor, chave){
-	                				var aux = 0;
-	                				notPedidos.forEach(function(v, c){
-	                					if (valor.id == v) {
-	                						aux++; 
-	                					}
-	                				});
-
-									if (aux == 0) {
-										if (valor.estoque > 0) {
-											tbody.append('\
-															<tr>\
-																<td style="width: 70%">' + valor.descricao + '</td>\
-																<td style="width: 25%" class="text-center">R$ ' + valor.valor + '</td>\
-																<td>' + '<a href="#" class="btn btn-success btn-xs" onclick="addItem(' + chave + ',' + valor.id + ',' + "'" + valor.descricao + "'" + ',' + "'" + valor.valor +  "'" + ',' + valor.estoque  + ')" style="border-radius: 25px;"><i class="fa fa-plus"></i></a>' + '</td>\
-															</tr>\
-														')
-
-										}else{
-											tbody.append('\
-															<tr class="bg-danger">\
-																<td style="width: 70%">' + valor.descricao + '</td>\
-																<td style="width: 30%">Sem estoque !</td>\
-															</tr>\
-														')
-										}
-
-									}
-			                    });
-
-	                			
-	                		}else{
-								data.forEach(function(valor, chave){
-									if (valor.estoque > 0) {
-										tbody.append('\
-													<tr>\
-														<td style="width: 70%">' + valor.descricao + '</td>\
-														<td style="width: 25%" class="text-center">R$ ' + valor.valor + '</td>\
-														<td>' + '<a href="#" class="btn btn-success btn-xs" onclick="addItem(' + chave + ',' + valor.id + ',' + "'" + valor.descricao + "'" + ',' + "'" + valor.valor + "'" + ',' + valor.estoque + ')" style="border-radius: 25px;"><i class="fa fa-plus"></i></a>' + '</td>\
-													</tr>\
-												');
-									}else{
-										tbody.append('\
-													<tr>\
-														<td style="width: 50%">' + valor.descricao + '</td>\
-														<td class="text-danger">Sem estoque !</td>\
-													</tr>\
-												');
-									}
-										
-			                    });
-	                		}	    
-
-
-					}else{
-						//alert('sme nad')
-					}
-	            },
-	            error: function(e) {
-	            	
-	            }
-	        });
-
 		}
 	});
 
@@ -866,6 +798,7 @@
 		$('input.query-input').val('');
 
 		$("#modal_pedidos .inputs-hidden").append('<input type="hidden" name="pedidos[' + id_produto + ']" value="1">')
+		forProdutos();
 
 	}
 
@@ -878,6 +811,7 @@
 		$('#modal_pedidos .inputs-hidden [name="pedidos[' + id_produto + ']"]').remove();
 		setLength();
 		forPedidos();
+		forProdutos();
 	
 	}
 

@@ -1,6 +1,6 @@
 <?php require_once APPROOT . '/views/inc/header.php'; ?>
 	
-	<div class="row d-sm-flex align-items-center justify-content-center mb-4">
+	<div class="row d-sm-flex align-items-center justify-content-center my-1">
 		<div class="col-lg-4 d-none d-lg-block d-xl-none">
 			<hr class="bg-info w-50 mr-0" style="height: .1px; border-radius: 10px; box-shadow: 0 0 3px 0px gray !important">
 		</div>
@@ -76,4 +76,64 @@
 			</div>
 		</div>
 	</div>
+	<div class="row">
+		<!-- Pie Chart -->
+		<div class="col-lg-4" >
+			<div class="card shadow mb-4" >
+				<!-- Card Header - Dropdown -->
+				<div class="card-header py-3 text-center">
+					<h6 class="m-0 font-weight-bold"><i class="fas fa-chart-pie"></i> Votações</h6>
+				</div>
+				<!-- Card Body -->
+				<div class="card-body">
+					<div class="chart-pie pt-1 pb-1" style="height: 200px !important">
+						<canvas id="myPieChart"></canvas>
+					</div>
+					<div class="mt-3 text-center small">
+						<span class="mr-2">
+						<i class="fas fa-circle text-success"></i> Votos Sim
+						</span>
+						<span class="mr-2">
+						<i class="fas fa-circle text-danger"></i> Votos Não
+						</span>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 <?php require_once APPROOT . '/views/inc/footer.php'; ?>
+<!-- Page level plugins -->
+<script src="<?php echo URLROOT; ?>/vendor/chart.js/Chart.min.js"></script>
+
+<script src="<?php echo URLROOT; ?>/js/demo/chart-pie-demo.js"></script>
+<script type="text/javascript">
+	 var myPieChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ["Votos Sim", "Votos Não"],
+            datasets: [{
+                data: [
+                	<?php echo $data['votosNao'] ?>, <?php echo $data['votosSim'] ?>
+                ],
+                backgroundColor: ['#1cc88a', '#e74a3b'],
+            }],
+        },
+        options: {
+            maintainAspectRatio: false,
+            tooltips: {
+            backgroundColor: "rgb(255,255,255)",
+            bodyFontColor: "#858796",
+            borderColor: '#dddfeb',
+            borderWidth: 1,
+            xPadding: 15,
+            yPadding: 15,
+            displayColors: false,
+            caretPadding: 10,
+        },
+        legend: {
+            display: false
+        },
+        cutoutPercentage: 80,
+        },
+    });
+</script>

@@ -6,6 +6,8 @@
 			$this->mesaModel = $this->model('Mesa');
 			$this->caixaModel = $this->model('Caixa');
 			$this->produtoModel = $this->model('Produto');
+			$this->configModel = $this->model('Config');
+			$this->debEstoque = $this->configModel->getDebEstoque()->debitarEstoque;
 
 			if (!isset($_SESSION['id_usuario'])) {
 				redirect("/users/login");
@@ -73,75 +75,19 @@
 						// Load function register
 						if ($this->mesaModel->addMesa($data)) {
 							flash("mesas", "Mesa adicionada com Sucesso !");
-							redirect("/mesas/");
+							redirect("/mesas/gerenciar");
 						}else{
 							flash("mesas", "Não foi possível cadastrar a Mesa !", "alert-danger");
-							redirect("/mesas");
+							redirect("/mesas/gerenciar");
 						}
 					}else{
 						flash("mesas", "Não foi possível cadastrar a Mesa, já existe uma mesa com este código !", "alert-danger");
-						redirect("/mesas");
+						redirect("/mesas/gerenciar");
 					}
 					
 				}else{
 					flash("mesas", "Não foi possível cadastrar a Mesa, verifique todos os campos !", "alert-danger");
-					redirect("/mesas");
-				}
-
-			}else{
-				flash("mesas", "Ação Bloqueada !", "alert-danger");
-				redirect("/mesas");
-			}
-		
-		}
-
-		public function alterMesa($id) {
-			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-				// Sanitize POST data
-				$_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
-
-				// Init data
-				$data = [
-					'id' => $id,
-					'new_id' => ($_POST['num']),
-					'descricao' => 'Mesa '.$_POST['num'],
-				];
-
-				// Validade all 
-				if (isset($data['id']) && isset($data['descricao']) && isset($data['new_id'])) {
-					//Validated
-					if ($data['id'] == $data['new_id']) {
-						// Load function register
-						if ($this->mesaModel->update($data)) {
-							flash("mesas", "Mesa alterarada com Sucesso !");
-							redirect("/mesas/");
-						}else{
-							flash("mesas", "Não foi possível alterar a Mesa !", "alert-danger");
-							redirect("/mesas");
-						}
-					}elseif ($data['id'] != $data['new_id']) {
-						if ($this->mesaModel->verify($data['new_id']) == false) {
-							// Load function register
-							if ($this->mesaModel->update($data)) {
-								flash("mesas", "Mesa alterarada com Sucesso !");
-								redirect("/mesas/");
-							}else{
-								flash("mesas", "Não foi possível alterar a Mesa !", "alert-danger");
-								redirect("/mesas");
-							}
-						}else{
-							flash("mesas", "Não foi possível alterar a Mesa, já existe uma mesa com este código !", "alert-danger");
-							redirect("/mesas");
-						}
-					}else{
-						flash("mesas", "Não foi possível alterar a Mesa !", "alert-danger");
-						redirect("/mesas");
-					}
-					
-				}else{
-					flash("mesas", "Não foi possível alterar a Mesa, verifique todos os campos !", "alert-danger");
-					redirect("/mesas");
+					redirect("/mesas/gerenciar");
 				}
 
 			}else{
@@ -154,21 +100,26 @@
 		public function deleteMesa($id) {
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 				if ($this->mesaModel->verifyDis($id) == false) {
+					$comandas = $this->mesaModel->getComandaMesaAll($id);
+					foreach ($comandas as $key => $value) {
+						$this->mesaModel->cancelarCom($value->id);
+					}
+
 					if ($this->mesaModel->delete($id)) {
 						flash("mesas", "Mesa Excluida com Sucesso !");
-						redirect("/mesas/");
+						redirect("/mesas/gerenciar");
 					}else{
 						flash("mesas", "Não foi possível excluir a Mesa !", "alert-danger");
-						redirect("/mesas/");
+						redirect("/mesas/gerenciar");
 					}
+
 				}else{
 					flash("mesas", "Não é possível excluir uma mesa que está em Uso !", "alert-danger");
-					redirect("/mesas/");
+					redirect("/mesas/gerenciar");
 				}
-
 			}else{
 				flash("mesas", "Ação Bloqueada !", "alert-danger");
-				redirect("/mesas/");
+				redirect("/mesas/gerenciar");
 			}
 		
 		}
@@ -179,6 +130,7 @@
 			$row = $this->mesaModel->getProdutos(strtolower($query));
 
 			echo json_encode($row);
+		
 		}
 
 		// COMANDAS
@@ -262,6 +214,19 @@
 		
 		}
 
+		public function getComandaMesaAll() {
+			$array = array();
+			$row = $this->mesaModel->getMesas();
+
+			foreach ($row as $key => $value) {
+				$comandas = $this->mesaModel->getComandaMesaAll($value->id);
+				$array[$value->id] = $comandas;		
+			}
+
+			echo json_encode($array);
+
+		}
+
 		public function adicionarPedido() {
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
@@ -279,14 +244,16 @@
 					$cont = 0;
 					foreach ($data['pedidos'] as $key => $value) {
 						$this->mesaModel->addPedido($data['id_comanda'], $key, $value);
-						$estoque = $this->produtoModel->verifEstoque($key)[0];
-						if ($estoque >= $value) {
-							$this->produtoModel->updateEstoque($key, $value);
-						}else{
-							$this->produtoModel->updateEstoque($key, $estoque);
+						if ($this->debEstoque == 1) {
+							$estoque = $this->produtoModel->verifEstoque($key)[0];
+							if ($estoque >= $value) {
+								$this->produtoModel->updateEstoque($key, $value);
+							}else{
+								$this->produtoModel->updateEstoque($key, $estoque);
+							}
 						}
 					}
-
+					
 					flash("salao", "Pedido adicionado com Sucesso !");
 					redirect("/mesas/salao");
 					
@@ -335,11 +302,13 @@
 				if (isset($data['pedidosAlter']) && isset($data['pedidosDel'])) {
 
 					foreach ($data['pedidosAlter'] as $key => $value) {
-						$id_produto = $this->mesaModel->getEstoquePedido($key)[0]->id;
-						$estoque = $this->mesaModel->getEstoquePedido($key)[0]->estoque;
-						$quantidade = $this->mesaModel->getEstoquePedido($key)[0]->quantidade;
-						$total = $value - $quantidade;
-						$this->produtoModel->updateEstoque($id_produto, $total);
+						if ($this->debEstoque == 1) {
+							$id_produto = $this->mesaModel->getEstoquePedido($key)[0]->id;
+							$estoque = $this->mesaModel->getEstoquePedido($key)[0]->estoque;
+							$quantidade = $this->mesaModel->getEstoquePedido($key)[0]->quantidade;
+							$total = $value - $quantidade;
+							$this->produtoModel->updateEstoque($id_produto, $total);
+						}
 						$this->mesaModel->updatePedido($key, $value);
 						// echo "<pre>";
 						// echo "Id Produto: $id_produto<br>";
@@ -351,9 +320,12 @@
 					}
 
 					foreach ($data['pedidosDel'] as $key => $value) {
-						$id = $this->mesaModel->getEstoquePedido($value)[0]->id;
-						$quantidade = $this->mesaModel->getEstoquePedido($value)[0]->quantidade;
-						$this->produtoModel->updateEstoque($id, (-$quantidade));
+						if ($this->debEstoque == 1) {
+							$id = $this->mesaModel->getEstoquePedido($value)[0]->id;
+							$quantidade = $this->mesaModel->getEstoquePedido($value)[0]->quantidade;
+							$this->produtoModel->updateEstoque($id, (-$quantidade));
+						}
+
 						$this->mesaModel->deletePedido($value);
 					}
 
@@ -370,10 +342,6 @@
 				redirect("/mesas/salao");
 			}
 		
-		}
-
-		public function comandaTotal($id) {
-
 		}
 
 		public function fecharComanda() {
@@ -448,6 +416,14 @@
 					$pedido = $this->mesaModel->getPedido($data['id_comanda']);
 					// echo "<pre>";
 					// print_r($pedido);
+
+					if ($this->debEstoque == 1) {
+						foreach ($pedido as $key => $value) {
+							$id = $value->id_produto;
+							$quantidade = $value->quantidade;
+							$this->produtoModel->updateEstoque($id, (-$quantidade));
+						}
+					}
 
 					if ($this->mesaModel->cancelarCom($data['id_comanda'])) {
 						if ($this->mesaModel->setMesa($data['id_mesa'], 0)) {

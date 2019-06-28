@@ -34,7 +34,7 @@
 			.card{
 
     			background-color: rgba(255, 255, 255, 1);
-    			box-shadow: 0px 0px 10px 1px white !important;
+    			box-shadow: 0px 0px 25px 5px #590d0d !important
 
 			}
 
@@ -93,13 +93,13 @@
 							<!-- Nested Row within Card Body -->
 							<div class="row">
 								<div class="col-lg-6 d-none d-lg-block">
-									<img src="../img/img1.jpg" class="img-fluid">
+									<img src="../img/img1.jpeg" class="img-fluid">
 								</div>
 								<div class="col-lg-6 d-flex align-items-center align-content-center">
 									<div class="p-4 p-md-5 w-100">
 										<?php flash('login'); ?>
 										<div class="text-center">
-											<h1 class="h4 google-sans mb-4">Bem Vindo!</h1>
+											<h1 class="h4 google-sans mb-4">Entre na sua Conta</h1>
 										</div>
 										<form class="user" action="<?php echo URLROOT; ?>/users/login" method="POST">
 											<div class="form-group my-3">
@@ -117,7 +117,7 @@
 													<label class="custom-control-label" for="customCheck">Remember Me</label>
 												</div>
 											</div> -->
-											<button style="background-color: #eca225; color: white; font-size: 16px; padding: 0.5rem 1rem;" type="submit" class="btn btn-user btn-block mt-4">
+											<button style="background-color: #560808fa; color: white; font-size: 16px; padding: 0.5rem 1rem;" type="submit" class="btn btn-user btn-block mt-4">
 												Entrar
 											</button>
 											<hr>

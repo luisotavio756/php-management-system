@@ -23,7 +23,8 @@
 			$data = [
 				'pedido' => $pedido,
 				'status' => $status,
-				'statusVoto' => $this->mesaModel->getCom($id)[0]->statusVoto
+				'statusVoto' => isset($this->mesaModel->getCom($id)[0]->statusVoto) ? $this->mesaModel->getCom($id)[0]->statusVoto : null,
+				'configs' => $this->configModel->getConfigs(),
 			];
 
 			$this->view('mesas/pedido', $data);	

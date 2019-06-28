@@ -141,11 +141,11 @@ background: linear-gradient(90deg, rgba(60,54,54,1) 0%, rgba(117,47,47,1) 1%, rg
                         <i class="fas fa-users"></i>
                         <span>Usuários</span></a>
                     </li>
-                    <!-- <li class="nav-item">
+                    <li class="nav-item <?php echo $controller == 'configuracoes' ? 'active' : '' ?> ">
                         <a class="nav-link" href="<?php echo URLROOT; ?>/configuracoes">
                         	<i class="fas fa-cogs"></i>
                         <span>Configurações</span></a>
-                    </li> -->
+                    </li>
                 <?php endif ?>
                 <li class="nav-item">
                     <?php if (isset($_SESSION['id_caixa'])): ?>

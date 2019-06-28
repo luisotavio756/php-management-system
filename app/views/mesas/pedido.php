@@ -139,7 +139,7 @@ background: linear-gradient(90deg, rgba(60,54,54,1) 0%, rgba(117,47,47,1) 1%, rg
 							</div>
 						</div>
 						<div class="row">
-							<div class="col-12 my-2 text-right">
+							<div class="col-12 my-2 text-center">
 								<a href="<?php echo URLROOT ?>/clientes/imprimirPedido/<?php echo $data['pedido'][0]->id_comanda ?>/DOWNLOAD"><i class="fas fa-file-download"></i> Clique para Imprimir o Pedido</a>
 								<hr>
 							</div>
@@ -184,25 +184,43 @@ background: linear-gradient(90deg, rgba(60,54,54,1) 0%, rgba(117,47,47,1) 1%, rg
 				<div class="row" style="min-height: 300px">
 					<div class="col-lg-4 px-3">
 						<div class="logo text-center mt-5">
-							<img  src="../public/img/logo.svg" width="200" height="130" class="img-fluid">
+							<!-- <img  src="../public/img/logo.svg" width="200" height="130" class="img-fluid"> -->
+							<h2 class="">Assakabrasa</h2>
 						</div>
 						
-						<p class="text-justify text-muted-footer mt-3" style="font-weight: 500">Desenvolvido por <a href="https://www.instagram.com/includejr/" target="_blank">@includejr</a> com o pensamento ambiental de "Menos é Mais". Menos papel, menos poluição, mais anos de vida para nosso planeta. Colabore com essa idéia !</p>
+						<!-- <p class="text-justify text-muted-footer mt-3" style="font-weight: 500">Desenvolvido por <a href="https://www.instagram.com/includejr/" target="_blank">@includejr</a> com o pensamento ambiental de "Menos é Mais". Menos papel, menos poluição, mais anos de vida para nosso planeta. Colabore com essa idéia !</p> -->
+						<p class="text-justify text-muted-footer mt-3" style="font-weight: 500"><?php echo $data['configs']->descricaoEmpresa ?></p>
 
 					</div>
 					<div class="col-lg-4 py-5 text-center">
-						<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d5621.580815561395!2d-37.95654399617288!3d-4.929968940982865!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x667d48fa538468ec!2sMetal%C3%BArgica+S%C3%A3o+Jos%C3%A9+De+Anchieta!5e0!3m2!1spt-BR!2sbr!4v1559328265308!5m2!1spt-BR!2sbr" width="100%" height="250" frameborder="0" style="border:0" allowfullscreen></iframe>
+						<?php if (isset($data['configs']->maps)): ?>
+							
+							<iframe src="<?php echo $data['configs']->maps ?>" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+						<?php else: ?>
+							<iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d31800.077480058895!2d-37.989034613294194!3d-4.938021863997906!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7b982a3a30d74a3%3A0x8c394db26dbbcbb!2sRussas%2C+CE%2C+62900-000!5e0!3m2!1spt-BR!2sbr!4v1561663850324!5m2!1spt-BR!2sbr" width="600" height="450" frameborder="0" style="border:0" allowfullscreen></iframe>
+						<?php endif; ?>
 					</div>
 					<div class="col-lg-3 py-1 py-lg-5 px-4 mb-4 mg-lg-0 text-center">
 						<h4>Contato</h4>
 						<div class="mt-4 pl-1 text-left">
-							<p class="text-muted-footer data"><i class="fas fa-map-marker-alt"></i> Av. Coronel Araújo Lima, 1348, Centro - Russas/CE</p>
-							<p class="text-muted-footer data"><i class="fas fa-phone-volume"></i> (88) 93943-3438</p>
-							<p class="text-muted-footer data"><i class="fas fa-inbox"></i> suaempresa@gmail.com</p>
+							<p class="text-muted-footer data"><i class="fas fa-map-marker-alt"></i> <?php echo $data['configs']->endereco ?></p>
+							<p class="text-muted-footer data"><i class="fas fa-phone-volume"></i> <?php echo $data['configs']->telefone ?></p>
+							<p class="text-muted-footer data"><i class="fas fa-inbox"></i> <?php echo $data['configs']->email ?></p>
 							<div class="">
-								<a href="https://www.instagram.com/luisotaviioc/" target="_blank" class="mr-3 instagram"><i style="font-size: 25px" class="fab fa-instagram"></i></a> 
-								<a href="https://api.whatsapp.com/send?phone=5588997283474" target="_blank" class="mr-3 whatsapp"><i style="font-size: 25px" class="fab fa-whatsapp"></i></a> 
-								<a href="#" target="_blank" class="linkedin"><i style="font-size: 25px"class="fab fa-linkedin"></i></a>
+								<?php if (isset($data['configs']->instagram)): ?>
+									<a href="<?php echo isset($data['configs']->instagram) ? $data['configs']->instagram : '#' ?>" target="_blank" class="mr-3 instagram"><i style="font-size: 25px" class="fab fa-instagram"></i></a> 
+									
+								<?php endif ?>
+
+								<?php if (isset($data['configs']->whatsapp)): ?>
+									<a href="<?php echo isset($data['configs']->whatsapp) ? 'https://api.whatsapp.com/send?phone=55'.$data['configs']->whatsapp : '#' ?>" target="_blank" class="mr-3 whatsapp"><i style="font-size: 25px" class="fab fa-whatsapp"></i></a> 
+									
+								<?php endif ?>
+
+								<?php if (isset($data['configs']->facebook)): ?>
+									<a href="<?php echo $$data['configs']->facebook ?>" target="_blank" class="linkedin"><i style="font-size: 25px"class="fab fa-facebook"></i></a>
+								<?php endif ?>
+
 							</div>
 
 						</div>
@@ -317,7 +335,11 @@ background: linear-gradient(90deg, rgba(60,54,54,1) 0%, rgba(117,47,47,1) 1%, rg
 	            }
 	        });
 		}
-    </script>
+
+		$(document).ready(function(){
+			$('iframe').attr('width', '100%').attr('height', '250')
+		})
+    </script> 
 </body>
 
 </html>

@@ -4,6 +4,8 @@
 		public function __construct(){
 			$this->userModel = $this->model('User');
 			$this->mesaModel = $this->model('Mesa');
+			$this->configModel = $this->model('Config');
+
 			if (!isset($_SESSION['id_usuario'])) {
 				redirect("/users/login");
 			}else{
@@ -21,7 +23,9 @@
 					'comandas' => $comandas,
 					'comandasClose' => $comandasCloses,
 					'pedidosPendentes' => $this->getPedidosAll(),
-					'clientes' => $this->mesaModel->getCurrentesCom()
+					'clientes' => $this->mesaModel->getCurrentesCom(),
+					'votosSim' => $this->configModel->getVotosSim(),
+					'votosNao' => $this->configModel->getVotosNao(),
 			];
 
 			$this->view('pages/index', $data);

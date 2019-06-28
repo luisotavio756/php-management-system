@@ -60,6 +60,18 @@
 
 		}
 
+		public function getComandaMesaAll($id) {
+			$this->db->query("SELECT c.* FROM tb_comandas AS c JOIN tb_mesas AS m ON c.id_mesa = m.id WHERE m.id = :id AND c.status = 1 ORDER BY c.id DESC");
+			$this->db->bind(":id", $id);
+			$this->db->execute();
+
+			if ($this->db->rowCount() > 0) {
+				return $this->db->resultSet();
+			}else{
+				return false;
+			}
+		}
+
 		public function verify($id) {
 			$this->db->query("SELECT * FROM tb_mesas WHERE id = :id");
 			$this->db->bind(":id", $id);
@@ -115,7 +127,7 @@
 		}
 
 
-		// PEDIDOS
+		// PRODUTOS
 
 		public function getProdutos($query) {
 			$this->db->query("SELECT id, descricao, valor, estoque FROM tb_produtos WHERE descricao LIKE :query ORDER BY estoque DESC");
@@ -160,6 +172,7 @@
 			}else{
 				return false;
 			}
+		
 		}
 
 		public function getCom($id) {
@@ -171,6 +184,7 @@
 			}else{
 				return false;
 			}
+		
 		}
 
 		public function setCom($id, $status) {
@@ -196,6 +210,7 @@
 			}else{
 				return false;
 			}
+		
 		}
 
 		public function closeComanda($id, $total) {
@@ -217,18 +232,21 @@
 			$this->db->query("SELECT * FROM tb_comandas WHERE status = 0");
 
 			return $this->db->resultSet();
+		
 		}
 
 		public function getComCloses() {
 			$this->db->query("SELECT * FROM tb_comandas WHERE status = 1 AND CURRENT_DATE < data_fechado");
 
 			return $this->db->resultSet();
+		
 		}
 
 		public function getCurrentesCom() {
 			$this->db->query("SELECT * FROM tb_comandas WHERE CURRENT_DATE < data_registro OR CURRENT_DATE < data_fechado");
 			$this->db->execute();
 			return $this->db->rowCount();
+		
 		}
 
 		public function verifyComActive() {
@@ -240,6 +258,7 @@
 			}else{
 				return false;
 			}
+		
 		}
 
 		public function cancelarCom($id) {
@@ -255,7 +274,6 @@
 			}else{
 				return false;
 			}
-			
 
 		}
 
@@ -286,6 +304,7 @@
 			}else{
 				return false;
 			}
+		
 		}
 
 		public function updatePedido($id, $valor) {
@@ -310,6 +329,7 @@
 			}else{
 				return false;
 			}
+		
 		}
 
 		public function deletePedidoAll($id) {
@@ -321,6 +341,7 @@
 			}else{
 				return false;
 			}
+		
 		}
 
 		public function getPedido($id) {
@@ -332,6 +353,7 @@
 			}else{
 				return false;
 			}
+		
 		}
 
 		public function getPedidoTotal($id) {
@@ -343,6 +365,7 @@
 			}else{
 				return false;
 			}
+		
 		}
 
 

@@ -50,8 +50,8 @@
                             </div>
                         </div>
                         <div class="modal-footer">
-                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                            <button type="submit" class="btn btn-danger">Confirmar <i class="fas fa-trash"></i></button>
+                            <button type="submit" class="btn btn-danger">Confirmar e Excluir <i class="fas fa-trash"></i></button>
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar Ação <i class="fas fa-times"></i></button>
                         </div>
                     </form>
                 </div>
@@ -68,28 +68,14 @@
         <script src="<?php echo URLROOT; ?>/vendor/datatables/jquery.dataTables.js"></script>
         <script src="<?php echo URLROOT; ?>/vendor/datatables/dataTables.bootstrap4.min.js"></script>
         <script src="<?php echo URLROOT; ?>/vendor/mask/jquery.mask.js"></script>
-        <!-- File item template -->
-        <script type="text/html" id="files-template">
-            <li class="media">
-                <div class="media-body mb-1">
-                    <p class="mb-2">
-                        <strong>%%filename%%</strong> - Status: <span class="text-muted">Waiting</span>
-                    </p>
-                    <div class="progress mb-2">
-                        <div class="progress-bar progress-bar-striped progress-bar-animated bg-primary" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
-                    </div>
-                    <hr class="mt-1 mb-1" />
-                </div>
-            </li>
-        </script>
-        <!-- Debug item template -->
-        <script type="text/html" id="debug-template">
-          <li class="list-group-item text-%%color%%"><strong>%%date%%</strong>: %%message%%</li>
-        </script>
 
         <!-- Page level custom scripts -->
         <script src="<?php echo URLROOT; ?>/js/demo/datatables-demo.js"></script>
+
         <script type="text/javascript">
+           
+
+
             $("#btn-actions").click(function(){
                 $(".panel-action").fadeToggle();
             })

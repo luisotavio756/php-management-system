@@ -45,7 +45,7 @@
 											<a class="btn btn-secondary btn-circle btn-sm" href="#" id="<?php echo $value->id ?>" data-toggle="modal" data-placement="top" data-target="#modal_comandas" title="Comandas da Mesa">
 												<i class="fas fa-bookmark"></i>
 											</a>											
-											<a class="btn btn-danger btn-circle btn-sm" href="<?php echo URLROOT ?>/mesas/deleteMesa/<?php echo $value->id ?>" data-toggle="modal" data-placement="top" data-target="#modal_excluir" title="Excluir Mesa" text="Deseja Realmente excluir esta Mesa ?">
+											<a class="btn btn-danger btn-circle btn-sm" href="<?php echo URLROOT ?>/mesas/deleteMesa/<?php echo $value->id ?>" data-toggle="modal" data-placement="top" data-target="#modal_excluir" title="Excluir Mesa" text="Ao excluir a mesa, as comandas e pedidos ligados a ela tambem serão excluidos. Tem certeza ?">
 												<i class="fas fa-trash"></i>
 											</a>
 										</td>
@@ -110,6 +110,42 @@
 	        </div>
 	    </div>
 	</div>
+	<div class="modal fade" id="modal_comandas" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg" role="document">
+			<div class="modal-content">
+				<div class="modal-header">
+					<h5 class="modal-title" id="exampleModalLabel">Comandas Passadas</h5>
+					<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+						<span aria-hidden="true">&times;</span>
+					</button>
+				</div>
+				<form class="user" action="<?php echo URLROOT; ?>/mesas/add/" method="POST">
+					<div class="modal-body" style="min-height: 150px; max-height: 400px; overflow-y: auto">
+						<div class="row">
+							<div class="col-12">
+								<table class="table table-striped w-100">
+									<thead>
+										<tr>
+											<th>Nº</th>
+											<th>Cliente</th>
+											<th>Data</th>
+											<th>Total</th>
+										</tr>
+									</thead>
+									<tbody>
+
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+					<div class="modal-footer">
+						<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
 
 <?php require_once APPROOT . '/views/inc/footer.php'; ?>
 
@@ -142,5 +178,46 @@
 		$(this).find(".modal-title").html(link.attr("title"));
 		$(this).find("[name='num']").val(data[id].id)
 
+	});
+
+	$("#modal_comandas").on("show.bs.modal", function(e) {
+		var link = $(e.relatedTarget);
+		var id = link.attr('id');
+		$.ajax({
+            type: "GET",
+            url: "getComandaMesaAll/",  
+            data: {},        
+            success: function (data) {
+            	if (data != false) {
+            		if (data.lenght > 0) {
+	            		var d = JSON.parse(data);
+	            		// alert(JSON.stringify(d[id]))
+	            		d[id].forEach(function(valor, chave){
+	            			$('#modal_comandas').find('tbody').append('<tr>\
+	            											<td>' + valor.id + '</td>\
+	            											<td>' + valor.nome_cliente + '</td>\
+	            											<td>' + valor.data_fechado + '</td>\
+	            											<td>R$ ' + (valor.total) + '</td>\
+	            										</tr>\
+	            										');
+	            		});
+
+            		}else{
+            			// $('#modal_comandas').find('.modal-dialog')
+            			$('#modal_comandas').find('.modal-body .row .col-12').html('<h3 class="text-center my-5">Nenhuma comanda foi vinculada a esta mesa</h3>')
+            		}
+            	}	
+
+
+            },
+            error: function(e) {
+            	alert('kkkk')
+            }
+        });
+
+	});
+
+	$("#modal_comandas").on("hidden.bs.modal", function(e) {
+		$(this).find('.modal-body table tbody').html('');
 	});
 </script>
