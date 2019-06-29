@@ -17,6 +17,15 @@
 				}
 			}
 
+			if ($this->caixaModel->verifyOpen()) {
+				$_SESSION['id_caixa'] = $this->caixaModel->idCaixa();
+				// echo "esta aberto.";
+			}else{
+				unset($_SESSION['id_caixa']);
+				// $this->deleteSessionCaixa();
+				// echo "esta fechado.";
+			}
+
 		}
 
 		public function index(){
