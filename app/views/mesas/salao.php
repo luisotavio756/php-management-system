@@ -21,6 +21,36 @@
 		    text-indent: 1px;
 		    text-overflow: '';
 		}
+
+		.collapseCardOptions a{
+			font-size: 14.5px;
+			font-weight: 700;
+		}
+
+		.collapseCardOptions .card{
+			cursor: pointer;
+		}
+
+		@media screen and (max-width: 992px) {
+			.text-back {
+				display: block !important;
+			}
+
+			.text-back-2{
+				display: none !important;
+			}
+		}
+
+		@media screen and (min-width: 992px) {
+			.text-back {
+				display: none !important;
+			}
+
+			.text-back-2{
+				display: block !important;
+			}
+		}
+
 	</style>
 	<div class="row">
 		<div class="col-lg-12">
@@ -32,52 +62,86 @@
 				<div class="col-12 mt-4">
 					<div class="row">
 						<?php foreach ($data['mesas'] as $key => $value): ?>
-							<div class="col-xl-4 col-md-6 mb-4">
-								<div class="card border-left-<?php echo $value->status == 1 ? 'danger' : 'success' ?> shadow h-100 py-2">
-									<div class="card-body">
-
-										<div class="row no-gutters align-items-center">
+							<div class="col-md-6 col-lg-6 col-xl-4 mb-4">
+								<div class="card border-left-<?php echo $value->status == 1 ? 'danger' : 'success' ?> shadow h-100 py-1" style="min-height: 180px !important;">
+									<div class="card-body collapse-text-<?php echo $value->id ?> text-center collapseCardExample align-items-center" id="<?php echo $value->id ?>" style="display: flex; cursor: pointer;">
+										<div class="row mx-auto">
 											<div class="col mr-2">
 												<div style="font-size: 16px" class="font-weight-bold text-gray-800 text-uppercase mb-1"><?php echo $value->descricao ?>
 												<?php echo $value->status == 1 ? " --- Comanda <b>" . $data['comandasMesa'][$value->id]->id . "</b>" : "" ?> </div>
 												<p class="pulsate my-0 font-weight-bolder text-<?php echo $value->status == 1 ? 'danger' : 'success' ?>"><i class="fas fa-circle"></i> <?php echo $value->status == 1 ? 'Ocupada' : 'Disponível' ?></p>
+												<p class="text-center">Clique para ações</p>
 
-											</div>
-											<div class="col-auto">
-												<div class="dropdown no-arrow" title="Clique para Ações">
-													<a class="dropdown-toggle text-secondary" href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" style="text-decoration: none">
-														<!--  -->
-														Ações <i class="fas fa-angle-down fa-sm fa-fw text-gray-400"></i>
-													</a>
-													<div class="dropdown-menu dropdown-menu-right shadow animated--fade-in" aria-labelledby="dropdownMenuLink" x-placement="bottom-end">
-														<?php if ($value->status == 1): ?>
-															<a class="dropdown-item text-info" href="#modal_pedidos" data-toggle="modal" id="<?php echo $data['comandasMesa'][$value->id]->id ?>" mesa="<?php echo $value->id ?>"><i class="fas fa-plus mr-1"></i>  Adicionar Pedidos</a>
-															<div class="dropdown-divider"></div>
-
-															<a class="dropdown-item text-warning" href="#modal_ver_pedidos" data-toggle="modal" id="<?php echo $data['comandasMesa'][$value->id]->id ?>" mesa="<?php echo $value->id ?>" nome="<?php echo $data['comandasMesa'][$value->id]->nome_cliente ?>" data-registro="<?php echo $data['comandasMesa'][$value->id]->data_registro ?>"><i class="fas fa-file mr-1"></i>  Ver Pedido</a>
-
-															<div class="dropdown-divider"></div>
-
-															<a class="dropdown-item text-success" href="#modal_enviar_pedido" data-toggle="modal" id="<?php echo $data['comandasMesa'][$value->id]->id ?>" whats="<?php echo $data['comandasMesa'][$value->id]->whatsapp ?>" mesa="<?php echo $value->id ?>"><i class="fas fa-paper-plane mr-1"></i> Enviar Pedido</a>
-
-															<div class="dropdown-divider"></div>
-
-															<a class="dropdown-item text-success" href="#modal_fechar_comanda" data-toggle="modal" id="<?php echo $data['comandasMesa'][$value->id]->id ?>" nome="<?php echo $data['comandasMesa'][$value->id]->nome_cliente ?>" total="<?php echo $data['comandas'][$data['comandasMesa'][$value->id]->id] ?>" mesa="<?php echo $value->id ?>" data-registro="<?php echo toBrDateTime($data['comandasMesa'][$value->id]->data_registro) ?>"><i class="fas fa-check-circle mr-1"></i> Fechar Comanda</a>
-
-															<div class="dropdown-divider"></div>
-
-															<a class="dropdown-item text-danger" href="#modal_cancelar_comanda" data-toggle="modal" id="<?php echo $data['comandasMesa'][$value->id]->id ?>" nome="<?php echo $data['comandasMesa'][$value->id]->nome_cliente ?>" total="<?php echo $data['comandas'][$data['comandasMesa'][$value->id]->id] ?>" mesa="<?php echo $value->id ?>" data-registro="<?php echo toBrDateTime($data['comandasMesa'][$value->id]->data_registro) ?>"><i class="fas fa-ban mr-1"></i> Cancelar Comanda</a>
-														<?php else: ?>
-															<a class="dropdown-item" href="#modal_add_comanda" id="<?php echo $value->id ?>" data-toggle="modal"><i class="fas fa-plus mr-1"></i> Adicionar Comanda</a>
-
-															<div class="dropdown-divider"></div>
-
-															<a class="dropdown-item" href="#"><i class="fas fa-undo-alt mr-1"></i> Ultimas Comandas</a>
-														<?php endif; ?>
-													</div>
-												</div>
 											</div>
 										</div>
+									</div>
+									<div class="card-body py-2 px-1 collapse-options-<?php echo $value->id ?> collapseCardOptions" style="display: none" title="Clique para Voltar">
+										<div class="row mt-1 px-1">
+											<?php if ($value->status == 1): ?>
+					                		<div class="col-6 mb-2">
+					                			<div class="card h-100 px-0" href="#modal_pedidos" data-toggle="modal" id="<?php echo $data['comandasMesa'][$value->id]->id ?>" mesa="<?php echo $value->id ?>" title="Adicionar Produtos">
+													<div class="card-body py-2 px-1 text-center">
+														<a class="text-info"><i class="fas fa-plus mr-1"></i> Produtos</a>
+													</div>
+												</div>
+					                		</div>
+					                		<div class="col-6 mb-2">
+					                			<div class="card h-100 px-0" href="#modal_ver_pedidos" data-toggle="modal" id="<?php echo $data['comandasMesa'][$value->id]->id ?>" mesa="<?php echo $value->id ?>" nome="<?php echo $data['comandasMesa'][$value->id]->nome_cliente ?>" data-registro="<?php echo $data['comandasMesa'][$value->id]->data_registro ?>" title="Ver Pedido">
+													<div class="card-body py-2 px-1 text-center">
+														<a class="text-warning"><i class="fas fa-file mr-1"></i> Pedido</a>
+													</div>
+												</div>
+					                		</div>
+					                		<div class="col-6 mb-2">
+					                			<div class="card h-100 px-0"  href="#modal_enviar_pedido" data-toggle="modal" id="<?php echo $data['comandasMesa'][$value->id]->id ?>" whats="<?php echo $data['comandasMesa'][$value->id]->whatsapp ?>" mesa="<?php echo $value->id ?>" title="Enviar Pedido">
+													<div class="card-body py-2 px-1 text-center">
+														<a class="text-success"><i class="fas fa-paper-plane mr-1"></i> Enviar</a>
+													</div>
+												</div>
+					                		</div>
+					                		<div class="col-6 mb-2">
+					                			<div class="card h-100 px-0" href="#modal_fechar_comanda" data-toggle="modal" id="<?php echo $data['comandasMesa'][$value->id]->id ?>" nome="<?php echo $data['comandasMesa'][$value->id]->nome_cliente ?>" total="<?php echo $data['comandas'][$data['comandasMesa'][$value->id]->id] ?>" mesa="<?php echo $value->id ?>" data-registro="<?php echo toBrDateTime($data['comandasMesa'][$value->id]->data_registro) ?>">
+													<div class="card-body py-2 px-1 text-center">
+														<a class="text-success"><i class="fas fa-check-circle mr-1"></i> Fechar</a>
+													</div>
+												</div>
+					                		</div>
+					                		<div class="col-lg-6 mb-2">
+					                			<div class="card h-100 px-0" href="#modal_cancelar_comanda" data-toggle="modal" id="<?php echo $data['comandasMesa'][$value->id]->id ?>" nome="<?php echo $data['comandasMesa'][$value->id]->nome_cliente ?>" total="<?php echo $data['comandas'][$data['comandasMesa'][$value->id]->id] ?>" mesa="<?php echo $value->id ?>" data-registro="<?php echo toBrDateTime($data['comandasMesa'][$value->id]->data_registro) ?>" title="Cancelar Comanda">
+													<div class="card-body py-2 px-1 text-center">
+														<a class="text-danger"><i class="fas fa-ban mr-1"></i> Cancelar</a>
+													</div>
+												</div>
+					                		</div>
+					                		<div class="col-lg-6 mb-2 my-auto text-back-2 text-right">
+												<a class="btn btn-secondary collapseCardOptionsButton" id="<?php echo $value->id ?>" href="#" style="border-radius: 20px">
+													Voltar
+												</a>	
+					                		</div>
+					                		<div class="col-12 mb-2 text-back text-center">
+												<a class="btn btn-secondary collapseCardOptionsButton mx-auto" id="<?php echo $value->id ?>" href="#" style="border-radius: 20px">
+													<!-- <i class="fas fa-angle-right"></i> -->
+													Clique para Voltar
+												</a>	
+					                		</div>
+
+					                		<?php else: ?>
+											<div class="col-12 mb-2">
+					                			<div class="card h-100 px-0" href="#modal_add_comanda" id="<?php echo $value->id ?>" data-toggle="modal">
+													<div class="card-body py-2 px-1 text-center">
+														<a class="text-primary"><i class="fas fa-plus mr-1"></i> Adicionar Comanda</a>
+													</div>
+												</div>
+					                		</div>	
+					                		<div class="col-12 mb-2 text-center">
+												<a class="btn btn-secondary collapseCardOptionsButton mx-auto" id="<?php echo $value->id ?>" href="#" style="border-radius: 20px">
+													<!-- <i class="fas fa-angle-right"></i> -->
+													Voltar
+												</a>	
+					                		</div>		
+											<?php endif; ?>													
+					                	</div>
+										
 									</div>
 								</div>
 							</div>
@@ -343,7 +407,7 @@
                         </div>
 	                </div>
 	                <div class="modal-footer">
-	                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar e Desistir</button>
+	                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Desistir</button>
 	                    <button type="submit" class="btn btn-danger">Confirmar Ação <i class="fas fa-check"></i></button>
 	                </div>
 	            </form>
@@ -353,6 +417,28 @@
 
 <?php require_once APPROOT . '/views/inc/footer.php'; ?>
 <script type="text/javascript">
+	$(".collapseCardExample").click(function(){
+		var id = $(this).attr('id');
+		$(".collapseCardOptions").each(function(){
+			if ($(this).is( ":visible" )) {
+				$(this).fadeOut(200,() => {
+					$(this).parent().find('.collapseCardExample').show();
+				});	
+			}
+		});
+
+		$(".collapse-text-" + id).fadeOut(200,() => {
+			$('.collapse-options-' + id).show();
+		});
+	})
+
+	$(".collapseCardOptionsButton").click(function(e){
+		var id = $(this).attr('id')
+		$(".collapse-options-" + id).fadeOut(200,() => {
+			$('.collapse-text-' + id).show();
+		});
+	});
+
 	function enviarMensagem(numero, id){
 		var celular = numero;
 

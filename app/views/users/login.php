@@ -2,6 +2,7 @@
 // echo $_SERVER["REMOTE_ADDR"];
 	
 ?>
+
 <!DOCTYPE html>
 <html lang="en">
 	<head>
@@ -80,6 +81,27 @@
 			body{
 				font-family: 'Product Sans Regular' !important;
 			}
+
+			@media screen and (max-width: 992px) {
+				.text-back {
+					display: block !important;
+				}
+
+				.text-back-2{
+					display: none !important;
+				}
+			}
+
+			@media screen and (min-width: 992px) {
+				.text-back {
+					display: none !important;
+				}
+
+				.text-back-2{
+					display: inline-block;
+					/*display: block !important;*/
+				}
+			}
 		</style>
 	</head>
 	<body class="bg-gradient-primary" style="display: flex; align-content: center !important; align-items: center; height: 100vh !important">
@@ -90,9 +112,8 @@
 				<div class="col-xl-10 col-lg-12 col-md-9">
 					<div class="card o-hidden border-0 shadow-lg my-5">
 						<div class="card-body p-0">
-							<!-- Nested Row within Card Body -->
 							<div class="row">
-								<div class="col-lg-6 d-none d-lg-block">
+								<div class="col-lg-6 d-flex text-back-2">
 									<img src="../img/img1.jpeg" class="img-fluid">
 								</div>
 								<div class="col-lg-6 d-flex align-items-center align-content-center">
