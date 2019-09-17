@@ -502,48 +502,59 @@
 			</head>
 			<body>
 				<div width="100%">
-					<h1 style="text-align: center; font-weight: 100 !important">Churrascaria Assakabrasa</h1>
-				    <p style="text-align: center; font-family: Arial, sans-serif; font-size: 14px">Pedido Emitido em '.date("d/m/Y").'</p>
-				    
+					<h1 style="margin-top: 0; margin-bottom: 0; text-align: center; font-weight: 100 !important; font-size: 100px">Assakabrasa</h1>
+					<p style="margin-top: 0; margin-bottom: 0; text-align: center; font-family: Arial, sans-serif; font-size: 40px">Churrascaria e Self Service</p>
+				</div>
+				<table width="100%" style="border: none">
+					<tr style="border: none">				        
+						<td width="100%" style="text-align: center; font-size: 30px">Av. Francisco Raimundo de Oliveira, 609, Planalto da Catumbela, 62900-000, Russas-CE</td>
+					</tr>
+					<tr style="border: none">				        
+						<td width="100%" style="text-align: center; font-size: 30px">Fones: (88) 2145-0680 | (88) 9 9229-6462 |<br> (88) 9 9612-8612</td>
+					</tr>
+				</table>
+				<div width="100%">
+				    <p style="margin-top: 5px; margin-bottom: 0;text-align: center; font-family: Arial, sans-serif; font-size: 30px"><b>Pedido Emitido em '.date("d/m/Y H:i:s").'</b></p>	    
 				</div>
 				<table style="width: 100%; margin-top: 15px">
-					<thead>
-						<tr>
-							<th class="center">#</th>
-							<th class="left">Produto</th>
-							<th class="center">Qtd.</th>
-							<th class="center">Valor Uni.</th>
-							<th class="center">Valor Total</th>
-						</tr>
-					</thead>
 					<tbody>
+						<tr>
+							<th class="left" style="font-size: 30px; text-transform: uppercase">Produto</th>
+							<th class="center" style="font-size: 30px; text-transform: uppercase">Qtd.</th>
+							<th class="center" style="font-size: 30px; text-transform: uppercase">Valor Uni.</th>
+							<th class="center" style="font-size: 30px; text-transform: uppercase">Valor Total</th>
+						</tr>
+							
 						';	
 							$cont = 1;
 							$total = 0;
 							foreach ($pedidos as $key => $value) { 
 								$body .= 
 									'<tr>
-										<td class="center">'.$cont.'</td>
-										<td class="left">'.$value->descricao.'</td>
-										<td class="center">'.$value->quantidade.'</td>
-										<td class="center">R$ '. str_replace(".", ',', number_format($value->valor, 2)).'</td>
-										<td class="center">R$ '. str_replace(".", ',', number_format($value->valor * $value->quantidade, 2)) .'</td>
+										<td class="left" style="font-size: 30px; text-transform: uppercase">'.$value->descricao.'</td>
+										<td class="center" style="font-size: 30px; text-transform: uppercase">'.$value->quantidade.'</td>
+										<td class="center" style="font-size: 30px; text-transform: uppercase">R$ '. str_replace(".", ',', number_format($value->valor, 2)).'</td>
+										<td class="center" style="font-size: 30px; text-transform: uppercase">R$ '. str_replace(".", ',', number_format($value->valor * $value->quantidade, 2)) .'</td>
 									</tr>';
 								$cont++;
+								$total += $value->valor * $value->quantidade;
 							}
 
-							$total += $value->valor * $value->quantidade;
+							
 
 					$body .='
-					</tbody>
-					<tfoot>
 						<tr>
-							<th colspan="3" class="center">TOTAL:</th>
+							<th colspan="2" class="center" style="font-size: 35px; text-transform: uppercase">TOTAL:</th>
 					
-							<th colspan="2" class="center">R$ ' . str_replace('.', ',', number_format($total, 2)) .'</th>
+							<th colspan="2" class="center" style="font-size: 35px; text-transform: uppercase">R$ ' . str_replace('.', ',', number_format($total, 2)) .'</th>
 						</tr>
-					</tfoot>
+					</tbody>
 
+				</table>
+				<table width="100%" style="border: none; margin-bottom: 100px;">
+					<tr style="border: none">				        
+						<td width="100%" style="text-align: center; font-size: 30px">Desenvolvido por IncludeJr: includejr.com.br</td>
+					</tr>
 				</table>
 
 			</body>
@@ -558,6 +569,13 @@
 			$fontData = $defaultFontConfig['fontdata'];
 
 			$mpdf = new \Mpdf\Mpdf([
+				// 'format' => 'A4-L',
+				'margin_left' => 0,
+				'margin_right' => 0,
+				'margin_top' => 0,
+				'margin_bottom' => 0,
+				'margin_header' => 0,
+				'margin_footer' => 0,
 			    'fontDir' => array_merge($fontDirs, [
 			        __DIR__ . '/custom/font/directory',
 			    ]),
@@ -591,14 +609,6 @@
 			$mpdf->SetTitle("Pedido ".$id." - " . date("d/m/Y"));
 			$mpdf->SetAuthor("Include Jr");
 			$mpdf->SetDisplayMode('fullpage');
-
-
-			$mpdf->SetHTMLFooter('<table width="100%" style="border: none">
-						    <tr style="border: none">				        
-						        <td width="40%" style="text-align: right;">Russas-CE, {DATE j/m/Y}</td>
-						        <td width="33%" style="text-align: right;">{PAGENO}/{nbpg}</td>
-						    </tr>
-						</table>');
 			$stylesheet = file_get_contents('css/style_pedido.css');
 			$mpdf->WriteHTML($stylesheet,\Mpdf\HTMLParserMode::HEADER_CSS);
 			$mpdf->WriteHTML($body,\Mpdf\HTMLParserMode::HTML_BODY);

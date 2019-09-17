@@ -1,5 +1,11 @@
+*{
+    padding: 0 !important;
+    margin: 0!important;
+}
+
 body{
-    font-family: 'Roboto' !important;
+    font-family: 'Courier New', Courier, monospace !important;
+    text-transform: uppercase !important;
     /*font-weight: 700;*/
 }
 
@@ -26,9 +32,9 @@ td, th {
     padding: 15px 10px 15px 10px;
 }
 
-tr:nth-child(even) {
+/* tr:nth-child(even) {
     background-color: #dddddd;
-}
+} */
 
 @font-face {
     font-family: 'Open Sans';
