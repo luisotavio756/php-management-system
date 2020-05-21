@@ -1,5 +1,7 @@
 
-<img src="https://res.cloudinary.com/luisotavio756/image/upload/v1590021020/20200520_212423_hibys8.gif"/>
+<img src="https://res.cloudinary.com/luisotavio756/image/upload/v1590070452/0_9_cj4jwc.jpg"/>
+
+[See a Demo](https://res.cloudinary.com/luisotavio756/image/upload/v1590021020/20200520_212423_hibys8.gif)
 <h1 align="center">
    Dashboard Management System 
 </h1>
@@ -70,5 +72,8 @@ $ cd app/config/config.php
 # Now enjoy !
 ```
 
-Made with ♥ by Luis Otávio [Visit my LinkedIn!](https://www.linkedin.com/in/lu%C3%ADs-ot%C3%A1vio-87851517a/) :wave:
+Made with ♥ by Luis Otávio :wave:
+✔ [Visit my LinkedIn](https://www.linkedin.com/in/lu%C3%ADs-ot%C3%A1vio-87851517a/) 
+✔ [Visit my WhatsApp](https://api.whatsapp.com/send?phone=+5588997542399)
+✔ [Visit my Instagram](https://instagram.com/luisotaviioc)
 
