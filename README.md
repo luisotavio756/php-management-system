@@ -72,8 +72,8 @@ $ cd app/config/config.php
 # Now enjoy !
 ```
 
-Made with ♥ by Luis Otávio :wave:
-✔ [Visit my LinkedIn](https://www.linkedin.com/in/lu%C3%ADs-ot%C3%A1vio-87851517a/) 
-✔ [Visit my WhatsApp](https://api.whatsapp.com/send?phone=+5588997542399)
+Made with ♥ by Luis Otávio :wave:<br />
+✔ [Visit my LinkedIn](https://www.linkedin.com/in/lu%C3%ADs-ot%C3%A1vio-87851517a/)<br />
+✔ [Visit my WhatsApp](https://api.whatsapp.com/send?phone=+5588997542399)<br />
 ✔ [Visit my Instagram](https://instagram.com/luisotaviioc)
 
