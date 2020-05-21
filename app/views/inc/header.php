@@ -47,23 +47,7 @@
                 font-size: 0.9rem !important;
             }
 
-            .pulsate {
-                -webkit-animation: pulsate 1.5s ease-out;
-                -webkit-animation-iteration-count: infinite; 
-                opacity: 0.5;
-            }
-
-            @-webkit-keyframes pulsate {
-                0% { 
-                    opacity: 0.5;
-                }
-                50% { 
-                    opacity: 1.0;
-                }
-                100% { 
-                    opacity: 0.5;
-                }
-            }
+            
 
            /* .kkk{
                 background: rgb(60,54,54) !important;
