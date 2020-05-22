@@ -69,6 +69,8 @@ $ cd app/config/config.php
 5 - Start Apache and MySQL in Wampp, Xampp or other and open in your Browser:
 
 `http://localhost/Assakabrasa`
+User: admin
+Password: admin123
 # Now enjoy !
 ```
 
