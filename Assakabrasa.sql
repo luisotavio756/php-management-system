@@ -86,12 +86,13 @@ CREATE TABLE `tb_comandas` (
   `whatsapp` varchar(20) DEFAULT NULL,
   `data_registro` datetime NOT NULL,
   `data_fechado` datetime DEFAULT NULL,
-  `total` decimal(11,2) NOT NULL,
+  `total` decimal(11,2) NOT NULL DEFAULT '0.00',
   `id_usuario` int(11) NOT NULL,
   `id_mesa` int(11) NOT NULL,
-  `statusVoto` int(1) NOT NULL,
+  `statusVoto` int(1) NOT NULL DEFAULT '0',
   `status` int(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 ROW_FORMAT=COMPACT;
+
 
 --
 -- Extraindo dados da tabela `tb_comandas`
@@ -305,7 +306,7 @@ CREATE TABLE `tb_usuarios` (
 --
 
 INSERT INTO `tb_usuarios` (`id`, `nome`, `sobrenome`, `img`, `email`, `senha`, `nivel`, `status`) VALUES
-(12, 'Assakabrasa', 'Otavio', 'perfil12.jpg', 'admin', '$2y$10$M/lym9I3EuTnVExrUxXdI.SukG9LKjT/EaJQMixdfHHhk6ye1F9o2', 1, 1),
+(12, 'Assakabrasa', 'Otavio', 'perfil12.jpg', 'admin', '$2y$10$5xhHkAem27f1MCvNGLGzWeUN4FDnNaZ2zT0W39H3N8WquuGZ6bx5O', 1, 1),
 (14, 'Luis', 'Otavio', 'masculino.png', 'admin2', '$2y$10$ZnyJWaogWwhHNOSPw6/5Lu8L9jWBMIbrK4g4JCnhrOF2F/ccLlZ3i', 1, 1);
 
 --
