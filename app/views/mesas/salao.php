@@ -30,6 +30,7 @@
 		.collapseCardOptions .card{
 			cursor: pointer;
 		}
+		
 
 		@media screen and (max-width: 992px) {
 			.text-back {
@@ -168,15 +169,15 @@
 	            	<input type="hidden" name="id_comanda" value="">
 	            	<input type="hidden" name="id_mesa" value="">
 	            	<div class="inputs-hidden"></div>
-	                <div class="modal-body" style="height: 470px">
+	                <div class="modal-body" style="max-height: 80vh; overflow: auto;">
 	                	<div class="row">
-	                		<div class="col-6 px-2">
+	                		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 px-2">
 			                	<div class="row">
 									<div class="col-lg-10 mb-3 mb-lg-0">
 	                					<h4 class="text-center">Pesquisar Produtos</h4>
 										<input type="text" class="form-control form-control-user query-input mt-4" placeholder="Digite o nome do Produto..">
 									</div>
-									<div class="col-11" style="height: 297px; overflow-y: auto;">
+									<div class="col-12" style="max-height: 297px; overflow-y: auto;">
 										<table class="table mt-4">
 	                						<tbody id="tbody">
 	                							
@@ -186,9 +187,9 @@
 								</div>
 	                			
 	                		</div>	
-	                		<div class="col-6">
+	                		<div class="col-xs-12 col-sm-12 col-md-12 col-lg-6 mt-4 mt-lg-0">
 	                			<div class="row">
-	                				<div class="col-12" style="height: 350px; overflow-y: auto;">
+	                				<div class="col-12" style="max-height: 350px; overflow-y: auto;">
 	                					<h4 class="text-center">Produtos Adicionados</h4>
 	                					<table class="table mt-4">
 	                						<tbody id="tbody-produtos"></tbody>
@@ -197,12 +198,12 @@
 	                			</div>	                			
 	                		</div>		           
 	                	</div>
-	                	<div class="col-6 order-produtos" style="position: absolute;bottom: 0px;right: 0px;">
-	                		<div class="row">
-	                			<div class="col-2">
+	                	<div class="col-12 order-produtos mt-3">
+	                		<div class="row justify-content-end">
+	                			<div class="col-md-2 text-right">
 	                				<h6>Qtd: <b id="qtd">0</b></h6>
 	                			</div>
-	                			<div class="col-9 text-right">
+	                			<div class="col-md-2 text-right">
 	                				<h6>Valor: <b id="total">0.00</b></h6>
 	                			</div>
 	                		</div>
