@@ -90,11 +90,14 @@ background: linear-gradient(90deg, rgba(60,54,54,1) 0%, rgba(117,47,47,1) 1%, rg
                     <div id="mesas" class="collapse <?php echo $controller == 'mesas' ? 'show' : '' ?>" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
                         <div class="bg-white py-2 collapse-inner rounded">
                             <a class="collapse-item <?php echo $controller == 'mesas' && $method == 'salao' ? 'active' : '' ?>" href="<?php echo URLROOT; ?>/mesas/salao">Mostrar Salão</a>   
+                            <?php if ($_SESSION['nivel'] == 1): ?>
                             <a class="collapse-item <?php echo $controller == 'mesas' && $method == 'gerenciar' ? 'active' : '' ?>" href="<?php echo URLROOT; ?>/mesas/gerenciar">Gerenciar</a>   
+                            <?php endif ?>
                             <!-- <a class="collapse-item" href="<?php echo URLROOT; ?>/mesas/comandas">Comandas</a>  -->         
                         </div>
                     </div>
                 </li>
+                <?php if ($_SESSION['nivel'] == 1): ?>
                 <li class="nav-item <?php echo $controller == 'produtos' ? 'active' : '' ?> d-none d-sm-block">
                     <a class="nav-link <?php echo $controller == 'produtos' ? '' : 'collapsed' ?>" href="#" data-toggle="collapse" data-target="#produtos" aria-expanded="true" aria-controls="produtos">
 	                    <i class="fas fa-cubes"></i>
@@ -113,6 +116,7 @@ background: linear-gradient(90deg, rgba(60,54,54,1) 0%, rgba(117,47,47,1) 1%, rg
                     	<span>Caixa</span>
                     </a>
                 </li>
+                <?php endif ?>
                 <!-- Divider -->
                 <hr class="sidebar-divider">
                 <!-- Heading -->

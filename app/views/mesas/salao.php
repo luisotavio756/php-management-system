@@ -92,27 +92,29 @@
 													</div>
 												</div>
 					                		</div>
-					                		<div class="col-6 mb-2">
-					                			<div class="card h-100 px-0"  href="#modal_enviar_pedido" data-toggle="modal" id="<?php echo $data['comandasMesa'][$value->id]->id ?>" whats="<?php echo $data['comandasMesa'][$value->id]->whatsapp ?>" mesa="<?php echo $value->id ?>" title="Enviar Pedido">
-													<div class="card-body py-2 px-1 text-center">
-														<a class="text-success"><i class="fas fa-paper-plane mr-1"></i> Enviar</a>
+											<?php if ($_SESSION['nivel'] == 1): ?>
+												<div class="col-6 mb-2">
+													<div class="card h-100 px-0"  href="#modal_enviar_pedido" data-toggle="modal" id="<?php echo $data['comandasMesa'][$value->id]->id ?>" whats="<?php echo $data['comandasMesa'][$value->id]->whatsapp ?>" mesa="<?php echo $value->id ?>" title="Enviar Pedido">
+														<div class="card-body py-2 px-1 text-center">
+															<a class="text-success"><i class="fas fa-paper-plane mr-1"></i> Enviar</a>
+														</div>
 													</div>
 												</div>
-					                		</div>
-					                		<div class="col-6 mb-2">
-					                			<div class="card h-100 px-0" href="#modal_fechar_comanda" data-toggle="modal" id="<?php echo $data['comandasMesa'][$value->id]->id ?>" nome="<?php echo $data['comandasMesa'][$value->id]->nome_cliente ?>" total="<?php echo $data['comandas'][$data['comandasMesa'][$value->id]->id] ?>" mesa="<?php echo $value->id ?>" data-registro="<?php echo toBrDateTime($data['comandasMesa'][$value->id]->data_registro) ?>">
-													<div class="card-body py-2 px-1 text-center">
-														<a class="text-success"><i class="fas fa-check-circle mr-1"></i> Fechar</a>
+												<div class="col-6 mb-2">
+													<div class="card h-100 px-0" href="#modal_fechar_comanda" data-toggle="modal" id="<?php echo $data['comandasMesa'][$value->id]->id ?>" nome="<?php echo $data['comandasMesa'][$value->id]->nome_cliente ?>" total="<?php echo $data['comandas'][$data['comandasMesa'][$value->id]->id] ?>" mesa="<?php echo $value->id ?>" data-registro="<?php echo toBrDateTime($data['comandasMesa'][$value->id]->data_registro) ?>">
+														<div class="card-body py-2 px-1 text-center">
+															<a class="text-success"><i class="fas fa-check-circle mr-1"></i> Fechar</a>
+														</div>
 													</div>
 												</div>
-					                		</div>
-					                		<div class="col-lg-6 mb-2">
-					                			<div class="card h-100 px-0" href="#modal_cancelar_comanda" data-toggle="modal" id="<?php echo $data['comandasMesa'][$value->id]->id ?>" nome="<?php echo $data['comandasMesa'][$value->id]->nome_cliente ?>" total="<?php echo $data['comandas'][$data['comandasMesa'][$value->id]->id] ?>" mesa="<?php echo $value->id ?>" data-registro="<?php echo toBrDateTime($data['comandasMesa'][$value->id]->data_registro) ?>" title="Cancelar Comanda">
-													<div class="card-body py-2 px-1 text-center">
-														<a class="text-danger"><i class="fas fa-ban mr-1"></i> Cancelar</a>
+												<div class="col-lg-6 mb-2">
+													<div class="card h-100 px-0" href="#modal_cancelar_comanda" data-toggle="modal" id="<?php echo $data['comandasMesa'][$value->id]->id ?>" nome="<?php echo $data['comandasMesa'][$value->id]->nome_cliente ?>" total="<?php echo $data['comandas'][$data['comandasMesa'][$value->id]->id] ?>" mesa="<?php echo $value->id ?>" data-registro="<?php echo toBrDateTime($data['comandasMesa'][$value->id]->data_registro) ?>" title="Cancelar Comanda">
+														<div class="card-body py-2 px-1 text-center">
+															<a class="text-danger"><i class="fas fa-ban mr-1"></i> Cancelar</a>
+														</div>
 													</div>
 												</div>
-					                		</div>
+											<?php endif ?>
 					                		<div class="col-lg-6 mb-2 my-auto text-back-2 text-right">
 												<a class="btn btn-secondary collapseCardOptionsButton" id="<?php echo $value->id ?>" href="#" style="border-radius: 20px">
 													Voltar
