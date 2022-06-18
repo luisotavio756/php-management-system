@@ -236,6 +236,19 @@
 
 		}
 
+		public function verifyIfProductExistsOnOrder($pedidos, $id_produto) {
+			$count = 0;
+
+			foreach ($pedidos as $key => $value) {
+
+				if ((int) $value->id_produto === (int) $id_produto) {
+					return $value;
+				}
+			}
+
+			return null;
+		}
+
 		public function adicionarPedido() {
 			if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
@@ -243,16 +256,31 @@
 				$_POST = filter_input_array(INPUT_POST, FILTER_SANITIZE_STRING);
 
 				// Init data
+				$id_comanda = $_POST['id_comanda'];
+
 				$data = [
-					'id_comanda' => ($_POST['id_comanda']),
+					'id_comanda' => $id_comanda,
 					'id_mesa' => ($_POST['id_mesa']),
 					'pedidos' => ($_POST['pedidos']),
 				];
 
 				if (isset($data['id_comanda']) && isset($data['id_mesa']) && isset($data['pedidos'])) {
+					$pedidos = $this->mesaModel->getPedido($id_comanda);
 					$cont = 0;
+						
 					foreach ($data['pedidos'] as $key => $value) {
-						$this->mesaModel->addPedido($data['id_comanda'], $key, $value);
+						$pedido = $this->verifyIfProductExistsOnOrder($pedidos, $key);
+
+						if ($pedido) {
+							$pedidoId = $pedido->id_pedido;
+							$pedidoQtd = $pedido->quantidade;
+							$novaQtd = (int) $pedidoQtd + (int) $value;
+
+							$this->mesaModel->updatePedido($pedidoId, $novaQtd);
+						} else {
+							$this->mesaModel->addPedido($data['id_comanda'], $key, $value);
+						}
+
 						if ($this->debEstoque == 1) {
 							$estoque = $this->produtoModel->verifEstoque($key)[0];
 							if ($estoque >= $value) {
